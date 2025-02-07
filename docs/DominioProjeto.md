@@ -19,7 +19,7 @@ O objeto de estudo trata-se da criação de escalas de serviço operacional para
 - ***Escala***: Conjunto de militares agendados para prestar o serviço operacional separados por dia e função;
 - ***Escalante***: Militar designado para elaborar a escala;
 - ***Comando***: Militar ou militares comandam o quartel e tomam as decisões estratégicas;
-- ***Posto*** ou ***Graduação***: São os graus hierárquicos conferidos aos militares. Posto refere-se a oficiais (Ex: Tenente e Capitão) e Graduação a Praças (Ex: Soldado e Sargento);
+- ***Patente***: São os graus hierárquicos conferidos aos militares (Posto ou Gradução). Posto refere-se a oficiais (Ex: Tenente e Capitão) e Graduação a Praças (Ex: Soldado e Sargento);
 - ***Função***: Atividade designada ao um militar ao ser escalado para o serviço operacional;
 - ***Antiguidade***: Relaciona-se a senioridade de um militar, é definida por um número, quanto menor o número maior a senioridade (antiguidade)  do militar;
 - ***Fiscal de Dia***: Função do militar que coordenará as atividades da equipe escalada durante a prestação do serviço operacional;
@@ -28,12 +28,12 @@ O objeto de estudo trata-se da criação de escalas de serviço operacional para
 - ***Ajudante de Linha***: Função do militar que estará auxiliando o Operador de Linha;
 - ***Permanente***: Função do militar que receberá as ocorrencias e fará a segurança do quartel.
 
-### Contextos Identificados
+### Subdomínios Identificados
 
-- ***Contexto do Escalante***: Elaborar, modificar e apresentar a escala;
-- ***Contexto do Comando***: Analisar, solicitar alterações e aprovar a escala;
-- ***Contexto dos Militares***: Visualisar a escala aprovada;
-- ***Contexto de Segurança***: Define regras de acesso e segurança a cada etapa do processo de elaboração da escala.
+- ***Escalante <Subdomínio Principal>***: Elaborar, modificar e apresentar a escala;
+- ***Comando <Subdomínio de Suporte>***: Analisar, solicitar alterações e aprovar a escala;
+- ***Militares <Subdomínio de Suporte>***: Visualisar a escala aprovada;
+- ***Segurança <Subdomínio Genérico>***: Definir regras de acesso e segurança para cada ator do processo de elaboração da escala.
 
 
 </div>
