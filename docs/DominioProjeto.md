@@ -11,7 +11,7 @@ O objeto de estudo trata-se da criação de escalas de serviço operacional para
 1. Apresentar a escala do mês em questão para aprovação do comando do quartel;
 1. O comando analisará a escala e pode apontar alterações na mesma ou aprova-la;
 1. A escala retorna ao escalante para as alterações e as etapas de 4 a 6 serão repetidas até que a escala seja aprovada;
-1. Após a aprovação da escala, o militar designado divulga a escala aos demais militares para cumprimento do serviço.
+1. Após a aprovação da escala, esta é publicizada aos demais militares para cumprimento do serviço.
 
 O serviço operacional é realizado todos os dias do mês, incluindo finais de semana e feriados. No entanto, haverão períodos em que será necessária a criação de escalas especiais com regras específicas definidas pelo comando.
 
