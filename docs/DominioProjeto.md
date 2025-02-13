@@ -55,6 +55,6 @@ O escalante, após o termino da execução da escala, deve consultar o COD para 
     * *Militares*: Visualisar a escala aprovada e realizar permutas entre militares escalados;
     * *Perfis*: Definir os perfis de acesso para cada ator do processo de elaboração e execução da escala.
 - ***Subdomínios de Genéricos***:
-    * *Segurança*: Autenticar e autorizar atores conforme perfis de acesso.
+    * *Segurança* (externo): Autenticar e autorizar atores conforme perfis de acesso, utilizando-se de padrões abertos de autenticação e autorização.
 
 </div>
