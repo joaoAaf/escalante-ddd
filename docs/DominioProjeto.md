@@ -27,14 +27,15 @@ O escalante, após o termino da execução da escala, deve consultar o COD para 
 
 ### Atores Envolvidos
 
-- ***Militar***: Trabalhador do quartel que pode ou não prestar serviço operacional;
 - ***Escalante***: Militar designado para elaborar a escala;
 - ***Comando***: Militar ou militares comandam o quartel e tomam as decisões estratégicas;
+- ***Ajudancia***: Setor responsável pelo suporte administrativo, gerencia dos dados dos militares, como seus cadastros, ferias e licenças;
+- ***Militar***: Trabalhador do quartel que pode ou não prestar serviço operacional.
 
 ### Especificidades
 
 - ***Escala***: Conjuntos de militares agendados para prestar serviço operacional separados por dia e função, normalmente refere-se a um mês de serviços;
-- ***Serviço Operacional***: O periodo de tempo que um grupo de militares escalados realizam as atividades designadas (Ex: 48 horas); 
+- ***Serviço Operacional***: O periodo de tempo que um grupo de militares escalados realizam as atividades designadas (Ex: 48 horas);
 - ***COD***: Registro diario das ocorrencias que aconteceram durante um serviço operacional;
 - ***Permuta***: Documento que permite substituir um militar por outro em um serviço operacional;
 - ***Patente***: São os graus hierárquicos conferidos aos militares (Posto ou Gradução). Posto refere-se a oficiais (Ex: Tenente e Capitão) e Graduação a Praças (Ex: Soldado e Sargento);
@@ -52,8 +53,8 @@ O escalante, após o termino da execução da escala, deve consultar o COD para 
     * *Escalante*: Elaborar, modificar, revisar escalas e apresentar ao comando relatório contendo quantos serviços cada militar realizou em cada mês.
 - ***Subdomínios de Suporte***:
     * *Comando*: Analisar escalas e permutas, aprovar ou reprovar, e solicitar de alterações quando necessário;
-    * *Militares*: Visualisar a escala aprovada e realizar permutas entre militares escalados;
-    * *Perfis*: Definir os perfis de acesso para cada ator do processo de elaboração e execução da escala.
+    * *Ajudancia*: Gerenciar os dados e dos militares;
+    * *Militares*: Visualisar a escala aprovada e realizar permutas entre militares escalados.
 - ***Subdomínios de Genéricos***:
     * *Segurança* (externo): Autenticar e autorizar atores conforme perfis de acesso, utilizando-se de padrões abertos de autenticação e autorização.
 
