@@ -22,7 +22,9 @@ O diagrama de contexto do projeto é representado pelo diagrama abaixo:
 <img src="./diagramas/img/DiagramaContexto.png">
 </div>
 
-### Diagramas UML
+Foi identificado, durante a elaboração dos diagramas de classes UML, que devido ao fato de haverem diversas classes compartilhadas entre os contextos do sistema, foi escolhido o uso de núcleos compartilhados, a fim de evitar possíveis inconsistências entre os bancos de dados e facilitar a manutenção do sistema.
+
+### Diagramas de Classes UML
 
 Os diagramas abaixo representam as classes do sistema e suas relações:
 
