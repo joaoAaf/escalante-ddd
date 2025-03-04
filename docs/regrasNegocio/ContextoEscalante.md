@@ -1,6 +1,6 @@
 <div style="text-align:justify">
 
-## Regras de Negócio do Contexto do Escalante
+## Regras de Negócio do Contexto Escalante
 
 ### Descrição da Necessidade:
 Automatizar a tarefa de criação das escalas mensais de serviço operacional para os militares do CBMCE do quartel de Limoeiro do Norte, visando dar mais eficiência a este processo.

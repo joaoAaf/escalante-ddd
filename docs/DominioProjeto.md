@@ -49,7 +49,8 @@ O escalante, após o termino da execução da escala, deve consultar o COD para 
 - ***C.O.V.***: Função do militar que estará atuando como motorista durante o serviço operacional;
 - ***Operador de Linha***: Função do militar que estará atuando na linha de frente de uma operação (Ex: Combate a incêndio);
 - ***Ajudante de Linha***: Função do militar que estará auxiliando o Operador de Linha;
-- ***Permanente***: Função do militar que receberá as ocorrências e fará a segurança do quartel.
+- ***Permanente***: Função do militar que receberá as ocorrências e fará a segurança do quartel;
+- ***Nome de Paz***: Nome utilizado pelos militares para se identificarem.
 
 ### Subdomínios Identificados
 
