@@ -69,7 +69,7 @@ public class Nome {
 
     @Override
     public String toString() {
-        return "Nome [id=" + id + ", nomeCompleto=" + nomeCompleto + ", nomePaz=" + nomePaz + "]";
+        return "Nome [nomeCompleto=" + nomeCompleto + ", nomePaz=" + nomePaz + "]";
     }
 
 }

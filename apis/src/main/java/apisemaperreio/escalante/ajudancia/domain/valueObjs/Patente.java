@@ -1,27 +1,67 @@
 package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
-public enum Patente {
+public class Patente {
 
-    TEN("Tenente", 1),
-    SUBTEN("Subtenente", 2),
-    SGT("Sargento", 3),
-    CB("Cabo", 4),
-    SD("Soldado", 5);
+    private Long id;
+    private DadoPatente dadoPatente;
+    private Integer folgaEspecial;
 
-    private String nome;
-    private Integer antiguidade;
-
-    private Patente(String nome, Integer antiguidade) {
-        this.nome = nome;
-        this.antiguidade = antiguidade;
+    public Patente(DadoPatente nomePatente, Integer folgaEspecial) {
+        this.dadoPatente = nomePatente;
+        this.folgaEspecial = folgaEspecial;
     }
 
-    public String getNome() {
-        return nome;
+    public Long getId() {
+        return id;
     }
 
-    public Integer getAntiguidade() {
-        return antiguidade;
+    public DadoPatente getDadoPatente() {
+        return dadoPatente;
+    }
+
+    public void setDadoPatente(DadoPatente nomePatente) {
+        this.dadoPatente = nomePatente;
+    }
+
+    public Integer getFolgaEspecial() {
+        return folgaEspecial;
+    }
+
+    public void setFolgaEspecial(Integer folgaEspecial) {
+        this.folgaEspecial = folgaEspecial;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((dadoPatente == null) ? 0 : dadoPatente.hashCode());
+        result = prime * result + ((folgaEspecial == null) ? 0 : folgaEspecial.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Patente other = (Patente) obj;
+        if (dadoPatente != other.dadoPatente)
+            return false;
+        if (folgaEspecial == null) {
+            if (other.folgaEspecial != null)
+                return false;
+        } else if (!folgaEspecial.equals(other.folgaEspecial))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Patente [nomePatente=" + dadoPatente + ", folgaEspecial=" + folgaEspecial + "]";
     }
 
 }

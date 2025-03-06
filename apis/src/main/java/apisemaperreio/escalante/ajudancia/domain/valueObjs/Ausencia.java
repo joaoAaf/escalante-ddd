@@ -1,6 +1,8 @@
-package apisemaperreio.escalante.ajudancia.domain.entities;
+package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
 import java.time.LocalDate;
+
+import apisemaperreio.escalante.ajudancia.domain.entities.Militar;
 
 public class Ausencia {
 
@@ -129,8 +131,7 @@ public class Ausencia {
 
     @Override
     public String toString() {
-        return "Ausencia [id=" + id + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", motivo=" + motivo
-                + ", descricao=" + descricao + ", militar=" + militar.getMatricula() + "]";
+        return "Ausencia [dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", motivo=" + motivo + "]";
     }
 
 }

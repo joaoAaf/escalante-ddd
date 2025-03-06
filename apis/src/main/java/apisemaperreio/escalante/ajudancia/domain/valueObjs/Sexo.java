@@ -2,8 +2,8 @@ package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
 public enum Sexo {
 
-    MASCULINO('M'),
-    FEMININO('F');
+    M('M'),
+    F('F');
 
     private char sexo;
 
