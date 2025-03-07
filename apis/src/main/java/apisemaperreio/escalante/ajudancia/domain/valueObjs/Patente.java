@@ -1,13 +1,28 @@
 package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Patente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 8, nullable = false)
     private DadoPatente dadoPatente;
+
     private Integer folgaEspecial;
 
-    public Patente(DadoPatente nomePatente, Integer folgaEspecial) {
-        this.dadoPatente = nomePatente;
+    public Patente(DadoPatente dadoPatente, Integer folgaEspecial) {
+        this.dadoPatente = dadoPatente;
         this.folgaEspecial = folgaEspecial;
     }
 
@@ -19,8 +34,8 @@ public class Patente {
         return dadoPatente;
     }
 
-    public void setDadoPatente(DadoPatente nomePatente) {
-        this.dadoPatente = nomePatente;
+    public void setDadoPatente(DadoPatente dadoPatente) {
+        this.dadoPatente = dadoPatente;
     }
 
     public Integer getFolgaEspecial() {
@@ -61,7 +76,7 @@ public class Patente {
 
     @Override
     public String toString() {
-        return "Patente [nomePatente=" + dadoPatente + ", folgaEspecial=" + folgaEspecial + "]";
+        return "Patente [dadoPatente=" + dadoPatente + ", folgaEspecial=" + folgaEspecial + "]";
     }
 
 }

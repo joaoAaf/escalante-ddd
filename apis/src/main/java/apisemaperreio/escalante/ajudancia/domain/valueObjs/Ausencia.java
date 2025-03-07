@@ -2,15 +2,39 @@ package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
 import java.time.LocalDate;
 
-import apisemaperreio.escalante.ajudancia.domain.entities.Militar;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import apisemaperreio.escalante.ajudancia.domain.entities.Militar;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Ausencia {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate dataInicio;
+    
+    @Column(nullable = false)
     private LocalDate dataFim;
+    
+    @Column(nullable = false, length = 50)
     private String motivo;
+
+    @Column(length = 255)
     private String descricao;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "matricula_militar", nullable = false)
+    @JsonIgnore
     private Militar militar;
 
     public Ausencia(LocalDate dataInicio, LocalDate dataFim, String motivo, String descricao, Militar militar) {
@@ -19,12 +43,6 @@ public class Ausencia {
         this.motivo = motivo;
         this.descricao = descricao;
         this.militar = militar;
-    }
-
-    public Ausencia(LocalDate dataInicio, LocalDate dataFim, String motivo, Militar militar) {
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.motivo = motivo;
     }
 
     public Ausencia() {
@@ -78,7 +96,6 @@ public class Ausencia {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((dataInicio == null) ? 0 : dataInicio.hashCode());
         result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
         result = prime * result + ((motivo == null) ? 0 : motivo.hashCode());
@@ -96,11 +113,6 @@ public class Ausencia {
         if (getClass() != obj.getClass())
             return false;
         Ausencia other = (Ausencia) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
         if (dataInicio == null) {
             if (other.dataInicio != null)
                 return false;

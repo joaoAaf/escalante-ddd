@@ -1,12 +1,50 @@
 package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
-public record Email(
-        Long id,
-        String profissional,
-        String pessoal) {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Email {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 100, unique = true, nullable = false)
+    private String profissional;
+
+    @Column(length = 100, unique = true)
+    private String pessoal;
 
     public Email(String profissional, String pessoal) {
-        this(null, profissional, pessoal);
+        this.profissional = profissional;
+        this.pessoal = pessoal;
+    }
+
+    public Email() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getProfissional() {
+        return profissional;
+    }
+
+    public void setProfissional(String profissional) {
+        this.profissional = profissional;
+    }
+
+    public String getPessoal() {
+        return pessoal;
+    }
+
+    public void setPessoal(String pessoal) {
+        this.pessoal = pessoal;
     }
 
     @Override
@@ -44,5 +82,5 @@ public record Email(
     public String toString() {
         return "Email [profissional=" + profissional + ", pessoal=" + pessoal + "]";
     }
-    
+
 }

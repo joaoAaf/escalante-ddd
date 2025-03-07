@@ -2,10 +2,23 @@ package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
 import java.util.Arrays;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Nome {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 100)
     private String nomeCompleto;
+
+    @Column(nullable = false, length = 50)
     private String nomePaz;
 
     public Nome(String nomeCompleto, String nomePaz) {
