@@ -4,32 +4,77 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import apisemaperreio.escalante.ajudancia.domain.valueObjs.Ausencia;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Email;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Endereco;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Nome;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Patente;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Sexo;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Telefone;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
+@Entity
 public class Militar {
 
+    @Id
+    @Column(length = 8, unique = true, nullable = false)
     private String matricula;
+
+    @Column(length = 11, unique = true, nullable = false)
     private String cpf;
+
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_nome")
     private Nome nome;
+
+    @Column(nullable = false)
     private LocalDate nascimento;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 1, nullable = false)
     private Sexo sexo;
+
+    @OneToMany(mappedBy = "militar", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Telefone> telefones = new HashSet<Telefone>();
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_email")
     private Email email;
+
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_endereco")
     private Endereco endereco;
+
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_patente")
     private Patente patente;
+
+    @Column(unique = true, nullable = false)
     private Integer antiguidade;
+
     private Integer folgaEspecial;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean escalavel;
+
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean cov;
+
+    @OneToMany(mappedBy = "militar", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ausencia> ausencias = new HashSet<Ausencia>();
 
     public Militar(String matricula, String cpf, Nome nome, LocalDate nascimento, Sexo sexo, Telefone telefone,
-            Email email, Endereco endereco, Patente patente, Integer antiguidade, Boolean escalavel, Boolean cov) {
+            Email email, Endereco endereco, Patente patente, Integer antiguidade, Integer folgaEspecial,
+            Boolean escalavel, Boolean cov) {
         this.matricula = matricula;
         this.cpf = cpf;
         this.nome = nome;
@@ -40,6 +85,7 @@ public class Militar {
         this.endereco = endereco;
         this.patente = patente;
         this.antiguidade = antiguidade;
+        this.folgaEspecial = folgaEspecial;
         this.escalavel = escalavel;
         this.cov = cov;
     }
@@ -184,10 +230,7 @@ public class Militar {
 
     @Override
     public String toString() {
-        return "Militar [matricula=" + matricula + ", cpf=" + cpf + ", nome=" + nome + ", nascimento=" + nascimento
-                + ", sexo=" + sexo + ", telefones=" + telefones + ", email=" + email + ", endereco=" + endereco
-                + ", patente=" + patente + ", antiguidade=" + antiguidade + ", folgaEspecial=" + folgaEspecial
-                + ", escalavel=" + escalavel + ", cov=" + cov + "]";
+        return "Militar [matricula=" + matricula + ", nome=" + nome + ", sexo=" + sexo + ", patente=" + patente + "]";
     }
 
 }
