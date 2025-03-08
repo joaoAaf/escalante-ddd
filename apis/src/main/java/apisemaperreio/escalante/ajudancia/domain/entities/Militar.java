@@ -61,7 +61,7 @@ public class Militar {
     @Column(unique = true, nullable = false)
     private Integer antiguidade;
 
-    private Integer folgaEspecial;
+    private int folgaEspecial;
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean escalavel;
@@ -73,7 +73,7 @@ public class Militar {
     private Set<Ausencia> ausencias = new HashSet<Ausencia>();
 
     public Militar(String matricula, String cpf, Nome nome, LocalDate nascimento, Sexo sexo, Telefone telefone,
-            Email email, Endereco endereco, Patente patente, Integer antiguidade, Integer folgaEspecial,
+            Email email, Endereco endereco, Patente patente, Integer antiguidade, int folgaEspecial,
             Boolean escalavel, Boolean cov) {
         this.matricula = matricula;
         this.cpf = cpf;
@@ -85,7 +85,7 @@ public class Militar {
         this.endereco = endereco;
         this.patente = patente;
         this.antiguidade = antiguidade;
-        this.folgaEspecial = folgaEspecial;
+        this.folgaEspecial = patente.getFolgaEspecial().compareTo(folgaEspecial) > 0 ? patente.getFolgaEspecial() : folgaEspecial;
         this.escalavel = escalavel;
         this.cov = cov;
     }
