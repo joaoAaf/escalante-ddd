@@ -26,6 +26,9 @@ public class Patente {
         this.folgaEspecial = folgaEspecial;
     }
 
+    public Patente() {
+    }
+
     public Long getId() {
         return id;
     }

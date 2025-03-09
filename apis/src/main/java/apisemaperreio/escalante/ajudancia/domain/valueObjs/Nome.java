@@ -1,7 +1,5 @@
 package apisemaperreio.escalante.ajudancia.domain.valueObjs;
 
-import java.util.Arrays;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +8,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Nome {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,18 +20,26 @@ public class Nome {
     private String nomePaz;
 
     public Nome(String nomeCompleto, String nomePaz) {
-        if (verificaNomePaz(nomeCompleto, nomePaz)) {
-            this.nomeCompleto = nomeCompleto;
-            this.nomePaz = nomePaz;
-        }
-        throw new IllegalArgumentException("Nome de Paz inválido");
+        this.nomeCompleto = nomeCompleto;
+        this.nomePaz = nomePaz;
     }
 
-    public Boolean verificaNomePaz(String nomeCompleto, String nomePaz) {
-        var nomeCompletoArray = Arrays.asList(nomeCompleto.split(" "));
-        var nomePazArray = Arrays.asList(nomePaz.split(" "));
-        return nomePazArray.stream().allMatch(nomeCompletoArray::contains);
+    public Nome() {
     }
+
+    // public Nome(String nomeCompleto, String nomePaz) {
+    // if (verificaNomePaz(nomeCompleto, nomePaz)) {
+    // this.nomeCompleto = nomeCompleto;
+    // this.nomePaz = nomePaz;
+    // }
+    // throw new IllegalArgumentException("Nome de Paz inválido");
+    // }
+
+    // public Boolean verificaNomePaz(String nomeCompleto, String nomePaz) {
+    // var nomeCompletoArray = Arrays.asList(nomeCompleto.split(" "));
+    // var nomePazArray = Arrays.asList(nomePaz.split(" "));
+    // return nomePazArray.stream().allMatch(nomeCompletoArray::contains);
+    // }
 
     public Long getId() {
         return id;
