@@ -5,12 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Ausencia;
+import apisemaperreio.escalante.ajudancia.domain.valueObjs.DadoPatente;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Email;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Endereco;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Nome;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Patente;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Sexo;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Telefone;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.MilitarRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,8 +45,9 @@ public class Militar {
     @Column(length = 1, nullable = false)
     private Sexo sexo;
 
-    @OneToMany(mappedBy = "militar", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Telefone> telefones = new HashSet<Telefone>();
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_telefone")
+    private Telefone telefone;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_email")
@@ -80,14 +83,38 @@ public class Militar {
         this.nome = nome;
         this.nascimento = nascimento;
         this.sexo = sexo;
-        this.telefones.add(telefone);
+        this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
         this.patente = patente;
         this.antiguidade = antiguidade;
-        this.folgaEspecial = patente.getFolgaEspecial().compareTo(folgaEspecial) > 0 ? patente.getFolgaEspecial() : folgaEspecial;
+        this.folgaEspecial = patente.getFolgaEspecial().compareTo(folgaEspecial) > 0 ? patente.getFolgaEspecial()
+                : folgaEspecial;
         this.escalavel = escalavel;
         this.cov = cov;
+    }
+
+    public Militar(MilitarRequest militarRequest) {
+        this.matricula = militarRequest.matricula();
+        this.cpf = militarRequest.cpf();
+        this.nome = new Nome(militarRequest.nome().nomeCompleto(), militarRequest.nome().nomePaz());
+        this.nascimento = militarRequest.nascimento();
+        this.sexo = Sexo.valueOf(militarRequest.sexo());
+        this.telefone = new Telefone(militarRequest.telefone().ddd1(), militarRequest.telefone().numero1(),
+                militarRequest.telefone().ddd2(), militarRequest.telefone().numero2());
+        this.email = new Email(militarRequest.email().profissional(), militarRequest.email().pessoal());
+        this.endereco = new Endereco(militarRequest.endereco().logradouro(), militarRequest.endereco().numero(),
+                militarRequest.endereco().complemento(), militarRequest.endereco().bairro(),
+                militarRequest.endereco().cep(), militarRequest.endereco().municipio(),
+                militarRequest.endereco().siglaUf());
+        this.patente = new Patente(DadoPatente.valueOf(militarRequest.patente().nomePatente()),
+                militarRequest.patente().folgaEspecial());
+        this.antiguidade = militarRequest.antiguidade();
+        this.folgaEspecial = militarRequest.patente().folgaEspecial().compareTo(militarRequest.folgaEspecial()) > 0
+                ? militarRequest.patente().folgaEspecial()
+                : militarRequest.folgaEspecial();
+        this.escalavel = militarRequest.escalavel();
+        this.cov = militarRequest.cov();
     }
 
     public Militar() {
@@ -133,8 +160,12 @@ public class Militar {
         this.sexo = sexo;
     }
 
-    public Set<Telefone> getTelefones() {
-        return telefones;
+    public Telefone getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(Telefone telefone) {
+        this.telefone = telefone;
     }
 
     public Email getEmail() {
@@ -169,11 +200,11 @@ public class Militar {
         this.antiguidade = antiguidade;
     }
 
-    public Integer getFolgaEspecial() {
+    public int getFolgaEspecial() {
         return folgaEspecial;
     }
 
-    public void setFolgaEspecial(Integer folgaEspecial) {
+    public void setFolgaEspecial(int folgaEspecial) {
         this.folgaEspecial = folgaEspecial;
     }
 
@@ -191,10 +222,6 @@ public class Militar {
 
     public void setCov(Boolean cov) {
         this.cov = cov;
-    }
-
-    public Set<Ausencia> getAusencias() {
-        return ausencias;
     }
 
     @Override
@@ -230,7 +257,7 @@ public class Militar {
 
     @Override
     public String toString() {
-        return "Militar [matricula=" + matricula + ", nome=" + nome + ", sexo=" + sexo + ", patente=" + patente + "]";
+        return "Militar [matricula=" + matricula + ", nome=" + nome.getNomePaz() + ", sexo=" + sexo + ", patente=" + patente.getDadoPatente().getNome() + "]";
     }
 
 }
