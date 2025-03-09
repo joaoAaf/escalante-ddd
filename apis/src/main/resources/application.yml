@@ -1,5 +1,8 @@
 spring:
   application:
     name: escalante
+  profiles:
+    active:
+    - test  
   jpa:
     open-in-view: false
