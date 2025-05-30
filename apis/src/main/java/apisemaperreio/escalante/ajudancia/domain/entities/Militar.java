@@ -5,14 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Ausencia;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.DadoPatente;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Email;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Endereco;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Nome;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Patente;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Sexo;
 import apisemaperreio.escalante.ajudancia.domain.valueObjs.Telefone;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.MilitarRequest;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -88,36 +86,16 @@ public class Militar {
         this.endereco = endereco;
         this.patente = patente;
         this.antiguidade = antiguidade;
-        this.folgaEspecial = patente.getFolgaEspecial().compareTo(folgaEspecial) > 0 ? patente.getFolgaEspecial()
-                : folgaEspecial;
+        this.folgaEspecial = definirFolgaEspecial(folgaEspecial, patente.getFolgaEspecial());
         this.escalavel = escalavel;
         this.cov = cov;
     }
 
-    public Militar(MilitarRequest militarRequest) {
-        this.matricula = militarRequest.matricula();
-        this.cpf = militarRequest.cpf();
-        this.nome = new Nome(militarRequest.nome().nomeCompleto(), militarRequest.nome().nomePaz());
-        this.nascimento = militarRequest.nascimento();
-        this.sexo = Sexo.valueOf(militarRequest.sexo());
-        this.telefone = new Telefone(militarRequest.telefone().ddd1(), militarRequest.telefone().numero1(),
-                militarRequest.telefone().ddd2(), militarRequest.telefone().numero2());
-        this.email = new Email(militarRequest.email().profissional(), militarRequest.email().pessoal());
-        this.endereco = new Endereco(militarRequest.endereco().logradouro(), militarRequest.endereco().numero(),
-                militarRequest.endereco().complemento(), militarRequest.endereco().bairro(),
-                militarRequest.endereco().cep(), militarRequest.endereco().municipio(),
-                militarRequest.endereco().siglaUf());
-        this.patente = new Patente(DadoPatente.valueOf(militarRequest.patente().nomePatente()),
-                militarRequest.patente().folgaEspecial());
-        this.antiguidade = militarRequest.antiguidade();
-        this.folgaEspecial = militarRequest.patente().folgaEspecial().compareTo(militarRequest.folgaEspecial()) > 0
-                ? militarRequest.patente().folgaEspecial()
-                : militarRequest.folgaEspecial();
-        this.escalavel = militarRequest.escalavel();
-        this.cov = militarRequest.cov();
+    public Militar() {
     }
 
-    public Militar() {
+    public int definirFolgaEspecial(int folgaMilitar, int folgaPatente) {
+        return folgaMilitar > folgaPatente ? folgaMilitar : folgaPatente;
     }
 
     public String getMatricula() {
@@ -257,7 +235,8 @@ public class Militar {
 
     @Override
     public String toString() {
-        return "Militar [matricula=" + matricula + ", nome=" + nome.getNomePaz() + ", sexo=" + sexo + ", patente=" + patente.getDadoPatente().getNome() + "]";
+        return "Militar [matricula=" + matricula + ", nome=" + nome.getNomePaz() + ", sexo=" + sexo + ", patente="
+                + patente.getDadoPatente().getNome() + "]";
     }
 
 }

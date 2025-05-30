@@ -44,7 +44,7 @@ public class Instantiation implements CommandLineRunner {
             endereco,
             patente,
             10,
-            6,
+            4,
             true,
             false);
         
