@@ -17,23 +17,23 @@ Há escala de serviço operacional todos os dias do mês, incluindo finais de se
 
 Cada militar, durante o período de um mês, deve participar de pelo menos 2 serviços operacionais.
 
-No caso de ausências legais, se estas ocorrerem antes do inicio da execução da escala, o escalante deve fazer a escala considerando-as. Para isto deverá ser consultado o setor de Ajudância do CBMCE para verificar se existem militares de licença ou férias no período da escala em questão.
+No caso de ausências legais, se estas ocorrerem antes do início da execução da escala, o escalante deve fazer a escala considerando-as. Para isto deverá ser consultado o setor de Ajudância do CBMCE para verificar se existem militares de licença ou férias no período da escala em questão.
 
-O setor da Ajudância é responsável por gerenciar as informações dos militares, incluindo dados pessoais e profissionais, como nome, matricula, cpf,endereço, contatos, data de nascimento, patente, antiguidade, ferias, licenças e se o militar pode ser escalado para o serviço operacional.
+O setor da Ajudância é responsável por gerenciar as informações dos militares, incluindo dados pessoais e profissionais, como nome, matricula, CPF, endereço, contatos, data de nascimento, patente, antiguidade, férias, licenças e se o militar pode ser escalado para o serviço operacional.
 
 A escala, durante sua execução, poderá sofrer alterações devido a ausência de um ou mais militares escalados ou permutas de serviço entre eles.
 
 Caso ocorram ausências durante o período de execução, o Fiscal de Dia constará a ausência no COD e solicitará ao comando a substituição do militar ausente.
 
-No caso das permutas, o militar que desejar permutar o serviço com outro em determinado dia deverá, em consenso mútuo entre os envolvidos, solicitar autorização ao comando, se autorizado, o militar solicitante substituirá o militar que estiver escalado no dia solicitado. Este procedimento é realizado por meio de um documento chamado "Permuta", que deve assinado pelos militares envolvidos e pelo comando. No dia do serviço em questão, a Permuta deve ser apresentada ao Fiscal de Dia pelo militar que irá substituir o originalmente escalado. O Fiscal de dia constará no COD a alteração da escala.
+No caso das permutas, o militar que desejar permutar o serviço com outro em determinado dia deverá, em consenso mútuo entre os envolvidos, solicitar autorização ao comando, se autorizado, o militar solicitante substituirá o militar que estiver escalado no dia solicitado. Este procedimento é realizado por meio de um documento chamado “Permuta”, que deve assinado pelos militares envolvidos e pelo comando. No dia do serviço em questão, a Permuta deve ser apresentada ao Fiscal de Dia pelo militar que substituirá o originalmente escalado. O Fiscal de dia constará no COD a alteração da escala.
 
-O escalante, após o termino da execução da escala, deve consultar o COD para verificar as divergências entre a escala original e a executada e apresentar ao comando uma planilha contendo quantos serviços cada militar realizou no mês em questão.
+O escalante, após o término da execução da escala, deve consultar o COD para verificar as divergências entre a escala original e a executada e apresentar ao comando uma planilha contendo quantos serviços cada militar realizou no mês em questão.
 
 ### Atores Envolvidos
 
 - ***Escalante***: Militar designado para elaborar a escala;
 - ***Comando***: Militar ou militares comandam o quartel e tomam as decisões estratégicas;
-- ***Ajudância***: Setor responsável pelo suporte administrativo, gerencia dos dados dos militares, como seus cadastros, ferias e licenças;
+- ***Ajudância***: Setor responsável pelo suporte administrativo, gerencia dos dados dos militares, como seus cadastros, férias e licenças;
 - ***Militar***: Trabalhador do quartel que pode ou não prestar serviço operacional.
 
 ### Especificidades
@@ -44,12 +44,12 @@ O escalante, após o termino da execução da escala, deve consultar o COD para 
 - ***Permuta***: Documento que permite substituir um militar por outro em um serviço operacional;
 - ***Patente***: São os graus hierárquicos conferidos aos militares (Posto ou Graduação). Posto refere-se a oficiais (Ex: Tenente e Capitão) e Graduação a Praças (Ex: Soldado e Sargento);
 - ***Função***: Atividade realizada em um serviço operacional;
-- ***Antiguidade***: Relaciona-se a senioridade de um militar, é definida por um número, quanto menor o número maior a senioridade (antiguidade)  do militar;
+- ***Antiguidade***: Relaciona-se a senioridade de um militar, é definida por um número, quanto menor o número maior a senioridade (antiguidade) do militar;
 - ***Fiscal de Dia***: Função do militar que coordenará as atividades da equipe escalada durante a prestação do serviço operacional;
-- ***C.O.V.***: Função do militar que estará atuando como motorista durante o serviço operacional;
-- ***Operador de Linha***: Função do militar que estará atuando na linha de frente de uma operação (Ex: Combate a incêndio);
-- ***Ajudante de Linha***: Função do militar que estará auxiliando o Operador de Linha;
-- ***Permanente***: Função do militar que receberá as ocorrências e fará a segurança do quartel;
+- ***C.O.V.***: Função do militar que atuará como motorista durante o serviço operacional;
+- ***Operador de Linha***: Função do militar que atuará na linha de frente de uma operação (Ex: Combate a incêndio);
+- ***Ajudante de Linha***: Função do militar que auxiliará o Operador de Linha;
+- ***Permanente***: Função do militar que receberá as ocorrências e fará a segurança do quartel.
 - ***Nome de Paz***: Nome utilizado pelos militares para se identificarem.
 
 ### Subdomínios Identificados
