@@ -1,6 +1,6 @@
 <div style="text-align:justify">
 
-## Regras de Negócio Contexto Ajudância
+## Contexto Ajudância
 
 ### Descrição da Necessidade:
 Guardar e gerenciar os dados dos militares do CBMCE do quartel de Limoeiro do Norte, atuando como auxiliar dos demais contextos do sistema.
@@ -35,6 +35,14 @@ Guardar e gerenciar os dados dos militares do CBMCE do quartel de Limoeiro do No
 
 1. No caso de um militar com status inativo, deve ser registrada a data em que este militar foi
 inativado e o motivo da inativação;
+
+1. A antiguidade será definida por um numero que é atribuido a cada militar, os militares que possirem os menores numeros serão os mais antigos;
+
+1. Não haverão dois militares com o mesmo numero de antiguidade;
+
+1. O numero que define a antiguidade deve condizer com a hierarquia dos Postos ou Graduações dos militares, de forma que nunca haverá um militar em um Posto ou Graduação com nivel hierarquico superior com numero de antiguidade maior que outro em um Posto ou Graduação com nivel hierarquico inferior. Abaixo esta definida em ordem hierarquica dos Postos e Graduações:
+    - **TEN** > **SUB TEN** > **SGT** > **CB** > **SD**;
+    - Ex: Se o **TEN** menos antigo tiver o número de antiguidade igual 5, nenhum **SUB TEN** pode ter um numero de antiguidade menor que 5;
 
 1. Os dados de um militar só podem ser removidos do sistema, após este ter sido inativado a pelo menos 1 ano;
 
