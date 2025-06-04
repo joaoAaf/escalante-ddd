@@ -1,10 +1,9 @@
-package apisemaperreio.escalante.ajudancia.domain.valueObjs;
+package apisemaperreio.escalante.ajudancia.domain;
 
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import apisemaperreio.escalante.ajudancia.domain.entities.Militar;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
