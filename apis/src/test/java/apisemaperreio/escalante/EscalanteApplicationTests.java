@@ -36,7 +36,7 @@ class EscalanteApplicationTests {
 
 		MilitarRequest militarRequest = new MilitarRequest(
 				"34567890",
-				"00000000000",
+				"99999999999",
 				nome,
 				LocalDate.parse("1991-06-24"),
 				"M",
@@ -44,7 +44,7 @@ class EscalanteApplicationTests {
 				email,
 				endereco,
 				patente,
-				10,
+				1000,
 				4,
 				true,
 				false);
