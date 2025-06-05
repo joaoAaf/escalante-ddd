@@ -1,16 +1,9 @@
-package apisemaperreio.escalante.ajudancia.domain.entities;
+package apisemaperreio.escalante.ajudancia.domain;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Ausencia;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Email;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Endereco;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Nome;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Patente;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Sexo;
-import apisemaperreio.escalante.ajudancia.domain.valueObjs.Telefone;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

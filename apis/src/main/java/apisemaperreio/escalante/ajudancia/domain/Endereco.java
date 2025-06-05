@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.ajudancia.domain.valueObjs;
+package apisemaperreio.escalante.ajudancia.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
