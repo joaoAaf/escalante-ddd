@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.EmailRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.EnderecoRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.MilitarRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.NomeRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.PatenteRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestDtos.TelefoneRequest;
-import apisemaperreio.escalante.ajudancia.services.useCases.MilitarUseCases;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.EmailRequest;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.EnderecoRequest;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.MilitarRequest;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.NomeRequest;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.PatenteRequest;
+import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.TelefoneRequest;
+import apisemaperreio.escalante.ajudancia.services.usecases.MilitarUseCases;
 import apisemaperreio.escalante.ajudancia.utils.MilitarMapper;
 
 @SpringBootTest

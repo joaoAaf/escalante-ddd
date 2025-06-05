@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.ajudancia.domain.valueObjs;
+package apisemaperreio.escalante.ajudancia.domain;
 
 public enum Sexo {
 

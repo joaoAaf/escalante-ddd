@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.ajudancia.services.dtos.requestDtos;
+package apisemaperreio.escalante.ajudancia.services.dtos.requestdtos;
 
 import java.time.LocalDate;
 

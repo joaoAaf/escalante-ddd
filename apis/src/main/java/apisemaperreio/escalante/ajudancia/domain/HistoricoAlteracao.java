@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.ajudancia.domain.entities;
+package apisemaperreio.escalante.ajudancia.domain;
 
 import java.time.LocalDateTime;
 
