@@ -1,7 +1,7 @@
-package apisemaperreio.escalante.ajudancia.services.usecases;
+package apisemaperreio.escalante.ajudancia.usecases;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.MilitarRequest;
+import apisemaperreio.escalante.ajudancia.dtos.requestdtos.MilitarRequest;
 
 public interface MilitarUseCases {
 

@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.ajudancia.services.dtos.requestdtos;
+package apisemaperreio.escalante.ajudancia.dtos.requestdtos;
 
 public record PatenteRequest(String nomePatente, int folgaEspecial) {
 

@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
 import apisemaperreio.escalante.ajudancia.domain.Patente;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.MilitarRequest;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.PatenteRequest;
+import apisemaperreio.escalante.ajudancia.dtos.requestdtos.MilitarRequest;
+import apisemaperreio.escalante.ajudancia.dtos.requestdtos.PatenteRequest;
 
 @Mapper(componentModel = "spring")
 public interface MilitarMapper {

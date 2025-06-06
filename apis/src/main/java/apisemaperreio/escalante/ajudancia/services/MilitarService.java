@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
 import apisemaperreio.escalante.ajudancia.repositories.MilitarRepository;
-import apisemaperreio.escalante.ajudancia.services.dtos.requestdtos.MilitarRequest;
-import apisemaperreio.escalante.ajudancia.services.usecases.MilitarUseCases;
+import apisemaperreio.escalante.ajudancia.dtos.requestdtos.MilitarRequest;
+import apisemaperreio.escalante.ajudancia.usecases.MilitarUseCases;
 import apisemaperreio.escalante.ajudancia.utils.MilitarMapper;
 
 @Service
