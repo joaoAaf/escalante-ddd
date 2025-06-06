@@ -1,4 +1,4 @@
-package apisemaperreio.escalante;
+package apisemaperreio.escalante.ajudancia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.EmailRequest;
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.EnderecoRequest;
@@ -18,7 +19,8 @@ import apisemaperreio.escalante.ajudancia.usecases.MilitarUseCases;
 import apisemaperreio.escalante.ajudancia.utils.MilitarMapper;
 
 @SpringBootTest
-class EscalanteApplicationTests {
+@ActiveProfiles("test1")
+class AjudanciaUseCasesTest {
 
 	@Autowired
 	private MilitarMapper militarMapper;
@@ -26,7 +28,7 @@ class EscalanteApplicationTests {
 	private MilitarUseCases militarUseCases;
 
 	@Test
-	public void cadastrarMilitarTeste_returnMilitar() {
+	public void cadastrarMilitarTest_returnMilitar() {
 
 		var nome = new NomeRequest("Fulano de Tal", "Fulano");
 		var telefone = new TelefoneRequest("88", "99999999", null, null);
