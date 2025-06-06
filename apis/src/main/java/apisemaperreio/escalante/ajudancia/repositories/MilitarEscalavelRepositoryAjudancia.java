@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
 
-public interface MilitarAjudanciaEscalanteRepository extends JpaRepository<Militar, String> {
+public interface MilitarEscalavelRepositoryAjudancia extends JpaRepository<Militar, String> {
 
     @Query("SELECT m FROM Militar m LEFT JOIN FETCH m.nome LEFT JOIN FETCH m.telefone " +
                         "LEFT JOIN FETCH m.email LEFT JOIN FETCH m.endereco " +

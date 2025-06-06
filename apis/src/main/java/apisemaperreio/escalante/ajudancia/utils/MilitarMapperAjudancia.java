@@ -9,7 +9,7 @@ import apisemaperreio.escalante.ajudancia.dtos.requestdtos.MilitarRequest;
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.PatenteRequest;
 
 @Mapper(componentModel = "spring")
-public interface MilitarMapper {
+public interface MilitarMapperAjudancia {
 
     @Mapping(source = "nomePatente", target = "dadoPatente")
     Patente toPatente(PatenteRequest patenteRequest);

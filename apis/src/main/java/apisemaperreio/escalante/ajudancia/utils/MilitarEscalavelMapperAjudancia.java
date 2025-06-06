@@ -6,16 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
-import apisemaperreio.escalante.sharedcore.ajudancia_escalante.dtos.MilitarAjudanciaEscalante;
+import apisemaperreio.escalante.ajudancia.dtos.militarescalaveldtos.MilitarEscalavel;
 
 @Mapper(componentModel = "spring")
-public interface MilitarAjudanciaEscalanteMapper {
+public interface MilitarEscalavelMapperAjudancia {
     
     @Mapping(source = "nome.nomePaz", target = "nomePaz")
     @Mapping(source = "patente.dadoPatente", target = "patente.nome")
     @Mapping(source = "patente.dadoPatente.antiguidade", target = "patente.antiguidade")
-    MilitarAjudanciaEscalante toMilitarEscalanteDto(Militar militar);
+    MilitarEscalavel toMilitarEscalanteDto(Militar militar);
     
-    List<MilitarAjudanciaEscalante> toListMilitarEscalanteDto(List<Militar>  militares);
+    List<MilitarEscalavel> toListMilitarEscalanteDto(List<Militar>  militares);
 
 }

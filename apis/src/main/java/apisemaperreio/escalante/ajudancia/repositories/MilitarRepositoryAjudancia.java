@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import apisemaperreio.escalante.ajudancia.domain.Militar;
 
 @Repository
-public interface MilitarRepository extends JpaRepository<Militar, String> {
+public interface MilitarRepositoryAjudancia extends JpaRepository<Militar, String> {
 
 }

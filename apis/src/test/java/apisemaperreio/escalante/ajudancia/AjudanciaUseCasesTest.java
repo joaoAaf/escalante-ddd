@@ -15,17 +15,17 @@ import apisemaperreio.escalante.ajudancia.dtos.requestdtos.MilitarRequest;
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.NomeRequest;
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.PatenteRequest;
 import apisemaperreio.escalante.ajudancia.dtos.requestdtos.TelefoneRequest;
-import apisemaperreio.escalante.ajudancia.usecases.MilitarUseCases;
-import apisemaperreio.escalante.ajudancia.utils.MilitarMapper;
+import apisemaperreio.escalante.ajudancia.usecases.MilitarUseCasesAjudancia;
+import apisemaperreio.escalante.ajudancia.utils.MilitarMapperAjudancia;
 
 @SpringBootTest
 @ActiveProfiles("test1")
 class AjudanciaUseCasesTest {
 
 	@Autowired
-	private MilitarMapper militarMapper;
+	private MilitarMapperAjudancia militarMapper;
 	@Autowired
-	private MilitarUseCases militarUseCases;
+	private MilitarUseCasesAjudancia militarUseCases;
 
 	@Test
 	public void cadastrarMilitarTest_returnMilitar() {
