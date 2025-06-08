@@ -34,7 +34,7 @@ public class Militar {
             return;
         servicosMilitar.sort(Comparator.comparing(ServicoOperacional::getDataServico).reversed());
         for (int contador = 0; contador < servicosMilitar.size(); contador++) {
-            if (contador > 0 && !this.ultimosServicos.getLast().equals(servicosMilitar.get(contador)))
+            if (contador > 0 && !this.getMatricula().equals(servicosMilitar.get(contador).getMatriculaMilitar()))
                 break;
             this.ultimosServicos.add(servicosMilitar.get(contador));
         }

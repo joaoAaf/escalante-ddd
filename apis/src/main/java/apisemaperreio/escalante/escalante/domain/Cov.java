@@ -7,10 +7,6 @@ import java.util.List;
 public class Cov extends ServicoOperacional {
 
     private final int FOLGA_COV = 4;
-    
-    public Cov(LocalDate dataServico, Funcao funcao, int folga, String matriculaMilitar) {
-        super(dataServico, funcao, folga, matriculaMilitar);
-    }
 
     public Cov() {
     }

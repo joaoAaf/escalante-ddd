@@ -11,19 +11,12 @@ public abstract class ServicoOperacional {
     private int folga;
     private String matriculaMilitar;
 
-    public ServicoOperacional(LocalDate dataServico, Funcao funcao, int folga, String matriculaMilitar) {
-        this.dataServico = dataServico;
-        this.funcao = funcao;
-        this.folga = folga;
-        this.matriculaMilitar = matriculaMilitar;
-    }
-
     public ServicoOperacional() {
     }
 
     public abstract void escalarMilitar(List<Militar> militares, LocalDate data);
 
-    public int definirFolga(int folgaMilitar, int folgaServico) {
+    protected int definirFolga(int folgaMilitar, int folgaServico) {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;
     }
 

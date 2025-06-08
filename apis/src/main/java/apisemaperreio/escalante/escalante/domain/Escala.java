@@ -4,16 +4,46 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class Escala {
 
+    @Autowired
+    private ServicoOperacional servicoOperacional;
+    
     private Long id;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private int diasServico;
     private List<ServicoOperacional> militaresEscalados = new ArrayList<ServicoOperacional>();
 
-    public Escala(LocalDate dataInicio, LocalDate dataFim) {
+    public Escala(LocalDate dataInicio, LocalDate dataFim, int diasServico) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
+        this.diasServico = diasServico;
+    }
+
+    public void preencherEscala(List<Militar> militares) {
+        var dataAtual = this.dataInicio;
+        while (dataAtual.compareTo(this.dataFim) <= 0) {
+            this.preencherDiasServico(militares, dataAtual, (Cov) servicoOperacional);
+            dataAtual = dataAtual.plusDays(this.diasServico);
+        } 
+    }
+
+    private void preencherDiasServico(List<Militar> militares, LocalDate dataAtual, ServicoOperacional servicoOperacional) {
+        var dataServico = dataAtual;    
+        var novoSevicoOperacional = servicoOperacional;
+        novoSevicoOperacional.escalarMilitar(militares, dataServico);
+        this.militaresEscalados.add(novoSevicoOperacional);
+        if (this.diasServico > 1) {
+            for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
+                var proximoServicoOperacional = novoSevicoOperacional;
+                dataServico = dataServico.plusDays(1);
+                proximoServicoOperacional.setDataServico(dataServico);
+                this.militaresEscalados.add(proximoServicoOperacional);
+            }
+        }
     }
 
     public Long getId() {
@@ -34,6 +64,14 @@ public class Escala {
 
     public void setDataFim(LocalDate dataFim) {
         this.dataFim = dataFim;
+    }
+
+    public int getDiasServico() {
+        return diasServico;
+    }
+
+    public void setDiasServico(int diasServico) {
+        this.diasServico = diasServico;
     }
 
     public List<ServicoOperacional> getMilitaresEscalados() {
@@ -79,7 +117,8 @@ public class Escala {
 
     @Override
     public String toString() {
-        return "Escala [id=" + id + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + "]";
+        return "Escala [id=" + id + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", diasServico="
+                + diasServico + "]";
     }
 
 }
