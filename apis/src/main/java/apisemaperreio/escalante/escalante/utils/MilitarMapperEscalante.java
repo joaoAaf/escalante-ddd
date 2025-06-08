@@ -11,7 +11,7 @@ import apisemaperreio.escalante.escalante.domain.Militar;
 @Mapper(componentModel = "spring")
 public interface MilitarMapperEscalante {
 
-    @Mapping(target = "ultimoServico", ignore = true)
+    @Mapping(target = "ultimosServicos", ignore = true)
     Militar toMilitar(MilitarEscalavel militarEscalavel);
 
     List<Militar> toListMilitar(List<MilitarEscalavel> militaresEscalaveis);

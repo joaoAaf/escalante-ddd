@@ -1,6 +1,9 @@
 package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Militar {
 
@@ -11,9 +14,10 @@ public class Militar {
     private Integer antiguidade;
     private int folgaEspecial;
     private Boolean cov;
-    private LocalDate ultimoServico;
+    private List<ServicoOperacional> ultimosServicos = new ArrayList<>();
 
-    public Militar(String matricula, String nomePaz, LocalDate nascimento, Patente patente, Integer antiguidade, int folgaEspecial, Boolean cov) {
+    public Militar(String matricula, String nomePaz, LocalDate nascimento, Patente patente, Integer antiguidade,
+            int folgaEspecial, Boolean cov) {
         this.matricula = matricula;
         this.nomePaz = nomePaz;
         this.nascimento = nascimento;
@@ -21,6 +25,27 @@ public class Militar {
         this.antiguidade = antiguidade;
         this.folgaEspecial = folgaEspecial;
         this.cov = cov;
+    }
+
+    public void ultimosServicosConsecutivos(List<ServicoOperacional> servicos) {
+        var servicosMilitar = servicos.stream().filter(
+            servico -> servico.getMatriculaMilitar().equals(this.matricula)).toList();
+        if (servicosMilitar.isEmpty())
+            return;
+        servicosMilitar.sort(Comparator.comparing(ServicoOperacional::getDataServico).reversed());
+        for (int contador = 0; contador < servicosMilitar.size(); contador++) {
+            if (contador > 0 && !this.ultimosServicos.getLast().equals(servicosMilitar.get(contador)))
+                break;
+            this.ultimosServicos.add(servicosMilitar.get(contador));
+        }
+    }
+
+    public LocalDate dataUltimoServico() {
+        return ultimosServicos.getFirst().getDataServico();
+    }
+
+    public int folgaUltimoServico() {
+        return ultimosServicos.getFirst().getFolga();
     }
 
     public String getMatricula() {
@@ -79,12 +104,8 @@ public class Militar {
         this.cov = cov;
     }
 
-    public LocalDate getUltimoServico() {
-        return ultimoServico;
-    }
-
-    public void setUltimoServico(LocalDate ultimoServico) {
-        this.ultimoServico = ultimoServico;
+    public List<ServicoOperacional> getUltimosServicos() {
+        return ultimosServicos;
     }
 
     @Override
@@ -114,9 +135,9 @@ public class Militar {
 
     @Override
     public String toString() {
-        return "Militar [matricula=" + matricula + ", nomePaz=" + nomePaz + ", nascimento=" + nascimento + ", patente="
-                + patente + ", antiguidade=" + antiguidade + ", folgaEspecial=" + folgaEspecial + ", cov=" + cov
-                + ", ultimoServico=" + ultimoServico + "]";
+        return "Militar [matricula=" + matricula + ", nomePaz=" + nomePaz + ", nascimento=" + nascimento +
+                ", patente=" + patente + ", antiguidade=" + antiguidade + ", folgaEspecial=" +
+                folgaEspecial + ", cov=" + cov + "]";
     }
 
 }
