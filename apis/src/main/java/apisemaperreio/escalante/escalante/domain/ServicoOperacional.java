@@ -3,18 +3,48 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public abstract class ServicoOperacional {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate dataServico;
-    private Funcao funcao;
-    private int folga;
-    private String matriculaMilitar;
 
-    public ServicoOperacional() {
+    @Column(nullable = false)
+    private LocalDate dataServico;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Funcao funcao;
+
+    @Column(nullable = false)
+    private int folga;
+
+    @Column(nullable = false)
+    private String matriculaMilitar;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_escala")
+    private Escala escala;
+
+    public ServicoOperacional(LocalDate dataServico, Funcao funcao) {
+        this.dataServico = dataServico;
+        this.funcao = funcao;
     }
 
-    public abstract void escalarMilitar(List<Militar> militares, LocalDate data);
+    public abstract void escalarMilitar(List<Militar> militares);
+
+    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, List<Militar> militares);
 
     protected int definirFolga(int folgaMilitar, int folgaServico) {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;
@@ -60,6 +90,14 @@ public abstract class ServicoOperacional {
         this.matriculaMilitar = matriculaMilitar;
     }
 
+    public Escala getEscala() {
+        return escala;
+    }
+
+    public void setEscala(Escala escala) {
+        this.escala = escala;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -102,8 +140,8 @@ public abstract class ServicoOperacional {
 
     @Override
     public String toString() {
-        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao
-                + ", matriculaMilitar=" + matriculaMilitar + "]";
+        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao + ", folga="
+                + folga + ", matriculaMilitar=" + matriculaMilitar + "]";
     }
 
 }

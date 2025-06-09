@@ -4,17 +4,31 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
+@Entity
 public class Escala {
 
-    @Autowired
-    private ServicoOperacional servicoOperacional;
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate dataInicio;
+
+    @Column(nullable = false)
     private LocalDate dataFim;
+
+    @Column(nullable = false)
     private int diasServico;
+
+    @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicoOperacional> militaresEscalados = new ArrayList<ServicoOperacional>();
 
     public Escala(LocalDate dataInicio, LocalDate dataFim, int diasServico) {
@@ -26,22 +40,17 @@ public class Escala {
     public void preencherEscala(List<Militar> militares) {
         var dataAtual = this.dataInicio;
         while (dataAtual.compareTo(this.dataFim) <= 0) {
-            this.preencherDiasServico(militares, dataAtual, (Cov) servicoOperacional);
+            this.preencherDiasServico(militares, new Cov(dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
-        } 
+        }
     }
 
-    private void preencherDiasServico(List<Militar> militares, LocalDate dataAtual, ServicoOperacional servicoOperacional) {
-        var dataServico = dataAtual;    
-        var novoSevicoOperacional = servicoOperacional;
-        novoSevicoOperacional.escalarMilitar(militares, dataServico);
-        this.militaresEscalados.add(novoSevicoOperacional);
+    private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
+        servicoOperacional.escalarMilitar(militares);
+        this.militaresEscalados.add(servicoOperacional);
         if (this.diasServico > 1) {
             for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
-                var proximoServicoOperacional = novoSevicoOperacional;
-                dataServico = dataServico.plusDays(1);
-                proximoServicoOperacional.setDataServico(dataServico);
-                this.militaresEscalados.add(proximoServicoOperacional);
+                this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militares));
             }
         }
     }

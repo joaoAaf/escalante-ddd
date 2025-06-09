@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import apisemaperreio.escalante.ajudancia.domain.Militar;
 
+@Repository
 public interface MilitarEscalavelRepositoryAjudancia extends JpaRepository<Militar, String> {
 
     @Query("SELECT m FROM Militar m LEFT JOIN FETCH m.nome LEFT JOIN FETCH m.telefone " +
