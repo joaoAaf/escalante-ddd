@@ -2,6 +2,7 @@ package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,9 +43,11 @@ public abstract class ServicoOperacional {
         this.funcao = funcao;
     }
 
-    public abstract void escalarMilitar(List<Militar> militares);
+    public abstract void escalarMilitar(Militar militar);
 
-    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, List<Militar> militares);
+    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
+
+    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar);
 
     protected int definirFolga(int folgaMilitar, int folgaServico) {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;

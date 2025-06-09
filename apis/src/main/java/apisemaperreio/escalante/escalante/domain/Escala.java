@@ -46,11 +46,13 @@ public class Escala {
     }
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
-        servicoOperacional.escalarMilitar(militares);
+        var militarEscalado = servicoOperacional.buscarMilitar(militares)
+                .orElseThrow();
+        servicoOperacional.escalarMilitar(militarEscalado);
         this.militaresEscalados.add(servicoOperacional);
         if (this.diasServico > 1) {
             for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
-                this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militares));
+                this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
             }
         }
     }
