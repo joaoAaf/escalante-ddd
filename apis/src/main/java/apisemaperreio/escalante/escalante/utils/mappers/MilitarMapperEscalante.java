@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.escalante.utils;
+package apisemaperreio.escalante.escalante.utils.mappers;
 
 import java.util.List;
 

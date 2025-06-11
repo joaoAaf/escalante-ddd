@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import apisemaperreio.escalante.ajudancia.usecases.MilitarEscalavelUseCasesAjudancia;
 import apisemaperreio.escalante.escalante.domain.Militar;
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
-import apisemaperreio.escalante.escalante.utils.MilitarMapperEscalante;
+import apisemaperreio.escalante.escalante.utils.mappers.MilitarMapperEscalante;
 
 @Service
 public class MilitarServiceEscalante implements MilitarUseCasesEscalante {

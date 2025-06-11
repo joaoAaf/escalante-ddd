@@ -3,7 +3,9 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import apisemaperreio.escalante.escalante.utils.factories.ServicoOperacionalFactory;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,14 +42,14 @@ public class Escala {
     public void preencherEscala(List<Militar> militares) {
         var dataAtual = this.dataInicio;
         while (dataAtual.compareTo(this.dataFim) <= 0) {
-            this.preencherDiasServico(militares, new Cov(dataAtual));
+            this.preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
         var militarEscalado = servicoOperacional.buscarMilitar(militares)
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Não foi encontrado nenhum militar apto para o serviço operacional."));
         servicoOperacional.escalarMilitar(militarEscalado);
         this.militaresEscalados.add(servicoOperacional);
         if (this.diasServico > 1) {
