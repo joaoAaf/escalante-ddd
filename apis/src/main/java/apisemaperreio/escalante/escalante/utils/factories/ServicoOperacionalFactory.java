@@ -21,7 +21,6 @@ public final class ServicoOperacionalFactory {
         var servicoOperacionalFactory = new ServicoOperacionalFactory(dataServico);
         var servicoOperacional = Optional.ofNullable(servicoOperacionalFactory.servicosOperacionais.get(funcao))
             .orElseThrow(() -> new IllegalArgumentException("A Função atribuida ao Serviço Operacional é inválida."));
-        servicoOperacional.setDataServico(dataServico);
         return servicoOperacional;
     }
 

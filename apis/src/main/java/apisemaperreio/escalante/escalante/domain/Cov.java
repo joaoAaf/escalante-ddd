@@ -3,6 +3,7 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,22 +30,21 @@ public class Cov extends ServicoOperacional {
     }
 
     @Override
-    public Optional<Militar> buscarMilitar(List<Militar> militares) {
+    public Militar buscarMilitar(List<Militar> militares) {
         var militaresCov = militares.stream().filter(militar -> militar.getCov().equals(true))
                 .collect(Collectors.toList());
         var militaresCovNuncaEscalados = militaresCov.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
         if (!militaresCovNuncaEscalados.isEmpty()) {
             militaresCovNuncaEscalados.sort(Comparator.comparingInt(Militar::getAntiguidade));
-            return Optional.of(militaresCovNuncaEscalados.getFirst());
+            return Optional.of(militaresCovNuncaEscalados.getFirst()).orElseThrow();
         }
         militaresCov.sort(Comparator.comparing(Militar::dataUltimoServico));
         var militarEscalado = militaresCov.getFirst();
         var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico())) {
-            return Optional.of(militarEscalado);
-        }
-        return Optional.empty();
+        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
+            return Optional.of(militarEscalado).orElseThrow();
+        throw new NoSuchElementException("Nenhum militar apto foi encontrado para a função de C.O.V.");
     }
 
     @Override

@@ -3,10 +3,10 @@ package apisemaperreio.escalante.escalante.domain;
 public enum Funcao {
 
     COV("C.O.V."),
-    FISCAL_DE_DIA("Fiscal de Dia"),
-    OPERADOR_DE_LINHA("Operador de Linha"),
+    PERMANENTE("Permanente"),
     AJUDANTE_DE_LINHA("Ajudante de Linha"),
-    PERMANENTE("Permanente");
+    OPERADOR_DE_LINHA("Operador de Linha"),
+    FISCAL_DE_DIA("Fiscal de Dia");
 
     private String nome;
 

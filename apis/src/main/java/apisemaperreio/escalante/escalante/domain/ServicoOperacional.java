@@ -2,7 +2,6 @@ package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +44,7 @@ public abstract class ServicoOperacional {
 
     public abstract void escalarMilitar(Militar militar);
 
-    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
+    public abstract Militar buscarMilitar(List<Militar> militares);
 
     public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar);
 
@@ -143,7 +142,7 @@ public abstract class ServicoOperacional {
 
     @Override
     public String toString() {
-        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao + ", folga="
+        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao.getNome() + ", folga="
                 + folga + ", matriculaMilitar=" + matriculaMilitar + "]";
     }
 

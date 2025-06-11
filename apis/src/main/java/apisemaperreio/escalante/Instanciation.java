@@ -1,12 +1,14 @@
 package apisemaperreio.escalante;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import apisemaperreio.escalante.escalante.domain.Escala;
+import apisemaperreio.escalante.escalante.domain.Funcao;
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
 
 @Configuration
@@ -27,7 +29,9 @@ public class Instanciation implements CommandLineRunner {
 
         escala.preencherEscala(militares);
 
-        escala.getMilitaresEscalados().forEach(servico -> System.out.println(servico));
+        escala.getMilitaresEscalados().forEach(System.out::println);
+
+        Arrays.stream(Funcao.values()).forEach(System.out::println);
 
     }
 
