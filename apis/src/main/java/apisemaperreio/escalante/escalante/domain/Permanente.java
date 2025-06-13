@@ -32,32 +32,29 @@ public class Permanente extends ServicoOperacional {
 
     @Override
     public Militar selecionarMilitar(List<Militar> militares) {
-        var militaresNaoCov = militares.stream()
-                .filter(militar -> militar.getCov().equals(false) &&
-                        (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
-                .collect(Collectors.toList());
-        var militaresNaoCovNuncaEscalados = militaresNaoCov.stream().filter(
-                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
-        if (!militaresNaoCovNuncaEscalados.isEmpty())
-            return filtrarMilitar(militaresNaoCovNuncaEscalados, this::filtrarPatenteNuncaEscalado).orElseThrow();
-        var militarEscalado = filtrarMilitar(militaresNaoCov, this::filtrarPatente).orElseThrow();
-        var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
-            return militarEscalado;
-        var militaresCov = militares.stream().filter(militar -> militar.getCov().equals(true))
-                .collect(Collectors.toList());
-        var militaresCovNuncaEscalados = militaresCov.stream().filter(
-                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
-        if (!militaresCovNuncaEscalados.isEmpty())
-            return filtrarMilitar(militaresCovNuncaEscalados, this::filtrarPatenteNuncaEscalado).orElseThrow();
-        militarEscalado = filtrarMilitar(militaresCov, this::filtrarPatente).orElseThrow();
-        folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
-            return militarEscalado;
-        throw new NoSuchElementException("Nenhum militar apto foi encontrado para a função de Permanente.");
+       var militarSelecionado = selecionarPermanente(militares, false)
+                .orElse(selecionarPermanente(militares, true)
+                        .orElseThrow(() -> new NoSuchElementException("Nenhum militar apto foi encontrado para a função de Permanente.")));
+        return militarSelecionado;
     }
 
-    private Optional<Militar> filtrarMilitar(List<Militar> militares,
+    private Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
+        var militaresAptos = militares.stream()
+                .filter(militar -> militar.getCov().equals(cov) &&
+                        (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
+                .collect(Collectors.toList());
+        var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
+                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
+        if (!militaresAptosNuncaEscalados.isEmpty())
+            return filtrarMilitarApto(militaresAptosNuncaEscalados, this::filtrarPatenteNuncaEscalado);
+        var militarEscalado = filtrarMilitarApto(militaresAptos, this::filtrarPatenteJaEscalado);
+        var folga = militarEscalado.get().getUltimosServicos().size() * militarEscalado.get().folgaUltimoServico();
+        if (militarEscalado.get().dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
+            return militarEscalado;
+        return Optional.empty();
+    }
+
+    private Optional<Militar> filtrarMilitarApto(List<Militar> militares,
             BiFunction<List<Militar>, String, Optional<Militar>> filtro) {
         for (var patente : Funcao.PERMANENTE.getPatentes()) {
             var militarEscalado = filtro.apply(militares, patente);
@@ -76,7 +73,7 @@ public class Permanente extends ServicoOperacional {
                 .findFirst();
     }
 
-    private Optional<Militar> filtrarPatente(List<Militar> militares, String patente) {
+    private Optional<Militar> filtrarPatenteJaEscalado(List<Militar> militares, String patente) {
         return militares.stream()
                 .filter(militar -> militar.getPatente().getNome().equals(patente))
                 .sorted(Comparator.comparing(Militar::dataUltimoServico)
