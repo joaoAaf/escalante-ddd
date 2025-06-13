@@ -42,6 +42,7 @@ public class Escala {
         var dataAtual = this.dataInicio;
         while (dataAtual.compareTo(this.dataFim) <= 0) {
             this.preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
+            this.preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }

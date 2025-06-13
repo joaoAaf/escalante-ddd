@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import apisemaperreio.escalante.escalante.domain.Cov;
 import apisemaperreio.escalante.escalante.domain.Funcao;
+import apisemaperreio.escalante.escalante.domain.Permanente;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
 public final class ServicoOperacionalFactory {
@@ -15,6 +16,7 @@ public final class ServicoOperacionalFactory {
     
     private ServicoOperacionalFactory(LocalDate dataServico) {
         servicosOperacionais.put(Funcao.COV, new Cov(dataServico));
+        servicosOperacionais.put(Funcao.PERMANENTE, new Permanente(dataServico));
     }
 
     public static ServicoOperacional criarServicoOperacional(Funcao funcao, LocalDate dataServico) {
