@@ -44,7 +44,7 @@ public abstract class ServicoOperacional {
 
     public abstract void escalarMilitar(Militar militar);
 
-    public abstract Militar buscarMilitar(List<Militar> militares);
+    public abstract Militar selecionarMilitar(List<Militar> militares);
 
     public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar);
 

@@ -30,7 +30,7 @@ public class Cov extends ServicoOperacional {
     }
 
     @Override
-    public Militar buscarMilitar(List<Militar> militares) {
+    public Militar selecionarMilitar(List<Militar> militares) {
         var militaresCov = militares.stream().filter(militar -> militar.getCov().equals(true))
                 .collect(Collectors.toList());
         var militaresCovNuncaEscalados = militaresCov.stream().filter(

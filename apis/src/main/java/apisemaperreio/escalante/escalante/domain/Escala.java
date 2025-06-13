@@ -48,7 +48,7 @@ public class Escala {
     }
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
-        var militarEscalado = servicoOperacional.buscarMilitar(militares);
+        var militarEscalado = servicoOperacional.selecionarMilitar(militares);
         servicoOperacional.escalarMilitar(militarEscalado);
         this.militaresEscalados.add(servicoOperacional);
         if (this.diasServico > 1) {

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Permanente extends ServicoOperacional {
@@ -30,18 +31,16 @@ public class Permanente extends ServicoOperacional {
     }
 
     @Override
-    public Militar buscarMilitar(List<Militar> militares) {
+    public Militar selecionarMilitar(List<Militar> militares) {
         var militaresNaoCov = militares.stream()
                 .filter(militar -> militar.getCov().equals(false) &&
-                (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
+                        (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
                 .collect(Collectors.toList());
         var militaresNaoCovNuncaEscalados = militaresNaoCov.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
         if (!militaresNaoCovNuncaEscalados.isEmpty())
-            return filtrarPatenteNuncaEscalado(militaresNaoCovNuncaEscalados, "SD").orElse(
-                    filtrarPatenteNuncaEscalado(militaresNaoCovNuncaEscalados, "CB").orElseThrow());
-        var militarEscalado = filtrarPatente(militaresNaoCov, "SD").orElse(
-                filtrarPatente(militaresNaoCov, "CB").orElseThrow());
+            return filtrarMilitar(militaresNaoCovNuncaEscalados, this::filtrarPatenteNuncaEscalado).orElseThrow();
+        var militarEscalado = filtrarMilitar(militaresNaoCov, this::filtrarPatente).orElseThrow();
         var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
         if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
             return militarEscalado;
@@ -50,14 +49,24 @@ public class Permanente extends ServicoOperacional {
         var militaresCovNuncaEscalados = militaresCov.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
         if (!militaresCovNuncaEscalados.isEmpty())
-            return filtrarPatenteNuncaEscalado(militaresCovNuncaEscalados, "SD").orElse(
-                    filtrarPatenteNuncaEscalado(militaresCovNuncaEscalados, "CB").orElseThrow());
-        militarEscalado = filtrarPatente(militaresCov, "SD").orElse(
-                filtrarPatente(militaresCov, "CB").orElseThrow());
+            return filtrarMilitar(militaresCovNuncaEscalados, this::filtrarPatenteNuncaEscalado).orElseThrow();
+        militarEscalado = filtrarMilitar(militaresCov, this::filtrarPatente).orElseThrow();
         folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
         if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
             return militarEscalado;
         throw new NoSuchElementException("Nenhum militar apto foi encontrado para a função de Permanente.");
+    }
+
+    private Optional<Militar> filtrarMilitar(List<Militar> militares,
+            BiFunction<List<Militar>, String, Optional<Militar>> filtro) {
+        for (var patente : Funcao.PERMANENTE.getPatentes()) {
+            var militarEscalado = filtro.apply(militares, patente);
+            if (militarEscalado.isEmpty()) {
+                continue;
+            }
+            return militarEscalado;
+        }
+        return Optional.empty();
     }
 
     private Optional<Militar> filtrarPatenteNuncaEscalado(List<Militar> militares, String patente) {
