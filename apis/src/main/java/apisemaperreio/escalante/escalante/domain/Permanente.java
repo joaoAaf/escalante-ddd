@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Permanente extends ServicoOperacional {
@@ -38,20 +39,30 @@ public class Permanente extends ServicoOperacional {
     public Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
         var militaresAptos = militares.stream()
                 .filter(militar -> militar.getCov().equals(cov) &&
-                        (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
+                        Funcao.PERMANENTE.getPatentes().contains(militar.getPatente().getNome()))
                 .collect(Collectors.toList());
         var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
         if (!militaresAptosNuncaEscalados.isEmpty()) {
-            return filtrarPatenteNuncaEscalado(militaresAptosNuncaEscalados, "SD")
-                    .or(() -> filtrarPatenteNuncaEscalado(militaresAptosNuncaEscalados, "CB"));
+            return filtrarPatente(militaresAptosNuncaEscalados, this::filtrarPatenteNuncaEscalado);
         }
-        var militarEscalado = filtrarPatenteJaEscalado(militaresAptos, "SD")
-                .or(() -> filtrarPatenteJaEscalado(militaresAptos, "CB"));
+        var militarEscalado = filtrarPatente(militaresAptos, this::filtrarPatenteJaEscalado);
         if (militarEscalado.isPresent()) {
             var folga = militarEscalado.get().getUltimosServicos().size() * militarEscalado.get().folgaUltimoServico();
             if (!militarEscalado.get().dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
                 return militarEscalado;
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Militar> filtrarPatente(List<Militar> militares,
+            BiFunction<List<Militar>, String, Optional<Militar>> filtro) {
+        for (var patente : Funcao.PERMANENTE.getPatentes()) {
+            var militarEscalado = filtro.apply(militares, patente);
+            if (militarEscalado.isEmpty()) {
+                continue;
+            }
+            return militarEscalado;
         }
         return Optional.empty();
     }
