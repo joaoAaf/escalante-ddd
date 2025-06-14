@@ -32,34 +32,22 @@ public class Permanente extends ServicoOperacional {
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        var militaresNaoCov = militares.stream()
-                .filter(militar -> militar.getCov().equals(false) &&
+        return selecionarPermanente(militares, false).or(() -> selecionarPermanente(militares, true));
+    }
+
+    public Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
+        var militaresAptos = militares.stream()
+                .filter(militar -> militar.getCov().equals(cov) &&
                         (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
                 .collect(Collectors.toList());
-        var militaresNaoCovNuncaEscalados = militaresNaoCov.stream().filter(
+        var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
-        if (!militaresNaoCovNuncaEscalados.isEmpty()) {
-            return filtrarPatenteNuncaEscalado(militaresNaoCovNuncaEscalados, "SD")
-                    .or(() -> filtrarPatenteNuncaEscalado(militaresNaoCovNuncaEscalados, "CB"));
+        if (!militaresAptosNuncaEscalados.isEmpty()) {
+            return filtrarPatenteNuncaEscalado(militaresAptosNuncaEscalados, "SD")
+                    .or(() -> filtrarPatenteNuncaEscalado(militaresAptosNuncaEscalados, "CB"));
         }
-        var militarEscalado = filtrarPatenteJaEscalado(militaresNaoCov, "SD")
-                .or(() -> filtrarPatenteJaEscalado(militaresNaoCov, "CB"));
-        if (militarEscalado.isPresent()) {
-            var folga = militarEscalado.get().getUltimosServicos().size() * militarEscalado.get().folgaUltimoServico();
-            if (!militarEscalado.get().dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
-                return militarEscalado;
-        }
-        var militaresCov = militares.stream()
-                .filter(militar -> militar.getCov().equals(false) &&
-                        (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
-                .collect(Collectors.toList());
-        var militaresCovNuncaEscalados = militaresCov.stream().filter(
-                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
-        if (!militaresCovNuncaEscalados.isEmpty())
-            return filtrarPatenteNuncaEscalado(militaresCovNuncaEscalados, "SD")
-                    .or(() -> filtrarPatenteNuncaEscalado(militaresCovNuncaEscalados, "CB"));
-        militarEscalado = filtrarPatenteJaEscalado(militaresCov, "SD")
-                .or(() -> filtrarPatenteJaEscalado(militaresCov, "CB"));
+        var militarEscalado = filtrarPatenteJaEscalado(militaresAptos, "SD")
+                .or(() -> filtrarPatenteJaEscalado(militaresAptos, "CB"));
         if (militarEscalado.isPresent()) {
             var folga = militarEscalado.get().getUltimosServicos().size() * militarEscalado.get().folgaUltimoServico();
             if (!militarEscalado.get().dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
