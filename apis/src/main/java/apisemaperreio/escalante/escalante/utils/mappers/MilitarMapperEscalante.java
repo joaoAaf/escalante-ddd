@@ -12,6 +12,7 @@ import apisemaperreio.escalante.escalante.domain.Militar;
 public interface MilitarMapperEscalante {
 
     @Mapping(target = "ultimosServicos", ignore = true)
+    @Mapping(source = "patente.nome", target = "patente")
     Militar toMilitar(MilitarEscalavel militarEscalavel);
 
     List<Militar> toListMilitar(List<MilitarEscalavel> militaresEscalaveis);

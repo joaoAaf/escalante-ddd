@@ -39,7 +39,7 @@ public class Permanente extends ServicoOperacional {
     public Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
         var militaresAptos = militares.stream()
                 .filter(militar -> militar.getCov().equals(cov) &&
-                        Funcao.PERMANENTE.getPatentes().contains(militar.getPatente().getNome()))
+                        Funcao.PERMANENTE.getPatentes().contains(militar.getPatente()))
                 .collect(Collectors.toList());
         var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
@@ -56,7 +56,7 @@ public class Permanente extends ServicoOperacional {
     }
 
     private Optional<Militar> filtrarPatente(List<Militar> militares,
-            BiFunction<List<Militar>, String, Optional<Militar>> filtro) {
+            BiFunction<List<Militar>, Patente, Optional<Militar>> filtro) {
         for (var patente : Funcao.PERMANENTE.getPatentes()) {
             var militarEscalado = filtro.apply(militares, patente);
             if (militarEscalado.isEmpty()) {
@@ -67,16 +67,16 @@ public class Permanente extends ServicoOperacional {
         return Optional.empty();
     }
 
-    private Optional<Militar> filtrarPatenteNuncaEscalado(List<Militar> militares, String patente) {
+    private Optional<Militar> filtrarPatenteNuncaEscalado(List<Militar> militares, Patente patente) {
         return militares.stream()
-                .filter(militar -> militar.getPatente().getNome().equals(patente))
+                .filter(militar -> militar.getPatente().equals(patente))
                 .sorted(Comparator.comparingInt(Militar::getAntiguidade).reversed())
                 .findFirst();
     }
 
-    private Optional<Militar> filtrarPatenteJaEscalado(List<Militar> militares, String patente) {
+    private Optional<Militar> filtrarPatenteJaEscalado(List<Militar> militares, Patente patente) {
         return militares.stream()
-                .filter(militar -> militar.getPatente().getNome().equals(patente))
+                .filter(militar -> militar.getPatente().equals(patente))
                 .sorted(Comparator.comparing(Militar::dataUltimoServico)
                         .thenComparing(Comparator.comparingInt(Militar::getAntiguidade).reversed()))
                 .findFirst();
