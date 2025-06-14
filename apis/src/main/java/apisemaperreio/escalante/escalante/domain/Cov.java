@@ -42,7 +42,7 @@ public class Cov extends ServicoOperacional {
         militaresCov.sort(Comparator.comparing(Militar::dataUltimoServico));
         var militarEscalado = militaresCov.getFirst();
         var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
+        if (!militarEscalado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
             return Optional.of(militarEscalado).orElseThrow();
         throw new NoSuchElementException("Nenhum militar apto foi encontrado para a função de C.O.V.");
     }

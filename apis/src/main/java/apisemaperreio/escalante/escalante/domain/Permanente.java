@@ -43,9 +43,11 @@ public class Permanente extends ServicoOperacional {
         var militarEscalado = filtrarPatente(militaresNaoCov, "SD").orElse(
                 filtrarPatente(militaresNaoCov, "CB").orElseThrow());
         var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
+        if (!militarEscalado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
             return militarEscalado;
-        var militaresCov = militares.stream().filter(militar -> militar.getCov().equals(true))
+        var militaresCov = militares.stream()
+                .filter(militar -> militar.getCov().equals(false) &&
+                (militar.getPatente().getNome().equals("SD") || militar.getPatente().getNome().equals("CB")))
                 .collect(Collectors.toList());
         var militaresCovNuncaEscalados = militaresCov.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
@@ -55,7 +57,7 @@ public class Permanente extends ServicoOperacional {
         militarEscalado = filtrarPatente(militaresCov, "SD").orElse(
                 filtrarPatente(militaresCov, "CB").orElseThrow());
         folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (militarEscalado.dataUltimoServico().plusDays(folga + 1).isBefore(this.getDataServico()))
+        if (!militarEscalado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
             return militarEscalado;
         throw new NoSuchElementException("Nenhum militar apto foi encontrado para a função de Permanente.");
     }
