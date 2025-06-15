@@ -8,6 +8,7 @@ import java.util.Optional;
 import apisemaperreio.escalante.escalante.domain.AjudanteLinha;
 import apisemaperreio.escalante.escalante.domain.Cov;
 import apisemaperreio.escalante.escalante.domain.Funcao;
+import apisemaperreio.escalante.escalante.domain.OperadorLinha;
 import apisemaperreio.escalante.escalante.domain.Permanente;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
@@ -19,6 +20,7 @@ public final class ServicoOperacionalFactory {
         servicosOperacionais.put(Funcao.COV, new Cov(dataServico));
         servicosOperacionais.put(Funcao.PERMANENTE, new Permanente(dataServico));
         servicosOperacionais.put(Funcao.AJUDANTE_DE_LINHA, new AjudanteLinha(dataServico));
+        servicosOperacionais.put(Funcao.OPERADOR_DE_LINHA, new OperadorLinha(dataServico));
     }
 
     public static ServicoOperacional criarServicoOperacional(Funcao funcao, LocalDate dataServico) {

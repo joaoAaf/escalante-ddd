@@ -47,6 +47,8 @@ public class Escala {
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
             this.preencherDiasServico(militares,
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.AJUDANTE_DE_LINHA, dataAtual));
+            this.preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }
