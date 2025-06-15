@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import apisemaperreio.escalante.escalante.domain.AjudanteLinha;
 import apisemaperreio.escalante.escalante.domain.Cov;
 import apisemaperreio.escalante.escalante.domain.Funcao;
 import apisemaperreio.escalante.escalante.domain.Permanente;
@@ -17,6 +18,7 @@ public final class ServicoOperacionalFactory {
     private ServicoOperacionalFactory(LocalDate dataServico) {
         servicosOperacionais.put(Funcao.COV, new Cov(dataServico));
         servicosOperacionais.put(Funcao.PERMANENTE, new Permanente(dataServico));
+        servicosOperacionais.put(Funcao.AJUDANTE_DE_LINHA, new AjudanteLinha(dataServico));
     }
 
     public static ServicoOperacional criarServicoOperacional(Funcao funcao, LocalDate dataServico) {

@@ -7,16 +7,16 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-public class Permanente extends ServicoOperacional {
+public class AjudanteLinha extends ServicoOperacional {
 
-    private final int FOLGA_PERMANENTE = 3;
+    private final int FOLGA_AJUDANTE_LINHA = 3;
 
-    public Permanente(LocalDate dataServico) {
-        super(dataServico, Funcao.PERMANENTE);
+    public AjudanteLinha(LocalDate dataServico) {
+        super(dataServico, Funcao.AJUDANTE_DE_LINHA);
     }
 
-    public Permanente(LocalDate dataServico, ServicoOperacional servicoOperacional) {
-        super(dataServico, Funcao.PERMANENTE);
+    public AjudanteLinha(LocalDate dataServico, ServicoOperacional servicoOperacional) {
+        super(dataServico, Funcao.AJUDANTE_DE_LINHA);
         this.setFolga(servicoOperacional.getFolga());
         this.setMatriculaMilitar(servicoOperacional.getMatriculaMilitar());
     }
@@ -25,7 +25,7 @@ public class Permanente extends ServicoOperacional {
     public void escalarMilitar(Optional<Militar> militar) {
         if (militar.isEmpty())
             return;
-        this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_PERMANENTE));
+        this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_AJUDANTE_LINHA));
         this.setMatriculaMilitar(militar.get().getMatricula());
         militar.get().getUltimosServicos().clear();
         militar.get().getUltimosServicos().add(this);
@@ -33,13 +33,13 @@ public class Permanente extends ServicoOperacional {
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        return selecionarPermanente(militares, false).or(() -> selecionarPermanente(militares, true));
+        return selecionarAjudanteLinha(militares, false).or(() -> selecionarAjudanteLinha(militares, true));
     }
 
-    public Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
+    public Optional<Militar> selecionarAjudanteLinha(List<Militar> militares, Boolean cov) {
         var militaresAptos = militares.stream()
                 .filter(militar -> militar.getCov().equals(cov) &&
-                        Funcao.PERMANENTE.getPatentes().contains(militar.getPatente()))
+                        Funcao.AJUDANTE_DE_LINHA.getPatentes().contains(militar.getPatente()))
                 .collect(Collectors.toList());
         var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
                 militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class Permanente extends ServicoOperacional {
 
     private Optional<Militar> filtrarPatente(List<Militar> militares,
             BiFunction<List<Militar>, Patente, Optional<Militar>> filtro) {
-        for (var patente : Funcao.PERMANENTE.getPatentes()) {
+        for (var patente : Funcao.AJUDANTE_DE_LINHA.getPatentes()) {
             var militarEscalado = filtro.apply(militares, patente);
             if (militarEscalado.isEmpty()) {
                 continue;
@@ -85,8 +85,8 @@ public class Permanente extends ServicoOperacional {
     @Override
     public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar) {
         var proximoServico = militar.orElseThrow().getUltimosServicos().size() % 2 != 0 ?
-                new AjudanteLinha(servicoOperacional.getDataServico().plusDays(1), servicoOperacional) :
-                new Permanente(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
+                new Permanente(servicoOperacional.getDataServico().plusDays(1), servicoOperacional) :
+                new AjudanteLinha(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
         if (militar.isEmpty())
             return proximoServico;
         militar.get().getUltimosServicos().add(proximoServico);

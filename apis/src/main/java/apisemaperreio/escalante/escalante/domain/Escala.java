@@ -41,8 +41,12 @@ public class Escala {
     public void preencherEscala(List<Militar> militares) {
         var dataAtual = this.dataInicio;
         while (dataAtual.compareTo(this.dataFim) <= 0) {
-            this.preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
-            this.preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
+            this.preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
+            this.preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
+            this.preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.AJUDANTE_DE_LINHA, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }
