@@ -41,52 +41,56 @@ public class AjudanteLinha extends ServicoOperacional {
                 .filter(militar -> militar.getCov().equals(cov) &&
                         Funcao.AJUDANTE_DE_LINHA.getPatentes().contains(militar.getPatente()))
                 .collect(Collectors.toList());
-        var militaresAptosNuncaEscalados = militaresAptos.stream().filter(
-                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
-        if (!militaresAptosNuncaEscalados.isEmpty()) {
-            return filtrarPatente(militaresAptosNuncaEscalados, this::filtrarPatenteNuncaEscalado);
-        }
-        var militarEscalado = filtrarPatente(militaresAptos, this::filtrarPatenteJaEscalado);
-        if (militarEscalado.isPresent()) {
-            var folga = militarEscalado.get().getUltimosServicos().size() * militarEscalado.get().folgaUltimoServico();
-            if (!militarEscalado.get().dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
-                return militarEscalado;
-        }
-        return Optional.empty();
+        var militaresAptosNuncaEscalados = militaresAptos.stream()
+                .filter(militar -> militar.getUltimosServicos().isEmpty())
+                .collect(Collectors.toList());
+        if (!militaresAptosNuncaEscalados.isEmpty())
+            return filtrarMilitarApto(militaresAptosNuncaEscalados, this::filtrarMilitarAptoNuncaEscalado);
+        return filtrarMilitarApto(militaresAptos, this::filtrarMilitarAptoJaEscalado);
     }
 
-    private Optional<Militar> filtrarPatente(List<Militar> militares,
+    private Optional<Militar> filtrarMilitarApto(List<Militar> militares,
             BiFunction<List<Militar>, Patente, Optional<Militar>> filtro) {
         for (var patente : Funcao.AJUDANTE_DE_LINHA.getPatentes()) {
-            var militarEscalado = filtro.apply(militares, patente);
-            if (militarEscalado.isEmpty()) {
+            var militarApto = filtro.apply(militares, patente);
+            if (militarApto.isEmpty())
                 continue;
-            }
-            return militarEscalado;
+            return militarApto;
         }
         return Optional.empty();
     }
 
-    private Optional<Militar> filtrarPatenteNuncaEscalado(List<Militar> militares, Patente patente) {
+    private Optional<Militar> filtrarMilitarAptoNuncaEscalado(List<Militar> militares, Patente patente) {
         return militares.stream()
                 .filter(militar -> militar.getPatente().equals(patente))
                 .sorted(Comparator.comparingInt(Militar::getAntiguidade).reversed())
                 .findFirst();
     }
 
-    private Optional<Militar> filtrarPatenteJaEscalado(List<Militar> militares, Patente patente) {
-        return militares.stream()
-                .filter(militar -> militar.getPatente().equals(patente))
-                .sorted(Comparator.comparing(Militar::dataUltimoServico)
-                        .thenComparing(Comparator.comparingInt(Militar::getAntiguidade).reversed()))
-                .findFirst();
+    private Optional<Militar> filtrarMilitarAptoJaEscalado(List<Militar> militares, Patente patente) {
+        return varificarFolgaMilitar(
+                militares.stream()
+                        .filter(militar -> militar.getPatente().equals(patente))
+                        .sorted(Comparator.comparing(Militar::dataUltimoServico)
+                                .thenComparing(Comparator.comparingInt(Militar::getAntiguidade).reversed()))
+                        .findFirst());
+    }
+
+    private Optional<Militar> varificarFolgaMilitar(Optional<Militar> militar) {
+        if (militar.isEmpty())
+            return militar;
+        var militarVerificado = militar.get();
+        var folga = militarVerificado.getUltimosServicos().size() * militarVerificado.folgaUltimoServico();
+        return militarVerificado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico())
+                ? Optional.empty()
+                : militar;
     }
 
     @Override
     public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar) {
-        var proximoServico = militar.orElseThrow().getUltimosServicos().size() % 2 != 0 ?
-                new Permanente(servicoOperacional.getDataServico().plusDays(1), servicoOperacional) :
-                new AjudanteLinha(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
+        var proximoServico = militar.orElseThrow().getUltimosServicos().size() % 2 != 0
+                ? new Permanente(servicoOperacional.getDataServico().plusDays(1), servicoOperacional)
+                : new AjudanteLinha(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
         if (militar.isEmpty())
             return proximoServico;
         militar.get().getUltimosServicos().add(proximoServico);

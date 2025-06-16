@@ -32,20 +32,28 @@ public class Cov extends ServicoOperacional {
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        var militaresCov = militares.stream().filter(militar -> militar.getCov().equals(true))
+        var militaresCov = militares.stream()
+                .filter(militar -> militar.getCov().equals(true))
                 .collect(Collectors.toList());
-        var militaresCovNuncaEscalados = militaresCov.stream().filter(
-                militar -> militar.getUltimosServicos().isEmpty()).collect(Collectors.toList());
+        var militaresCovNuncaEscalados = militaresCov.stream()
+                .filter(militar -> militar.getUltimosServicos().isEmpty())
+                .collect(Collectors.toList());
         if (!militaresCovNuncaEscalados.isEmpty()) {
             militaresCovNuncaEscalados.sort(Comparator.comparingInt(Militar::getAntiguidade));
-            return Optional.ofNullable(militaresCovNuncaEscalados.getFirst());
+            return militaresCovNuncaEscalados.stream().findFirst();
         }
         militaresCov.sort(Comparator.comparing(Militar::dataUltimoServico));
-        var militarEscalado = militaresCov.getFirst();
-        var folga = militarEscalado.getUltimosServicos().size() * militarEscalado.folgaUltimoServico();
-        if (!militarEscalado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico()))
-            return Optional.ofNullable(militarEscalado);
-        return Optional.empty();
+        return varificarFolgaMilitar(militaresCov.stream().findFirst());
+    }
+
+    private Optional<Militar> varificarFolgaMilitar(Optional<Militar> militar) {
+        if (militar.isEmpty())
+            return militar;
+        var militarVerificado = militar.get();
+        var folga = militarVerificado.getUltimosServicos().size() * militarVerificado.folgaUltimoServico();
+        return militarVerificado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico())
+                ? Optional.empty()
+                : militar;
     }
 
     @Override
