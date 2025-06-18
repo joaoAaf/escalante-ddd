@@ -3,6 +3,7 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import apisemaperreio.escalante.escalante.utils.factories.ServicoOperacionalFactory;
 import jakarta.persistence.CascadeType;
@@ -41,26 +42,51 @@ public class Escala {
     public void preencherEscala(List<Militar> militares) {
         var dataAtual = this.dataInicio;
         while (dataAtual.compareTo(this.dataFim) <= 0) {
-            this.preencherDiasServico(militares,
+            preencherDiasServico(militares,
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
-            this.preencherDiasServico(militares,
+            preencherDiasServico(militares,
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
-            this.preencherDiasServico(militares,
+            preencherDiasServico(militares,
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.AJUDANTE_DE_LINHA, dataAtual));
-            this.preencherDiasServico(militares,
+            preencherDiasServico(militares,
                     ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA, dataAtual));
+            preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.FISCAL_DE_DIA, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
+        if (servicoOperacional instanceof FiscalDia) {
+            var militarEscalado = escalarCovFiscal(militares, (FiscalDia) servicoOperacional)
+                    .or(() -> servicoOperacional.buscarMilitar(militares));
+            escalarMilitar(servicoOperacional, militarEscalado);
+            return;
+        }
         var militarEscalado = servicoOperacional.buscarMilitar(militares);
+        escalarMilitar(servicoOperacional, militarEscalado);
+    }
+
+    private Optional<Militar> escalarCovFiscal(List<Militar> militares, FiscalDia fiscalDia) {
+        var covFiscal = fiscalDia.verificarCovApto(militares, this.militaresEscalados);
+        if (covFiscal.isPresent()) {
+            preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA,
+                            fiscalDia.getDataServico()));
+            return covFiscal;
+        }
+        return Optional.empty();
+    }
+
+    private void escalarMilitar(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
         servicoOperacional.escalarMilitar(militarEscalado);
         this.militaresEscalados.add(servicoOperacional);
-        if (this.diasServico > 1) {
-            for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
-                this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
-            }
+        preencherDiasSeguintes(servicoOperacional, militarEscalado);
+    }
+
+    private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
+        for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
+            this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
         }
     }
 
