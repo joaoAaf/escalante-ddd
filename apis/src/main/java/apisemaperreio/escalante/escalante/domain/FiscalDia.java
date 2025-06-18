@@ -3,6 +3,7 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -40,7 +41,9 @@ public class FiscalDia extends ServicoOperacional {
         var maisAntigo = listaVerificacao.stream()
                 .map(servico -> militares.stream()
                         .filter(militar -> militar.getMatricula().equals(servico.getMatriculaMilitar()))
-                        .sorted(Comparator.comparing(Militar::getAntiguidade)).findFirst().orElse(null))
+                        .findFirst().orElse(null))
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(Militar::getAntiguidade))
                 .findFirst();
         if (maisAntigo.isEmpty())
             return Optional.empty();
