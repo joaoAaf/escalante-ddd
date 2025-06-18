@@ -50,7 +50,7 @@ public class Instanciation implements CommandLineRunner {
             var folgas = new ArrayList<Integer>();
             for (var i = 1; i < dataServicos.size() - 1; i += 2) {
                 if (dataServicos.size() > 2) {
-                    var folga = dataServicos.get(i + 1).compareTo(dataServicos.get(i));
+                    var folga = dataServicos.get(i + 1).compareTo(dataServicos.get(i)) - 1;
                     folgas.add(folga);
                 }
             }
