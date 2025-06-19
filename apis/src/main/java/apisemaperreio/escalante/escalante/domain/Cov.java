@@ -17,7 +17,7 @@ public class Cov extends ServicoOperacional {
     public Cov(LocalDate dataServico, ServicoOperacional servicoOperacional) {
         super(dataServico, Funcao.COV);
         this.setFolga(servicoOperacional.getFolga());
-        this.setMatriculaMilitar(servicoOperacional.getMatriculaMilitar());
+        this.setMilitar(servicoOperacional.getMilitar());
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Cov extends ServicoOperacional {
         if (militar.isEmpty())
             return;
         this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_COV));
-        this.setMatriculaMilitar(militar.get().getMatricula());
+        this.setMilitar(militar.get());
         militar.get().getUltimosServicos().clear();
         militar.get().getUltimosServicos().add(this);
     }

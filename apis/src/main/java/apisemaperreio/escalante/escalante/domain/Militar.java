@@ -29,12 +29,12 @@ public class Militar {
 
     public void ultimosServicosConsecutivos(List<ServicoOperacional> servicos) {
         var servicosMilitar = servicos.stream().filter(
-            servico -> servico.getMatriculaMilitar().equals(this.matricula)).toList();
+            servico -> servico.getMilitar().equals(this)).toList();
         if (servicosMilitar.isEmpty())
             return;
         servicosMilitar.sort(Comparator.comparing(ServicoOperacional::getDataServico).reversed());
         for (int contador = 0; contador < servicosMilitar.size(); contador++) {
-            if (contador > 0 && !this.getMatricula().equals(servicosMilitar.get(contador).getMatriculaMilitar()))
+            if (contador > 0 && !this.equals(servicosMilitar.get(contador).getMilitar()))
                 break;
             this.ultimosServicos.add(servicosMilitar.get(contador));
         }

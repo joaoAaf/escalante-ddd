@@ -39,12 +39,13 @@ public class Instanciation implements CommandLineRunner {
         for (var militar : militares) {
             var dataServicos = escala.getMilitaresEscalados().stream()
                     .filter(s -> {
-                        var matriculaMilitar = Optional.ofNullable(s.getMatriculaMilitar());
+                        var matriculaMilitar = Optional.ofNullable(s.getMilitar().getMatricula());
                         if (matriculaMilitar.isEmpty())
                             return false;
-                        return s.getMatriculaMilitar().equals(militar.getMatricula());
+                        return s.getMilitar().getMatricula().equals(militar.getMatricula());
                     })
-                    .map(ServicoOperacional::getDataServico).collect(Collectors.toList());
+                    .map(ServicoOperacional::getDataServico)
+                    .distinct().collect(Collectors.toList());
             System.out.println(militar);
             System.out.println("Data dos serviços: " + dataServicos);
             var folgas = new ArrayList<Integer>();

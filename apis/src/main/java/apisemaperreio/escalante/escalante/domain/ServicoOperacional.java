@@ -10,7 +10,7 @@ public abstract class ServicoOperacional {
     private LocalDate dataServico;
     private Funcao funcao;
     private int folga;
-    private String matriculaMilitar;
+    private Militar militar;
 
     public ServicoOperacional(LocalDate dataServico, Funcao funcao) {
         this.dataServico = dataServico;
@@ -59,12 +59,12 @@ public abstract class ServicoOperacional {
         this.folga = folga;
     }
 
-    public String getMatriculaMilitar() {
-        return matriculaMilitar;
+    public Militar getMilitar() {
+        return militar;
     }
 
-    public void setMatriculaMilitar(String matriculaMilitar) {
-        this.matriculaMilitar = matriculaMilitar;
+    public void setMilitar(Militar militar) {
+        this.militar = militar;
     }
 
     @Override
@@ -74,7 +74,8 @@ public abstract class ServicoOperacional {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((dataServico == null) ? 0 : dataServico.hashCode());
         result = prime * result + ((funcao == null) ? 0 : funcao.hashCode());
-        result = prime * result + ((matriculaMilitar == null) ? 0 : matriculaMilitar.hashCode());
+        result = prime * result + folga;
+        result = prime * result + ((militar == null) ? 0 : militar.hashCode());
         return result;
     }
 
@@ -99,18 +100,20 @@ public abstract class ServicoOperacional {
             return false;
         if (funcao != other.funcao)
             return false;
-        if (matriculaMilitar == null) {
-            if (other.matriculaMilitar != null)
+        if (folga != other.folga)
+            return false;
+        if (militar == null) {
+            if (other.militar != null)
                 return false;
-        } else if (!matriculaMilitar.equals(other.matriculaMilitar))
+        } else if (!militar.equals(other.militar))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao.getNome() + ", folga="
-                + folga + ", matriculaMilitar=" + matriculaMilitar + "]";
+        return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao + ", folga="
+                + folga + ", patenteEscalado=" + militar.getPatente()+ "]";
     }
 
 }

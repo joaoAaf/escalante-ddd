@@ -18,7 +18,7 @@ public class Permanente extends ServicoOperacional {
     public Permanente(LocalDate dataServico, ServicoOperacional servicoOperacional) {
         super(dataServico, Funcao.PERMANENTE);
         this.setFolga(servicoOperacional.getFolga());
-        this.setMatriculaMilitar(servicoOperacional.getMatriculaMilitar());
+        this.setMilitar(servicoOperacional.getMilitar());
     }
 
     @Override
@@ -26,7 +26,7 @@ public class Permanente extends ServicoOperacional {
         if (militar.isEmpty())
             return;
         this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_PERMANENTE));
-        this.setMatriculaMilitar(militar.get().getMatricula());
+        this.setMilitar(militar.get());
         militar.get().getUltimosServicos().clear();
         militar.get().getUltimosServicos().add(this);
     }
