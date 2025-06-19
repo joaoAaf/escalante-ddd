@@ -4,39 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-@Entity
 public abstract class ServicoOperacional {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private LocalDate dataServico;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Funcao funcao;
-
-    @Column(nullable = false)
     private int folga;
-
-    @Column(nullable = false)
     private String matriculaMilitar;
-    
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "id_escala")
-    private Escala escala;
 
     public ServicoOperacional(LocalDate dataServico, Funcao funcao) {
         this.dataServico = dataServico;
@@ -91,14 +65,6 @@ public abstract class ServicoOperacional {
 
     public void setMatriculaMilitar(String matriculaMilitar) {
         this.matriculaMilitar = matriculaMilitar;
-    }
-
-    public Escala getEscala() {
-        return escala;
-    }
-
-    public void setEscala(Escala escala) {
-        this.escala = escala;
     }
 
     @Override

@@ -5,31 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apisemaperreio.escalante.escalante.utils.factories.ServicoOperacionalFactory;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
-@Entity
 public class Escala {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private LocalDate dataInicio;
-
-    @Column(nullable = false)
     private LocalDate dataFim;
-
-    @Column(nullable = false)
     private int diasServico;
-
-    @OneToMany(mappedBy = "escala", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ServicoOperacional> militaresEscalados = new ArrayList<ServicoOperacional>();
 
     public Escala(LocalDate dataInicio, LocalDate dataFim, int diasServico) {
