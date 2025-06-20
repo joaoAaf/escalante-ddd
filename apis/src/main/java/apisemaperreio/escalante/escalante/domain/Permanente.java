@@ -13,49 +13,41 @@ public class Permanente extends ServicoOperacional {
 
     public Permanente(LocalDate dataServico) {
         super(dataServico, Funcao.PERMANENTE);
+        this.folga = FOLGA_PERMANENTE;
     }
 
     public Permanente(LocalDate dataServico, ServicoOperacional servicoOperacional) {
         super(dataServico, Funcao.PERMANENTE);
-        this.setFolga(servicoOperacional.getFolga());
-        this.setMilitar(servicoOperacional.getMilitar());
-    }
-
-    @Override
-    public void escalarMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return;
-        this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_PERMANENTE));
-        this.setMilitar(militar.get());
-        militar.get().getUltimosServicos().clear();
-        militar.get().getUltimosServicos().add(this);
+        this.folga = servicoOperacional.getFolga();
+        this.militar = servicoOperacional.getMilitar();
     }
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        return selecionarPermanente(militares, false).or(() -> selecionarPermanente(militares, true));
+        return selecionarMilitar(militares, false).or(() -> selecionarMilitar(militares, true));
     }
 
-    public Optional<Militar> selecionarPermanente(List<Militar> militares, Boolean cov) {
-        var militaresAptos = militares.stream()
-                .filter(militar -> militar.getCov().equals(cov) &&
-                        Funcao.PERMANENTE.getPatentes().contains(militar.getPatente()))
-                .collect(Collectors.toList());
-        var militaresAptosNuncaEscalados = militaresAptos.stream()
-                .filter(militar -> militar.getUltimosServicos().isEmpty())
-                .collect(Collectors.toList());
+    public Optional<Militar> selecionarMilitar(List<Militar> militares, Boolean cov) {
+        var militaresAptos = filtrarMilitaresAptos(militares, cov);
+        var militaresAptosNuncaEscalados = filtrarMilitaresAptosNuncaEscalados(militaresAptos);
         if (!militaresAptosNuncaEscalados.isEmpty())
             return filtrarMilitarApto(militaresAptosNuncaEscalados, this::filtrarMilitarAptoNuncaEscalado);
         return filtrarMilitarApto(militaresAptos, this::filtrarMilitarAptoJaEscalado);
     }
 
+    private List<Militar> filtrarMilitaresAptos(List<Militar> militares, Boolean cov) {
+        return militares.stream()
+                .filter(militar -> militar.getCov().equals(cov) &&
+                        this.funcao.getPatentes().contains(militar.getPatente()))
+                .collect(Collectors.toList());
+    }
+
     private Optional<Militar> filtrarMilitarApto(List<Militar> militares,
             BiFunction<List<Militar>, Patente, Optional<Militar>> filtro) {
-        for (var patente : Funcao.PERMANENTE.getPatentes()) {
+        for (var patente : this.funcao.getPatentes()) {
             var militarApto = filtro.apply(militares, patente);
-            if (militarApto.isEmpty())
-                continue;
-            return militarApto;
+            if (militarApto.isPresent())
+                return militarApto;
         }
         return Optional.empty();
     }
@@ -68,22 +60,12 @@ public class Permanente extends ServicoOperacional {
     }
 
     private Optional<Militar> filtrarMilitarAptoJaEscalado(List<Militar> militares, Patente patente) {
-        return varificarFolgaMilitar(
+        return verificarFolgaMilitar(
                 militares.stream()
                         .filter(militar -> militar.getPatente().equals(patente))
                         .sorted(Comparator.comparing(Militar::dataUltimoServico)
                                 .thenComparing(Comparator.comparingInt(Militar::getAntiguidade).reversed()))
                         .findFirst());
-    }
-
-    private Optional<Militar> varificarFolgaMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return militar;
-        var militarVerificado = militar.get();
-        var folga = militarVerificado.getUltimosServicos().size() * militarVerificado.folgaUltimoServico();
-        return militarVerificado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico())
-                ? Optional.empty()
-                : militar;
     }
 
     @Override

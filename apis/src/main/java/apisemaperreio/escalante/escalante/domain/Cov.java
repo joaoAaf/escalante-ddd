@@ -12,48 +12,42 @@ public class Cov extends ServicoOperacional {
 
     public Cov(LocalDate dataServico) {
         super(dataServico, Funcao.COV);
+        this.folga = FOLGA_COV;
     }
 
     public Cov(LocalDate dataServico, ServicoOperacional servicoOperacional) {
         super(dataServico, Funcao.COV);
-        this.setFolga(servicoOperacional.getFolga());
-        this.setMilitar(servicoOperacional.getMilitar());
-    }
-
-    @Override
-    public void escalarMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return;
-        this.setFolga(definirFolga(militar.get().getFolgaEspecial(), FOLGA_COV));
-        this.setMilitar(militar.get());
-        militar.get().getUltimosServicos().clear();
-        militar.get().getUltimosServicos().add(this);
+        this.folga = servicoOperacional.getFolga();
+        this.militar = servicoOperacional.getMilitar();
     }
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        var militaresCov = militares.stream()
-                .filter(militar -> militar.getCov().equals(true))
-                .collect(Collectors.toList());
-        var militaresCovNuncaEscalados = militaresCov.stream()
-                .filter(militar -> militar.getUltimosServicos().isEmpty())
-                .collect(Collectors.toList());
-        if (!militaresCovNuncaEscalados.isEmpty()) {
-            militaresCovNuncaEscalados.sort(Comparator.comparingInt(Militar::getAntiguidade));
-            return militaresCovNuncaEscalados.stream().findFirst();
-        }
-        militaresCov.sort(Comparator.comparing(Militar::dataUltimoServico));
-        return varificarFolgaMilitar(militaresCov.stream().findFirst());
+        var militaresAptos = filtrarMilitaresAptos(militares);
+        var militaresAptosNuncaEscalados = filtrarMilitaresAptosNuncaEscalados(militaresAptos);
+        if (!militaresAptosNuncaEscalados.isEmpty())
+            return filtrarMilitarAptoNuncaEscalado(militaresAptosNuncaEscalados);
+        return filtrarMilitarAptoJaEscalado(militaresAptos);
     }
 
-    private Optional<Militar> varificarFolgaMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return militar;
-        var militarVerificado = militar.get();
-        var folga = militarVerificado.getUltimosServicos().size() * militarVerificado.folgaUltimoServico();
-        return militarVerificado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico())
-                ? Optional.empty()
-                : militar;
+    private List<Militar> filtrarMilitaresAptos(List<Militar> militares) {
+        return militares.stream()
+                .filter(militar -> militar.getCov().equals(true))
+                .collect(Collectors.toList());
+    }
+
+    private Optional<Militar> filtrarMilitarAptoNuncaEscalado(List<Militar> militares) {
+        return militares.stream()
+                .sorted(Comparator.comparingInt(Militar::getAntiguidade))
+                .findFirst();
+    }
+
+    private Optional<Militar> filtrarMilitarAptoJaEscalado(List<Militar> militares) {
+        return verificarFolgaMilitar(
+                militares.stream()
+                        .sorted(Comparator.comparing(Militar::dataUltimoServico)
+                                .thenComparing(Comparator.comparingInt(Militar::getAntiguidade)))
+                        .findFirst());
     }
 
     @Override

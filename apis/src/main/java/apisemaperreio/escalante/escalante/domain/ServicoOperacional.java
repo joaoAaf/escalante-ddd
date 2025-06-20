@@ -3,68 +3,73 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class ServicoOperacional {
 
     private Long id;
-    private LocalDate dataServico;
-    private Funcao funcao;
-    private int folga;
-    private Militar militar;
+    protected LocalDate dataServico;
+    protected Funcao funcao;
+    protected int folga;
+    protected Militar militar;
 
     public ServicoOperacional(LocalDate dataServico, Funcao funcao) {
         this.dataServico = dataServico;
         this.funcao = funcao;
     }
 
-    public abstract void escalarMilitar(Optional<Militar> militar);
+    public void escalarMilitar(Optional<Militar> militar) {
+        if (militar.isEmpty())
+            return;
+        this.folga = definirFolga(militar.get().getFolgaEspecial(), this.folga);
+        this.militar = militar.get();
+        militar.get().getUltimosServicos().clear();
+        militar.get().getUltimosServicos().add(this);
+    }
 
-    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
-
-    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar);
-
-    protected int definirFolga(int folgaMilitar, int folgaServico) {
+    private int definirFolga(int folgaMilitar, int folgaServico) {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;
     }
 
-    public Long getId() {
-        return id;
+    protected Optional<Militar> verificarFolgaMilitar(Optional<Militar> militar) {
+        if (militar.isEmpty())
+            return militar;
+        var militarVerificado = militar.get();
+        var folga = militarVerificado.getUltimosServicos().size() * militarVerificado.folgaUltimoServico();
+        return militarVerificado.dataUltimoServico().plusDays(folga + 1).isAfter(this.getDataServico())
+                ? Optional.empty()
+                : militar;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    protected List<Militar> filtrarMilitaresAptosNuncaEscalados(List<Militar> militares) {
+        return militares.stream()
+                .filter(militar -> militar.getUltimosServicos().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
+
+    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional,
+            Optional<Militar> militar);
+
+    public Long getId() {
+        return id;
     }
 
     public LocalDate getDataServico() {
         return dataServico;
     }
 
-    public void setDataServico(LocalDate dataServico) {
-        this.dataServico = dataServico;
-    }
-
     public Funcao getFuncao() {
         return funcao;
-    }
-
-    public void setFuncao(Funcao funcao) {
-        this.funcao = funcao;
     }
 
     public int getFolga() {
         return folga;
     }
 
-    public void setFolga(int folga) {
-        this.folga = folga;
-    }
-
     public Militar getMilitar() {
         return militar;
-    }
-
-    public void setMilitar(Militar militar) {
-        this.militar = militar;
     }
 
     @Override
@@ -113,7 +118,8 @@ public abstract class ServicoOperacional {
     @Override
     public String toString() {
         return "ServicoOperacional [id=" + id + ", dataServico=" + dataServico + ", funcao=" + funcao + ", folga="
-                + folga + ", patenteEscalado=" + militar.getPatente()+ "]";
+                + folga + ", matriculaEscalado=" + militar.getMatricula() + ", patenteEscalado=" + militar.getPatente()
+                + ", antiguidadeEscalado=" + militar.getAntiguidade() + "]";
     }
 
 }
