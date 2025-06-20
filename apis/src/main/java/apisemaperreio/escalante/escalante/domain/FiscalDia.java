@@ -63,7 +63,7 @@ public class FiscalDia extends ServicoOperacional {
     private Optional<Militar> filtrarMilitarAptoNuncaEscalado(List<Militar> militares, Patente patente) {
         return militares.stream()
                 .filter(militar -> militar.getPatente().equals(patente))
-                .sorted(Comparator.comparingInt(Militar::getAntiguidade).reversed())
+                .sorted(Comparator.comparingInt(Militar::getAntiguidade))
                 .findFirst();
     }
 
@@ -72,7 +72,7 @@ public class FiscalDia extends ServicoOperacional {
                 militares.stream()
                         .filter(militar -> militar.getPatente().equals(patente))
                         .sorted(Comparator.comparing(Militar::dataUltimoServico)
-                                .thenComparing(Comparator.comparingInt(Militar::getAntiguidade).reversed()))
+                                .thenComparing(Comparator.comparingInt(Militar::getAntiguidade)))
                         .findFirst());
     }
 
