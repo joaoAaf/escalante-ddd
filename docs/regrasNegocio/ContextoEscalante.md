@@ -26,8 +26,8 @@ Para mitigar esta complexidade e reduzir consideravelmente tempo de execução d
     | | TEN | SUB TEN | SGT | CB | SD
     --- | --- | --- | --- | --- | ---
     **Fiscal de Dia** | 1º | 2º | 3º | 4º | 5º
-    **Operador de Linha** | não assume | 3º | 1º | 2º | 4º
-    **Ajudante de Linha** | não assume | não assume | 3º | 1º | 2º
+    **Operador de Linha** | não assume | 4º | 3º | 1º | 2º
+    **Ajudante de Linha** | não assume | não assume | não assume | 1º | 2º
     **Permanente** | não assume | não assume | não assume | 2º | 1º
     **C.O.V.** | - | - | - | - | -
 
@@ -36,11 +36,11 @@ Para mitigar esta complexidade e reduzir consideravelmente tempo de execução d
 1. Qualquer militar poderá assumir a função de C.O.V., desde que esteja autorizado a exercê-la;
 
 1. No momento da seleção dos militares para cada função deverá ser levada em conta a antiguidade do militar. A seleção das funções será feita na seguinte ordem:
-    - **1º C.O.V.**: Os mais antigos serão escolhidos primeiro;
-    - **2º Permanente**: Os mais modernos serão escolhidos primeiro;
-    - **3º Ajudante de Linha**: Os mais modernos serão escolhidos primeiro;
-    - **4º Operador de Linha**: Os mais modernos serão escolhidos primeiro;
-    - **5º Fiscal de Dia**: Os mais modernos serão escolhidos primeiro.
+    - **1º Fiscal de Dia**: Os mais antigos serão escolhidos primeiro;
+    - **2º C.O.V.**: Os mais antigos serão escolhidos primeiro;
+    - **3º Permanente**: Os mais modernos serão escolhidos primeiro;
+    - **4º Ajudante de Linha**: Os mais modernos serão escolhidos primeiro;
+    - **5º Operador de Linha**: Os mais modernos serão escolhidos primeiro.
 
 1. Deve-se escalar primeiro os militares que estiverem a mais tempo fora da escala;
 1. Os militares autorizados a exercerem a função de **C.O.V.** serão os últimos a serem escolhidos para as demais funções, com exceção da função de **Fiscal de Dia**.
