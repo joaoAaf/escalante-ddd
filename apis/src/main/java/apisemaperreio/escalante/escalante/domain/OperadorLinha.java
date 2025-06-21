@@ -1,7 +1,6 @@
 package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public class OperadorLinha extends ModernosPrimeiro {
 
@@ -19,11 +18,9 @@ public class OperadorLinha extends ModernosPrimeiro {
     }
 
     @Override
-    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar) {
+    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar) {
         var proximoServico = new OperadorLinha(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
-        if (militar.isEmpty())
-            return proximoServico;
-        militar.get().getUltimosServicos().add(proximoServico);
+        militar.getUltimosServicos().add(proximoServico);
         return proximoServico;
     }
 

@@ -35,11 +35,9 @@ public class FiscalDia extends AntigosPrimeiro {
     }
 
     @Override
-    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar) {
+    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar) {
         var proximoServico = new FiscalDia(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
-        if (militar.isEmpty())
-            return proximoServico;
-        militar.get().getUltimosServicos().add(proximoServico);
+        militar.getUltimosServicos().add(proximoServico);
         return proximoServico;
     }
 

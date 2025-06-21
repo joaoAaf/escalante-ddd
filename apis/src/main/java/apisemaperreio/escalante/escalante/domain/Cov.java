@@ -20,14 +20,9 @@ public class Cov extends AntigosPrimeiro {
     }
 
     @Override
-    public void escalarMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return;
-        this.folga = definirFolga(militar.get().getFolgaEspecial(), this.folga);
-        this.militar = militar.get();
-        militar.get().getUltimosServicos().clear();
-        militar.get().getUltimosServicos().add(this);
-        ServicoOperacional.covFiscal = militar;
+    public void escalarMilitar(Militar militar) {
+        super.escalarMilitar(militar);
+        ServicoOperacional.covFiscal = Optional.ofNullable(militar);
     }
 
     @Override
@@ -36,11 +31,9 @@ public class Cov extends AntigosPrimeiro {
     }
 
     @Override
-    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Optional<Militar> militar) {
+    public ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar) {
         var proximoServico = new Cov(servicoOperacional.getDataServico().plusDays(1), servicoOperacional);
-        if (militar.isEmpty())
-            return proximoServico;
-        militar.get().getUltimosServicos().add(proximoServico);
+        militar.getUltimosServicos().add(proximoServico);
         return proximoServico;
     }
 

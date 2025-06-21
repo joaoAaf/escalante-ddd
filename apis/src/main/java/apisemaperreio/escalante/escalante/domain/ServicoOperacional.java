@@ -26,13 +26,11 @@ public abstract class ServicoOperacional {
 
     public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
 
-    public void escalarMilitar(Optional<Militar> militar) {
-        if (militar.isEmpty())
-            return;
-        this.folga = definirFolga(militar.get().getFolgaEspecial(), this.folga);
-        this.militar = militar.get();
-        militar.get().getUltimosServicos().clear();
-        militar.get().getUltimosServicos().add(this);
+    public void escalarMilitar(Militar militar) {
+        this.folga = definirFolga(militar.getFolgaEspecial(), this.folga);
+        this.militar = militar;
+        militar.getUltimosServicos().clear();
+        militar.getUltimosServicos().add(this);
     }
 
     protected int definirFolga(int folgaMilitar, int folgaServico) {
@@ -59,8 +57,7 @@ public abstract class ServicoOperacional {
                 : militar;
     }
 
-    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional,
-            Optional<Militar> militar);
+    public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional, Militar militar);
 
     public Long getId() {
         return id;

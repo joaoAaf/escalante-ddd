@@ -42,12 +42,15 @@ public class Escala {
     }
 
     private void escalarMilitar(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
-        servicoOperacional.escalarMilitar(militarEscalado);
-        this.militaresEscalados.add(servicoOperacional);
-        preencherDiasSeguintes(servicoOperacional, militarEscalado);
+        militarEscalado.ifPresent(militar -> {
+            servicoOperacional.escalarMilitar(militar);
+            this.militaresEscalados.add(servicoOperacional);
+            preencherDiasSeguintes(servicoOperacional, militar);
+        });
+
     }
 
-    private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
+    private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Militar militarEscalado) {
         for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
             this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
         }
