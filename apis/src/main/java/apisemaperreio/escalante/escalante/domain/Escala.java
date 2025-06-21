@@ -3,6 +3,7 @@ package apisemaperreio.escalante.escalante.domain;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import apisemaperreio.escalante.escalante.utils.factories.ServicoOperacionalFactory;
 
@@ -39,12 +40,22 @@ public class Escala {
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
         var militarEscalado = servicoOperacional.buscarMilitar(militares);
+        escalarMilitar(servicoOperacional, militarEscalado);
+        if (servicoOperacional.covEhFiscal() && servicoOperacional instanceof AjudanteLinha) {
+            this.preencherDiasServico(militares,
+                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA, servicoOperacional.getDataServico()));
+        }
+    }
+
+    private void escalarMilitar(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
         servicoOperacional.escalarMilitar(militarEscalado);
         this.militaresEscalados.add(servicoOperacional);
-        if (this.diasServico > 1) {
-            for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
-                this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
-            }
+        preencherDiasSeguintes(servicoOperacional, militarEscalado);
+    }
+
+    private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
+        for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
+            this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
         }
     }
 
