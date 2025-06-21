@@ -2,6 +2,7 @@ package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +24,10 @@ public class Escala {
 
     public void preencherEscala(List<Militar> militares) {
         var dataAtual = this.dataInicio;
+        var funcoes = Arrays.stream(Funcao.values()).toList();
         while (dataAtual.compareTo(this.dataFim) <= 0) {
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.COV, dataAtual));
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.FISCAL_DE_DIA, dataAtual));
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.PERMANENTE, dataAtual));
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.AJUDANTE_DE_LINHA, dataAtual));
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA, dataAtual));
+            for (var funcao : funcoes)
+                preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(funcao, dataAtual));
             dataAtual = dataAtual.plusDays(this.diasServico);
         }
     }
@@ -42,8 +36,8 @@ public class Escala {
         var militarEscalado = servicoOperacional.buscarMilitar(militares);
         escalarMilitar(servicoOperacional, militarEscalado);
         if (servicoOperacional.covEhFiscal() && servicoOperacional instanceof AjudanteLinha) {
-            this.preencherDiasServico(militares,
-                    ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA, servicoOperacional.getDataServico()));
+            preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA,
+                    servicoOperacional.getDataServico()));
         }
     }
 
@@ -67,24 +61,12 @@ public class Escala {
         return dataInicio;
     }
 
-    public void setDataInicio(LocalDate dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
     public LocalDate getDataFim() {
         return dataFim;
     }
 
-    public void setDataFim(LocalDate dataFim) {
-        this.dataFim = dataFim;
-    }
-
     public int getDiasServico() {
         return diasServico;
-    }
-
-    public void setDiasServico(int diasServico) {
-        this.diasServico = diasServico;
     }
 
     public List<ServicoOperacional> getMilitaresEscalados() {
