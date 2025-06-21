@@ -1,9 +1,9 @@
 package apisemaperreio.escalante.escalante.utils.factories;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Function;
 
 import apisemaperreio.escalante.escalante.domain.AjudanteLinha;
 import apisemaperreio.escalante.escalante.domain.Cov;
@@ -15,21 +15,23 @@ import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
 public final class ServicoOperacionalFactory {
 
-    private final Map<Funcao, ServicoOperacional> servicosOperacionais = new HashMap<>();
-    
-    private ServicoOperacionalFactory(LocalDate dataServico) {
-        servicosOperacionais.put(Funcao.COV, new Cov(dataServico));
-        servicosOperacionais.put(Funcao.PERMANENTE, new Permanente(dataServico));
-        servicosOperacionais.put(Funcao.AJUDANTE_DE_LINHA, new AjudanteLinha(dataServico));
-        servicosOperacionais.put(Funcao.OPERADOR_DE_LINHA, new OperadorLinha(dataServico));
-        servicosOperacionais.put(Funcao.FISCAL_DE_DIA, new FiscalDia(dataServico));
+    private static final Map<Funcao, Function<LocalDate, ServicoOperacional>> FUNCOES_MAP = new EnumMap<>(Funcao.class);
+
+    static {
+        FUNCOES_MAP.put(Funcao.COV, Cov::new);
+        FUNCOES_MAP.put(Funcao.PERMANENTE, Permanente::new);
+        FUNCOES_MAP.put(Funcao.AJUDANTE_DE_LINHA, AjudanteLinha::new);
+        FUNCOES_MAP.put(Funcao.OPERADOR_DE_LINHA, OperadorLinha::new);
+        FUNCOES_MAP.put(Funcao.FISCAL_DE_DIA, FiscalDia::new);
     }
+
+    private ServicoOperacionalFactory() {}
 
     public static ServicoOperacional criarServicoOperacional(Funcao funcao, LocalDate dataServico) {
-        var servicoOperacionalFactory = new ServicoOperacionalFactory(dataServico);
-        var servicoOperacional = Optional.ofNullable(servicoOperacionalFactory.servicosOperacionais.get(funcao))
-            .orElseThrow(() -> new IllegalArgumentException("A Função atribuida ao Serviço Operacional é inválida."));
-        return servicoOperacional;
+        var servicoOperacional = FUNCOES_MAP.get(funcao);
+        if (servicoOperacional == null) {
+            throw new IllegalArgumentException("A Função atribuída ao Serviço Operacional é inválida.");
+        }
+        return servicoOperacional.apply(dataServico);
     }
-
 }
