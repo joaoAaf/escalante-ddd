@@ -23,20 +23,30 @@ public class FiscalDia extends ServicoOperacional {
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        return selecionarMilitar(militares, false).or(() -> selecionarMilitar(militares, true));
+        return verificarCovFiscal(selecionarMilitar(militares));
     }
 
-    private Optional<Militar> selecionarMilitar(List<Militar> militares, Boolean cov) {
-        var militaresAptos = filtrarMilitaresAptos(militares, cov);
+    private Optional<Militar> verificarCovFiscal(Optional<Militar> militar) {
+        if (covFiscal.isEmpty() || militar.isEmpty())
+            return covFiscal.or(() -> militar);
+        if (militar.get().getAntiguidade() < covFiscal.get().getAntiguidade()) {
+            covFiscal = Optional.empty();
+            return militar;
+        }
+        return covFiscal;
+    }
+
+    private Optional<Militar> selecionarMilitar(List<Militar> militares) {
+        var militaresAptos = filtrarMilitaresAptos(militares);
         var militaresAptosNuncaEscalados = filtrarMilitaresAptosNuncaEscalados(militaresAptos);
         if (!militaresAptosNuncaEscalados.isEmpty())
             return filtrarMilitarAptoNuncaEscalado(militaresAptosNuncaEscalados);
         return filtrarMilitarAptoJaEscalado(militaresAptos);
     }
 
-    private List<Militar> filtrarMilitaresAptos(List<Militar> militares, Boolean cov) {
+    private List<Militar> filtrarMilitaresAptos(List<Militar> militares) {
         return militares.stream()
-                .filter(militar -> militar.getCov().equals(cov))
+                .filter(militar -> militar.getCov().equals(false))
                 .collect(Collectors.toList());
     }
 

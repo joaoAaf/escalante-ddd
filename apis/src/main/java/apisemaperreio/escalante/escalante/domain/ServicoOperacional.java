@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 public abstract class ServicoOperacional {
 
+    protected static Optional<Militar> covFiscal = Optional.empty();
+
     private Long id;
     protected LocalDate dataServico;
     protected Funcao funcao;
@@ -18,6 +20,10 @@ public abstract class ServicoOperacional {
         this.funcao = funcao;
     }
 
+    public Boolean covEhFiscal() {
+        return covFiscal.isPresent();
+    }
+
     public void escalarMilitar(Optional<Militar> militar) {
         if (militar.isEmpty())
             return;
@@ -27,7 +33,7 @@ public abstract class ServicoOperacional {
         militar.get().getUltimosServicos().add(this);
     }
 
-    private int definirFolga(int folgaMilitar, int folgaServico) {
+    protected int definirFolga(int folgaMilitar, int folgaServico) {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;
     }
 

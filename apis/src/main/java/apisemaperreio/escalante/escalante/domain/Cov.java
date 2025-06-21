@@ -22,6 +22,17 @@ public class Cov extends ServicoOperacional {
     }
 
     @Override
+    public void escalarMilitar(Optional<Militar> militar) {
+        if (militar.isEmpty())
+            return;
+        this.folga = definirFolga(militar.get().getFolgaEspecial(), this.folga);
+        this.militar = militar.get();
+        militar.get().getUltimosServicos().clear();
+        militar.get().getUltimosServicos().add(this);
+        covFiscal = militar;
+    }
+
+    @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
         var militaresAptos = filtrarMilitaresAptos(militares);
         var militaresAptosNuncaEscalados = filtrarMilitaresAptosNuncaEscalados(militaresAptos);

@@ -5,8 +5,8 @@ import java.util.List;
 
 public enum Funcao {
 
-    FISCAL_DE_DIA("Fiscal de Dia", Arrays.asList()),
     COV("C.O.V.", Arrays.asList()),
+    FISCAL_DE_DIA("Fiscal de Dia", Arrays.asList()),
     PERMANENTE("Permanente", Arrays.asList( Patente.SD, Patente.CB)),
     AJUDANTE_DE_LINHA("Ajudante de Linha", Arrays.asList(Patente.CB, Patente.SD)),
     OPERADOR_DE_LINHA("Operador de Linha", Arrays.asList(Patente.CB, Patente.SD, Patente.SGT, Patente.SUBTEN));
