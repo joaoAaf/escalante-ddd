@@ -1,12 +1,10 @@
 package apisemaperreio.escalante.escalante.domain;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class FiscalDia extends ServicoOperacional {
+public class FiscalDia extends AntigosPrimeiro {
 
     private final int FOLGA_FISCAL = 4;
 
@@ -23,45 +21,17 @@ public class FiscalDia extends ServicoOperacional {
 
     @Override
     public Optional<Militar> buscarMilitar(List<Militar> militares) {
-        return verificarCovFiscal(selecionarMilitar(militares));
+        return verificarCovFiscal(selecionarMilitarApto(militares, false));
     }
 
     private Optional<Militar> verificarCovFiscal(Optional<Militar> militar) {
         if (covFiscal.isEmpty() || militar.isEmpty())
             return covFiscal.or(() -> militar);
         if (militar.get().getAntiguidade() < covFiscal.get().getAntiguidade()) {
-            covFiscal = Optional.empty();
+            ServicoOperacional.covFiscal = Optional.empty();
             return militar;
         }
-        return covFiscal;
-    }
-
-    private Optional<Militar> selecionarMilitar(List<Militar> militares) {
-        var militaresAptos = filtrarMilitaresAptos(militares);
-        var militaresAptosNuncaEscalados = filtrarMilitaresAptosNuncaEscalados(militaresAptos);
-        if (!militaresAptosNuncaEscalados.isEmpty())
-            return filtrarMilitarAptoNuncaEscalado(militaresAptosNuncaEscalados);
-        return filtrarMilitarAptoJaEscalado(militaresAptos);
-    }
-
-    private List<Militar> filtrarMilitaresAptos(List<Militar> militares) {
-        return militares.stream()
-                .filter(militar -> militar.getCov().equals(false))
-                .collect(Collectors.toList());
-    }
-
-    private Optional<Militar> filtrarMilitarAptoNuncaEscalado(List<Militar> militares) {
-        return militares.stream()
-                .sorted(Comparator.comparingInt(Militar::getAntiguidade))
-                .findFirst();
-    }
-
-    private Optional<Militar> filtrarMilitarAptoJaEscalado(List<Militar> militares) {
-        return verificarFolgaMilitar(
-                militares.stream()
-                        .sorted(Comparator.comparing(Militar::dataUltimoServico)
-                                .thenComparing(Comparator.comparingInt(Militar::getAntiguidade)))
-                        .findFirst());
+        return ServicoOperacional.covFiscal;
     }
 
     @Override

@@ -24,6 +24,8 @@ public abstract class ServicoOperacional {
         return covFiscal.isPresent();
     }
 
+    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
+
     public void escalarMilitar(Optional<Militar> militar) {
         if (militar.isEmpty())
             return;
@@ -37,6 +39,16 @@ public abstract class ServicoOperacional {
         return folgaMilitar > folgaServico ? folgaMilitar : folgaServico;
     }
 
+    protected abstract Optional<Militar> selecionarMilitarApto(List<Militar> militares, Boolean cov);
+
+    protected abstract List<Militar> filtrarMilitaresAptos(List<Militar> militares, Boolean cov);
+
+    protected List<Militar> filtrarMilitaresAptosNuncaEscalados(List<Militar> militares) {
+        return militares.stream()
+                .filter(militar -> militar.getUltimosServicos().isEmpty())
+                .collect(Collectors.toList());
+    }
+
     protected Optional<Militar> verificarFolgaMilitar(Optional<Militar> militar) {
         if (militar.isEmpty())
             return militar;
@@ -46,14 +58,6 @@ public abstract class ServicoOperacional {
                 ? Optional.empty()
                 : militar;
     }
-
-    protected List<Militar> filtrarMilitaresAptosNuncaEscalados(List<Militar> militares) {
-        return militares.stream()
-                .filter(militar -> militar.getUltimosServicos().isEmpty())
-                .collect(Collectors.toList());
-    }
-
-    public abstract Optional<Militar> buscarMilitar(List<Militar> militares);
 
     public abstract ServicoOperacional cloneDataSeguinte(ServicoOperacional servicoOperacional,
             Optional<Militar> militar);
