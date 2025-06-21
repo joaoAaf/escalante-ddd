@@ -36,8 +36,8 @@ Para mitigar esta complexidade e reduzir consideravelmente tempo de execução d
 1. Qualquer militar poderá assumir a função de C.O.V., desde que esteja autorizado a exercê-la;
 
 1. No momento da seleção dos militares para cada função deverá ser levada em conta a antiguidade do militar. A seleção das funções será feita na seguinte ordem:
-    - **1º Fiscal de Dia**: Os mais antigos serão escolhidos primeiro;
-    - **2º C.O.V.**: Os mais antigos serão escolhidos primeiro;
+    - **1º C.O.V.**: Os mais antigos serão escolhidos primeiro;
+    - **2º Fiscal de Dia**: Os mais antigos serão escolhidos primeiro;
     - **3º Permanente**: Os mais modernos serão escolhidos primeiro;
     - **4º Ajudante de Linha**: Os mais modernos serão escolhidos primeiro;
     - **5º Operador de Linha**: Os mais modernos serão escolhidos primeiro.
