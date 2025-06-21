@@ -13,12 +13,16 @@ import org.springframework.context.annotation.Configuration;
 import apisemaperreio.escalante.escalante.domain.Escala;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
+import apisemaperreio.escalante.escalante.utils.adapters.ExportadorXLSXAdapter;
 
 @Configuration
 public class Instanciation implements CommandLineRunner {
 
     @Autowired
     private MilitarUseCasesEscalante militarUseCasesEscalante;
+
+    @Autowired
+    private ExportadorXLSXAdapter exportador;
 
     @Override
     public void run(String... args) throws Exception {
@@ -59,7 +63,7 @@ public class Instanciation implements CommandLineRunner {
             System.out.println("Folgas: " + folgas);
         }
 
-        // Arrays.stream(Funcao.values()).forEach(System.out::println);
+        exportador.exportarEscalaExcel("escala.xlsx", escala.getMilitaresEscalados());
 
     }
 
