@@ -3,6 +3,6 @@ spring:
     name: escalante
   profiles:
     active:
-    - test  
+    - dev  
   jpa:
     open-in-view: false
