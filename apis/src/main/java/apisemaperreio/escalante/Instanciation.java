@@ -1,31 +1,25 @@
 package apisemaperreio.escalante;
 
-import java.time.LocalDate;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
-
-import apisemaperreio.escalante.escalante.domain.DadosEscala;
-import apisemaperreio.escalante.escalante.usecases.EscalaUseCasesEscalante;
 
 @Configuration
 public class Instanciation implements CommandLineRunner {
 
-    @Autowired
-    private EscalaUseCasesEscalante escalaUseCases;
+    // @Autowired
+    // private EscalaUseCasesEscalante escalaUseCases;
 
     @Override
     public void run(String... args) throws Exception {
 
-        var dataInicio = LocalDate.parse("2024-09-01");
-        var dataFim = LocalDate.parse("2024-09-30");
+        // var dataInicio = LocalDate.parse("2024-09-01");
+        // var dataFim = LocalDate.parse("2024-09-30");
 
-        var dadosEscala = new DadosEscala(dataInicio, dataFim, 2);
+        // var dadosEscala = new DadosEscala(dataInicio, dataFim, 2);
 
-        var escala = escalaUseCases.criarEscalaAutomatica(dadosEscala);
+        // var escala = escalaUseCases.criarEscalaAutomatica(dadosEscala);
 
-        escala.forEach(System.out::println);
+        // escala.forEach(System.out::println);
 
         // for (var militar : militares) {
         //     var dataServicos = escala.getMilitaresEscalados().stream()
