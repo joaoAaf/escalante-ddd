@@ -1,8 +1,8 @@
 package apisemaperreio.escalante.escalante.domain;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,26 +10,22 @@ import apisemaperreio.escalante.escalante.utils.factories.ServicoOperacionalFact
 
 public class Escala {
 
-    private Long id;
-    private LocalDate dataInicio;
-    private LocalDate dataFim;
-    private int diasServico;
-    private List<ServicoOperacional> militaresEscalados = new ArrayList<ServicoOperacional>();
+    private DadosEscala dadosEscala;
+    private List<ServicoOperacional> servicosEscala = new ArrayList<ServicoOperacional>();
 
-    public Escala(LocalDate dataInicio, LocalDate dataFim, int diasServico) {
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.diasServico = diasServico;
+    public Escala(DadosEscala dadosEscala) {
+        this.dadosEscala = dadosEscala;
     }
 
     public void preencherEscala(List<Militar> militares) {
-        var dataAtual = this.dataInicio;
+        var dataAtual = this.dadosEscala.dataInicio();
         var funcoes = Arrays.stream(Funcao.values()).toList();
-        while (dataAtual.compareTo(this.dataFim) <= 0) {
+        while (dataAtual.compareTo(this.dadosEscala.dataFim()) <= 0) {
             for (var funcao : funcoes)
                 preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(funcao, dataAtual));
-            dataAtual = dataAtual.plusDays(this.diasServico);
+            dataAtual = dataAtual.plusDays(this.dadosEscala.diasServico());
         }
+        this.servicosEscala.sort(Comparator.comparing(ServicoOperacional::getDataServico));
     }
 
     private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
@@ -44,45 +40,32 @@ public class Escala {
     private void escalarMilitar(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
         militarEscalado.ifPresent(militar -> {
             servicoOperacional.escalarMilitar(militar);
-            this.militaresEscalados.add(servicoOperacional);
+            this.servicosEscala.add(servicoOperacional);
             preencherDiasSeguintes(servicoOperacional, militar);
         });
 
     }
 
     private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Militar militarEscalado) {
-        for (int diaServico = 2; diaServico <= this.diasServico; diaServico++) {
-            this.militaresEscalados.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
+        for (int diaServico = 2; diaServico <= this.dadosEscala.diasServico(); diaServico++) {
+            this.servicosEscala.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
         }
     }
 
-    public Long getId() {
-        return id;
+    public DadosEscala getDadosEscala() {
+        return dadosEscala;
     }
 
-    public LocalDate getDataInicio() {
-        return dataInicio;
-    }
-
-    public LocalDate getDataFim() {
-        return dataFim;
-    }
-
-    public int getDiasServico() {
-        return diasServico;
-    }
-
-    public List<ServicoOperacional> getMilitaresEscalados() {
-        return militaresEscalados;
+    public List<ServicoOperacional> getServicosEscala() {
+        return servicosEscala;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((dataInicio == null) ? 0 : dataInicio.hashCode());
-        result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
+        result = prime * result + ((dadosEscala == null) ? 0 : dadosEscala.hashCode());
+        result = prime * result + ((servicosEscala == null) ? 0 : servicosEscala.hashCode());
         return result;
     }
 
@@ -95,28 +78,23 @@ public class Escala {
         if (getClass() != obj.getClass())
             return false;
         Escala other = (Escala) obj;
-        if (id == null) {
-            if (other.id != null)
+        if (dadosEscala == null) {
+            if (other.dadosEscala != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!dadosEscala.equals(other.dadosEscala))
             return false;
-        if (dataInicio == null) {
-            if (other.dataInicio != null)
+        if (servicosEscala == null) {
+            if (other.servicosEscala != null)
                 return false;
-        } else if (!dataInicio.equals(other.dataInicio))
-            return false;
-        if (dataFim == null) {
-            if (other.dataFim != null)
-                return false;
-        } else if (!dataFim.equals(other.dataFim))
+        } else if (!servicosEscala.equals(other.servicosEscala))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Escala [id=" + id + ", dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", diasServico="
-                + diasServico + "]";
+        return "Escala [dataInicio=" + dadosEscala.dataInicio() + ", dataFim=" + dadosEscala.dataFim()
+                + ", diasServico=" + dadosEscala.diasServico() + "]";
     }
 
 }
