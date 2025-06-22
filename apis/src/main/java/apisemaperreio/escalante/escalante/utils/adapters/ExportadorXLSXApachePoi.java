@@ -1,6 +1,6 @@
 package apisemaperreio.escalante.escalante.utils.adapters;
 
-import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -15,10 +15,9 @@ import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
     @Override
-    public void exportarEscalaExcel(String nomeArquivo, List<ServicoOperacional> servicos) throws Exception {
+    public void exportarEscalaXLSX(OutputStream outputStream, List<ServicoOperacional> servicos) throws Exception {
 
-        try (var workbook = new XSSFWorkbook();
-                var outputStream = new FileOutputStream(nomeArquivo)) {
+        try (var workbook = new XSSFWorkbook()) {
             var planilha = workbook.createSheet("Escala");
             int numeroLinha = 0;
 
@@ -37,10 +36,7 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
             workbook.write(outputStream);
 
-        } catch (Exception e) {
-            throw new Exception("Erro ao exportar para Excel", e);
         }
-
     }
 
     private void criarCabecalho(XSSFSheet planilha, int numeroLinha) {
