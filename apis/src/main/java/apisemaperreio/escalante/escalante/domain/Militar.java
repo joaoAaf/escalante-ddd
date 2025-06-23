@@ -28,16 +28,22 @@ public class Militar {
     }
 
     public void ultimosServicosConsecutivos(List<ServicoOperacional> servicos) {
-        var servicosMilitar = servicos.stream().filter(
-            servico -> servico.getMilitar().equals(this)).toList();
+        var servicosMilitar = servicos.stream()
+                .filter(servico -> servico.getMilitar().equals(this))
+                .sorted(Comparator.comparing(ServicoOperacional::getDataServico).reversed())
+                .toList();
         if (servicosMilitar.isEmpty())
             return;
-        servicosMilitar.sort(Comparator.comparing(ServicoOperacional::getDataServico).reversed());
         for (int contador = 0; contador < servicosMilitar.size(); contador++) {
-            if (contador > 0 && !this.equals(servicosMilitar.get(contador).getMilitar()))
+            if (contador > 0 && !servicosSaoConsecutivos(servicosMilitar, contador))
                 break;
             this.ultimosServicos.add(servicosMilitar.get(contador));
         }
+    }
+
+    public boolean servicosSaoConsecutivos(List<ServicoOperacional> servicos, int contador) {
+        return servicos.get(contador - 1).getDataServico()
+                .equals(servicos.get(contador).getDataServico().plusDays(1));
     }
 
     public LocalDate dataUltimoServico() {
@@ -52,56 +58,28 @@ public class Militar {
         return matricula;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
-    }
-
     public String getNomePaz() {
         return nomePaz;
-    }
-
-    public void setNomePaz(String nomePaz) {
-        this.nomePaz = nomePaz;
     }
 
     public LocalDate getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(LocalDate nascimento) {
-        this.nascimento = nascimento;
-    }
-
     public Patente getPatente() {
         return patente;
-    }
-
-    public void setPatente(Patente patente) {
-        this.patente = patente;
     }
 
     public Integer getAntiguidade() {
         return antiguidade;
     }
 
-    public void setAntiguidade(Integer antiguidade) {
-        this.antiguidade = antiguidade;
-    }
-
     public int getFolgaEspecial() {
         return folgaEspecial;
     }
 
-    public void setFolgaEspecial(int folgaEspecial) {
-        this.folgaEspecial = folgaEspecial;
-    }
-
     public Boolean getCov() {
         return cov;
-    }
-
-    public void setCov(Boolean cov) {
-        this.cov = cov;
     }
 
     public List<ServicoOperacional> getUltimosServicos() {
