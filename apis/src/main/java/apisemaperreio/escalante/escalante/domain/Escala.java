@@ -22,17 +22,17 @@ public class Escala {
         var funcoes = Arrays.stream(Funcao.values()).toList();
         while (dataAtual.compareTo(this.dadosEscala.dataFim()) <= 0) {
             for (var funcao : funcoes)
-                preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(funcao, dataAtual));
+                buscarMilitarApto(militares, ServicoOperacionalFactory.criarServicoOperacional(funcao, dataAtual));
             dataAtual = dataAtual.plusDays(this.dadosEscala.diasServico());
         }
         this.servicosEscala.sort(Comparator.comparing(ServicoOperacional::getDataServico));
     }
 
-    private void preencherDiasServico(List<Militar> militares, ServicoOperacional servicoOperacional) {
+    private void buscarMilitarApto(List<Militar> militares, ServicoOperacional servicoOperacional) {
         var militarEscalado = servicoOperacional.buscarMilitar(militares);
         escalarMilitar(servicoOperacional, militarEscalado);
         if (servicoOperacional.covEhFiscal() && servicoOperacional instanceof AjudanteLinha) {
-            preencherDiasServico(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA,
+            buscarMilitarApto(militares, ServicoOperacionalFactory.criarServicoOperacional(Funcao.OPERADOR_DE_LINHA,
                     servicoOperacional.getDataServico()));
         }
     }
@@ -40,13 +40,13 @@ public class Escala {
     private void escalarMilitar(ServicoOperacional servicoOperacional, Optional<Militar> militarEscalado) {
         militarEscalado.ifPresent(militar -> {
             servicoOperacional.escalarMilitar(militar);
-            this.servicosEscala.add(servicoOperacional);
-            preencherDiasSeguintes(servicoOperacional, militar);
+            preencherDiasServico(servicoOperacional, militar);
         });
 
     }
 
-    private void preencherDiasSeguintes(ServicoOperacional servicoOperacional, Militar militarEscalado) {
+    private void preencherDiasServico(ServicoOperacional servicoOperacional, Militar militarEscalado) {
+        this.servicosEscala.add(servicoOperacional);
         for (int diaServico = 2; diaServico <= this.dadosEscala.diasServico(); diaServico++) {
             this.servicosEscala.add(servicoOperacional.cloneDataSeguinte(servicoOperacional, militarEscalado));
         }
