@@ -31,7 +31,8 @@ public abstract class ModernosPrimeiro extends ServicoOperacional {
     protected List<Militar> filtrarMilitaresAptos(List<Militar> militares, Boolean cov) {
         return militares.stream()
                 .filter(militar -> militar.getCov().equals(cov) &&
-                        this.funcao.getPatentes().contains(militar.getPatente()))
+                        this.funcao.getPatentes().contains(militar.getPatente()) &&
+                        !this.dataServico.equals(militar.getNascimento()))
                 .collect(Collectors.toList());
     }
 

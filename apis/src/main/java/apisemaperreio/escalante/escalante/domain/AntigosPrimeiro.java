@@ -24,7 +24,8 @@ public abstract class AntigosPrimeiro extends ServicoOperacional {
     @Override
     protected List<Militar> filtrarMilitaresAptos(List<Militar> militares, Boolean cov) {
         return militares.stream()
-                .filter(militar -> militar.getCov().equals(cov))
+                .filter(militar -> militar.getCov().equals(cov) &&
+                        !this.dataServico.equals(militar.getNascimento()))
                 .collect(Collectors.toList());
     }
 
