@@ -33,9 +33,6 @@ public class ImportadorMilitaresXLSXApachePoi implements ImportadorMilitaresXLSX
             while (rowIterator.hasNext()) {
                 var row = rowIterator.next();
 
-                if (row == null)
-                    continue;
-
                 var antiguidade = Integer.valueOf(validarCelulas(row.getCell(0)));
                 var matricula = validarCelulas(row.getCell(1));
                 var patente = validarCelulas(row.getCell(2));
@@ -58,6 +55,7 @@ public class ImportadorMilitaresXLSXApachePoi implements ImportadorMilitaresXLSX
             }
 
         } catch (Exception e) {
+            militares.clear();
             System.out.println(e);
         }
 
