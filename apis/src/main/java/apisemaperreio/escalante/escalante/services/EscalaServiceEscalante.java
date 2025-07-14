@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import apisemaperreio.escalante.escalante.domain.DadosEscala;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
@@ -21,10 +22,10 @@ public class EscalaServiceEscalante implements EscalaUseCasesEscalante {
 
     @Autowired
     private ExportadorXLSXAdapter exportadorXLSX;
-    
+
     @Override
-    public List<ServicoOperacional> criarEscalaAutomatica(DadosEscala dadosEscala) {
-        var militares = militarUseCases.listarMilitaresEscalaveis(dadosEscala.dataInicio(), dadosEscala.dataFim());
+    public List<ServicoOperacional> criarEscalaAutomatica(DadosEscala dadosEscala, MultipartFile planilhaMilitares) {
+        var militares = militarUseCases.listarMilitaresEscalaveis(planilhaMilitares);
         var escala = EscalaFactory.criarEscala(dadosEscala);
         escala.preencherEscala(militares);
         return escala.getServicosEscala();

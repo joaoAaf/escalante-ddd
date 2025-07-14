@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import apisemaperreio.escalante.escalante.domain.DadosEscala;
 import apisemaperreio.escalante.escalante.usecases.EscalaUseCasesEscalante;
@@ -21,9 +21,9 @@ public class EscalaControllerEscalante {
     private EscalaUseCasesEscalante escalaUseCases;
 
     @PostMapping
-    public ResponseEntity<byte[]> criarEscala(@RequestBody DadosEscala dadosEscala) {
+    public ResponseEntity<byte[]> criarEscala(DadosEscala dadosEscala, MultipartFile planilhaMilitares) {
         try {
-            var servicosEscala = escalaUseCases.criarEscalaAutomatica(dadosEscala);
+            var servicosEscala = escalaUseCases.criarEscalaAutomatica(dadosEscala, planilhaMilitares);
             var escalaXLSX = escalaUseCases.exportarEscalaXLSX(servicosEscala);
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=escala.xlsx")
