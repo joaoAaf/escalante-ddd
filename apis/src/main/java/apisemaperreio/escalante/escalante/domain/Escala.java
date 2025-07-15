@@ -25,7 +25,9 @@ public class Escala {
                 buscarMilitarApto(militares, ServicoOperacionalFactory.criarServicoOperacional(funcao, dataAtual));
             dataAtual = dataAtual.plusDays(this.dadosEscala.diasServico());
         }
-        this.servicosEscala.sort(Comparator.comparing(ServicoOperacional::getDataServico));
+        this.servicosEscala.sort(Comparator.comparing(ServicoOperacional::getDataServico)
+                .thenComparing(ServicoOperacional::getFuncao, Comparator.comparingInt(Funcao::getOrdemExibicao))
+                .thenComparing(ServicoOperacional::getMilitar, Comparator.comparingInt(Militar::getAntiguidade)));
     }
 
     private void buscarMilitarApto(List<Militar> militares, ServicoOperacional servicoOperacional) {
