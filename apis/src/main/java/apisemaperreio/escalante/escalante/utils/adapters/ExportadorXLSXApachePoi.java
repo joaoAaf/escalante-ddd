@@ -1,8 +1,11 @@
 package apisemaperreio.escalante.escalante.utils.adapters;
 
 import java.io.OutputStream;
+import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,22 +38,22 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
     private void criarCabecalho(XSSFRow linha) {
         incluirNaCelula(linha, 0, "Data");
-        incluirNaCelula(linha, 1, "Função");
-        incluirNaCelula(linha, 2, "Folga");
-        incluirNaCelula(linha, 3, "Matricula Militar");
-        incluirNaCelula(linha, 4, "Nome Militar");
-        incluirNaCelula(linha, 5, "Patente Militar");
-        incluirNaCelula(linha, 6, "Antiguidade Militar");
+        incluirNaCelula(linha, 1, "Matricula");
+        incluirNaCelula(linha, 2, "Militar Escalado");
+        incluirNaCelula(linha, 3, "Posto/ Graduação");
+        incluirNaCelula(linha, 4, "Antiguidade");
+        incluirNaCelula(linha, 5, "Função");
+        incluirNaCelula(linha, 6, "Folga");
     }
 
     private void escreverLinhas(XSSFRow linha, ServicoOperacional servico) {
         incluirNaCelula(linha, 0, servico.getDataServico().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        incluirNaCelula(linha, 1, servico.getFuncao().getNome());
-        incluirNaCelula(linha, 2, servico.getFolga());
-        incluirNaCelula(linha, 3, servico.getMilitar().getMatricula());
-        incluirNaCelula(linha, 4, servico.getMilitar().getNomePaz());
-        incluirNaCelula(linha, 5, servico.getMilitar().getPatente().getNome());
-        incluirNaCelula(linha, 6, servico.getMilitar().getAntiguidade());
+        incluirNaCelula(linha, 1, servico.getMilitar().getMatricula());
+        incluirNaCelula(linha, 2, servico.getMilitar().getNomePaz());
+        incluirNaCelula(linha, 3, servico.getMilitar().getPatente().getNome());
+        incluirNaCelula(linha, 4, servico.getMilitar().getAntiguidade());
+        incluirNaCelula(linha, 5, servico.getFuncao().getNome());
+        incluirNaCelula(linha, 6, servico.getFolga());
     }
 
     private void incluirNaCelula(XSSFRow linha, int coluna, String valor) {
@@ -61,6 +64,15 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     private void incluirNaCelula(XSSFRow linha, int coluna, int valor) {
         var celula = linha.createCell(coluna);
         celula.setCellValue(valor);
+    }
+
+    private String[] listarDiasSemana() {
+        String[] dias = new String[7];
+        for (int i = 0; i < 7; i++) {
+            dias[i] = DayOfWeek.of(i == 0 ? 7 : i)
+                    .getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-BR")).toUpperCase();
+        }
+        return dias;
     }
 
 }
