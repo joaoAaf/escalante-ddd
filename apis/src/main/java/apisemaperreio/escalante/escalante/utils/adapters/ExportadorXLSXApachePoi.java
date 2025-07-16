@@ -2,9 +2,11 @@ package apisemaperreio.escalante.escalante.utils.adapters;
 
 import java.io.OutputStream;
 import java.time.DayOfWeek;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
+import apisemaperreio.escalante.escalante.domain.Funcao;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
 @Component
@@ -36,14 +39,45 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
         var datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
         int indiceDataServico = 0;
         for (var dia : dias) {
-            var dataString = datasServicos.get(indiceDataServico).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            if (dias.indexOf(dia) == 0) {
+                incluirNaCelula(linha, dias.indexOf(dia), "Atualização");
+                incluirNaCelula(proxLinha, dias.indexOf(dia), LocalDate.now());
+            }
+            var dataString = datasServicos.get(indiceDataServico);
             incluirNaCelula(linha, dias.indexOf(dia) + 1, dia);
             incluirNaCelula(proxLinha, dias.indexOf(dia) + 1, dataString);
             indiceDataServico++;
         }
-
         linha = planilha.createRow(numeroLinha++);
-
+        var funcoes = Arrays.stream(Funcao.values())
+                .sorted(Comparator.comparingInt(Funcao::getOrdemExibicao))
+                .toList();
+        for (var funcao : funcoes) {
+            incluirNaCelula(linha, 0, funcao.getNome());
+            int contador = 1;
+            for (var dataServico : datasServicos) {
+                var servico = servicos.stream()
+                        .filter(s -> s.getFuncao().equals(funcao) && s.getDataServico().equals(dataServico)).toList();
+                if (!servico.isEmpty()) {
+                    var militarEscalado = servico.get(0).getMilitar().getPatente().name() + " "
+                            + servico.get(0).getMilitar().getNomePaz();
+                    incluirNaCelula(linha, contador, militarEscalado);
+                }
+                if (servico.size() > 1) {
+                    var militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
+                            + servico.get(1).getMilitar().getNomePaz();
+                    incluirNaCelula(linha, contador, militarEscalado);
+                }
+                if (contador == indiceDataServico)
+                    break;
+                contador++;
+            }
+            linha = planilha.createRow(numeroLinha++);
+            if (funcao.equals(Funcao.OPERADOR_DE_LINHA)) {
+                incluirNaCelula(linha, 0, funcao.getNome());
+                linha = planilha.createRow(numeroLinha++);
+            }
+        }
     }
 
     private void criarAbaConferencia(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
@@ -70,7 +104,7 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     }
 
     private void escreverLinhas(XSSFRow linha, ServicoOperacional servico) {
-        incluirNaCelula(linha, 0, servico.getDataServico().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        incluirNaCelula(linha, 0, servico.getDataServico());
         incluirNaCelula(linha, 1, servico.getMilitar().getMatricula());
         incluirNaCelula(linha, 2, servico.getMilitar().getNomePaz());
         incluirNaCelula(linha, 3, servico.getMilitar().getPatente().getNome());
@@ -87,6 +121,14 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     private void incluirNaCelula(XSSFRow linha, int coluna, int valor) {
         var celula = linha.createCell(coluna);
         celula.setCellValue(valor);
+    }
+
+    private void incluirNaCelula(XSSFRow linha, int coluna, LocalDate valor) {
+        var celula = linha.createCell(coluna);
+        celula.setCellValue(valor);
+        var cellStyle = linha.getSheet().getWorkbook().createCellStyle();
+        cellStyle.setDataFormat(linha.getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
+        celula.setCellStyle(cellStyle);
     }
 
     private List<String> listarDiasSemana() {
