@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.time.DayOfWeek;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,19 +21,41 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     public void exportarEscalaXLSX(OutputStream outputStream, List<ServicoOperacional> servicos) throws Exception {
 
         try (var workbook = new XSSFWorkbook()) {
-            var planilha = workbook.createSheet("Escala");
-            int numeroLinha = 0;
-            var linha = planilha.createRow(numeroLinha++);
-
-            criarCabecalho(linha);
-
-            for (var servico : servicos) {
-                linha = planilha.createRow(numeroLinha++);
-                escreverLinhas(linha, servico);
-            }
-
+            criarAbaApresentacao(workbook, servicos);
+            criarAbaConferencia(workbook, servicos);
             workbook.write(outputStream);
+        }
+    }
 
+    private void criarAbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+        var planilha = workbook.createSheet("Apresentação");
+        int numeroLinha = 0;
+        var linha = planilha.createRow(numeroLinha++);
+        var proxLinha = planilha.createRow(numeroLinha++);
+        var dias = listarDiasSemana();
+        var datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
+        int indiceDataServico = 0;
+        for (var dia : dias) {
+            var dataString = datasServicos.get(indiceDataServico).format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            incluirNaCelula(linha, dias.indexOf(dia) + 1, dia);
+            incluirNaCelula(proxLinha, dias.indexOf(dia) + 1, dataString);
+            indiceDataServico++;
+        }
+
+        linha = planilha.createRow(numeroLinha++);
+
+    }
+
+    private void criarAbaConferencia(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+        var planilha = workbook.createSheet("Conferência");
+        int numeroLinha = 0;
+        var linha = planilha.createRow(numeroLinha++);
+
+        criarCabecalho(linha);
+
+        for (var servico : servicos) {
+            linha = planilha.createRow(numeroLinha++);
+            escreverLinhas(linha, servico);
         }
     }
 
@@ -66,11 +89,11 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
         celula.setCellValue(valor);
     }
 
-    private String[] listarDiasSemana() {
-        String[] dias = new String[7];
+    private List<String> listarDiasSemana() {
+        var dias = new ArrayList<String>();
         for (int i = 0; i < 7; i++) {
-            dias[i] = DayOfWeek.of(i == 0 ? 7 : i)
-                    .getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-BR")).toUpperCase();
+            dias.add(DayOfWeek.of(i == 0 ? 7 : i)
+                    .getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-BR")).toUpperCase());
         }
         return dias;
     }
