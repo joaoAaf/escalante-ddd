@@ -45,22 +45,16 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
         var datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
         int indiceDataServico = 0;
         for (var dia : dias) {
-            var estilo = workbook.createCellStyle();
+            var estiloCabecalho1 = definirEstiloCabecalho1(workbook);
+            var estiloCabecalho2 = definirEstiloCabecalho2(workbook);
+            var indiceDia = dias.indexOf(dia);
             if (dias.indexOf(dia) == 0) {
-                var celula = linha.createCell(dias.indexOf(dia));
-                incluirNaCelula(celula, "Data de Criação");
-                definirEstiloCabecalho(celula, estilo);
-                celula = proxLinha.createCell(dias.indexOf(dia));
-                incluirNaCelula(celula, estilo, LocalDate.now());
-                definirEstiloCabecalho(celula, estilo);
+                incluirNaCelula(linha.createCell(indiceDia), estiloCabecalho1, "Data de Criação");
+                incluirNaCelula(proxLinha.createCell(indiceDia), estiloCabecalho2, LocalDate.now());
             }
             var data = datasServicos.get(indiceDataServico);
-            var celula = linha.createCell(dias.indexOf(dia) + 1);
-            incluirNaCelula(celula, dia);
-            definirEstiloCabecalho(celula, estilo);
-            celula = proxLinha.createCell(dias.indexOf(dia) + 1);
-            incluirNaCelula(celula, estilo, data);
-            definirEstiloCabecalho(celula, estilo);
+            incluirNaCelula(linha.createCell(indiceDia + 1), estiloCabecalho1, dia);
+            incluirNaCelula(proxLinha.createCell(indiceDia + 1), estiloCabecalho2, data);
             indiceDataServico++;
         }
         linha = planilha.createRow(numeroLinha++);
@@ -68,8 +62,8 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
                 .sorted(Comparator.comparingInt(Funcao::getOrdemExibicao))
                 .toList();
         for (var funcao : funcoes) {
-            var celula = linha.createCell(0);
-            incluirNaCelula(celula, funcao.getNome());
+            var estiloPadrao = definirEstiloPadrao(workbook);
+            incluirNaCelula(linha.createCell(0), estiloPadrao, funcao.getNome());
             int contador = 1;
             for (var dataServico : datasServicos) {
                 var servico = servicos.stream()
@@ -77,14 +71,12 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
                 if (!servico.isEmpty()) {
                     var militarEscalado = servico.get(0).getMilitar().getPatente().name() + " "
                             + servico.get(0).getMilitar().getNomePaz();
-                    celula = linha.createCell(contador);
-                    incluirNaCelula(celula, militarEscalado);
+                    incluirNaCelula(linha.createCell(contador), estiloPadrao, militarEscalado);
                 }
                 if (servico.size() > 1) {
                     var militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
                             + servico.get(1).getMilitar().getNomePaz();
-                    celula = linha.createCell(contador);
-                    incluirNaCelula(celula, militarEscalado);
+                    incluirNaCelula(linha.createCell(contador), estiloPadrao, militarEscalado);
                 }
                 if (contador == indiceDataServico)
                     break;
@@ -92,8 +84,7 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
             }
             linha = planilha.createRow(numeroLinha++);
             if (funcao.equals(Funcao.OPERADOR_DE_LINHA)) {
-                celula = linha.createCell(0);
-                incluirNaCelula(celula, funcao.getNome());
+                incluirNaCelula(linha.createCell(0), estiloPadrao, funcao.getNome());
                 linha = planilha.createRow(numeroLinha++);
             }
         }
@@ -122,70 +113,64 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     }
 
     private void criarCabecalho(XSSFRow linha) {
-        var estilo = linha.getSheet().getWorkbook().createCellStyle();
+        var estilo = definirEstiloCabecalho1(linha.getSheet().getWorkbook());
         int indiceColuna = 0;
-        var celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Data");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Matricula");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Militar Escalado");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Posto/ Graduação");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Antiguidade");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, "Função");
-        definirEstiloCabecalho(celula, estilo);
-        celula = linha.createCell(indiceColuna);
-        incluirNaCelula(celula, "Folga");
-        definirEstiloCabecalho(celula, estilo);
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Data");
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Matricula");
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Militar Escalado");
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Posto/ Graduação");
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Antiguidade");
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, "Função");
+        incluirNaCelula(linha.createCell(indiceColuna), estilo, "Folga");
     }
 
     private void escreverLinhas(XSSFRow linha, ServicoOperacional servico) {
-        var estilo = linha.getSheet().getWorkbook().createCellStyle();
+        var estilo = definirEstiloPadrao(linha.getSheet().getWorkbook());
         int indiceColuna = 0;
-        var celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, estilo, servico.getDataServico());
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, servico.getMilitar().getMatricula());
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, servico.getMilitar().getNomePaz());
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, servico.getMilitar().getPatente().getNome());
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, servico.getMilitar().getAntiguidade());
-        celula = linha.createCell(indiceColuna++);
-        incluirNaCelula(celula, servico.getFuncao().getNome());
-        celula = linha.createCell(indiceColuna);
-        incluirNaCelula(celula, servico.getFolga());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getDataServico());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getMilitar().getMatricula());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getMilitar().getNomePaz());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getMilitar().getPatente().getNome());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getMilitar().getAntiguidade());
+        incluirNaCelula(linha.createCell(indiceColuna++), estilo, servico.getFuncao().getNome());
+        incluirNaCelula(linha.createCell(indiceColuna), estilo, servico.getFolga());
     }
 
-    private void incluirNaCelula(XSSFCell celula, String valor) {
+    private void incluirNaCelula(XSSFCell celula, XSSFCellStyle estilo, String valor) {
+        celula.setCellStyle(estilo);
         celula.setCellValue(valor);
     }
 
-    private void incluirNaCelula(XSSFCell celula, int valor) {
+    private void incluirNaCelula(XSSFCell celula, XSSFCellStyle estilo, int valor) {
+        celula.setCellStyle(estilo);
         celula.setCellValue(valor);
     }
 
     private void incluirNaCelula(XSSFCell celula, XSSFCellStyle estilo, LocalDate valor) {
         celula.setCellValue(valor);
-        estilo.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
-        celula.setCellStyle(estilo);
+        var formatoData = estilo.copy();
+        formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
+        celula.setCellStyle(formatoData);
     }
 
-    private void definirEstiloCabecalho(XSSFCell celula, XSSFCellStyle estilo) {
+    private XSSFCellStyle definirEstiloCabecalho2(XSSFWorkbook workbook) {
+        var estilo = definirEstiloCabecalho1(workbook);
+        estilo.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        return estilo;
+    }
+
+    private XSSFCellStyle definirEstiloCabecalho1(XSSFWorkbook workbook) {
+        var estilo = definirEstiloPadrao(workbook);
+        estilo.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+        estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return estilo;
+    }
+
+    private XSSFCellStyle definirEstiloPadrao(XSSFWorkbook workbook) {
+        var estilo = workbook.createCellStyle();
         estilo.setAlignment(HorizontalAlignment.CENTER);
         estilo.setVerticalAlignment(VerticalAlignment.CENTER);
-        estilo.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        celula.setCellStyle(estilo);
+        return estilo;
     }
 
 }
