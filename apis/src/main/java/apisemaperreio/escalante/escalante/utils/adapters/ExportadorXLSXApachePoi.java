@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -57,14 +58,18 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
             incluirNaCelula(proxLinha.createCell(indiceDia + 1), estiloCabecalho2, data);
             indiceDataServico++;
         }
-        linha = planilha.createRow(numeroLinha++);
         var funcoes = Arrays.stream(Funcao.values())
                 .sorted(Comparator.comparingInt(Funcao::getOrdemExibicao))
                 .toList();
         for (var funcao : funcoes) {
             var estiloPadrao = definirEstiloPadrao(workbook);
-            incluirNaCelula(linha.createCell(0), estiloPadrao, funcao.getNome());
             int contador = 1;
+            linha = planilha.createRow(numeroLinha++);
+            incluirNaCelula(linha.createCell(0), estiloPadrao, funcao.getNome());
+            if (funcao.equals(Funcao.OPERADOR_DE_LINHA)) {
+                proxLinha = planilha.createRow(numeroLinha++);
+                incluirNaCelula(proxLinha.createCell(0), estiloPadrao, funcao.getNome());
+            }
             for (var dataServico : datasServicos) {
                 var servico = servicos.stream()
                         .filter(s -> s.getFuncao().equals(funcao) && s.getDataServico().equals(dataServico)).toList();
@@ -72,20 +77,18 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
                     var militarEscalado = servico.get(0).getMilitar().getPatente().name() + " "
                             + servico.get(0).getMilitar().getNomePaz();
                     incluirNaCelula(linha.createCell(contador), estiloPadrao, militarEscalado);
+                    if (servico.size() > 1) {
+                        militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
+                                + servico.get(1).getMilitar().getNomePaz();
+                        incluirNaCelula(proxLinha.createCell(contador), estiloPadrao, militarEscalado);
+                    } else if (funcao.equals(Funcao.OPERADOR_DE_LINHA))
+                        incluirNaCelula(proxLinha.createCell(contador), estiloPadrao, "----------------------");
                 }
-                if (servico.size() > 1) {
-                    var militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
-                            + servico.get(1).getMilitar().getNomePaz();
-                    incluirNaCelula(linha.createCell(contador), estiloPadrao, militarEscalado);
-                }
+                else
+                    incluirNaCelula(proxLinha.createCell(contador), estiloPadrao, "----------------------");
                 if (contador == indiceDataServico)
                     break;
                 contador++;
-            }
-            linha = planilha.createRow(numeroLinha++);
-            if (funcao.equals(Funcao.OPERADOR_DE_LINHA)) {
-                incluirNaCelula(linha.createCell(0), estiloPadrao, funcao.getNome());
-                linha = planilha.createRow(numeroLinha++);
             }
         }
     }
@@ -147,10 +150,10 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
     }
 
     private void incluirNaCelula(XSSFCell celula, XSSFCellStyle estilo, LocalDate valor) {
-        celula.setCellValue(valor);
         var formatoData = estilo.copy();
         formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
         celula.setCellStyle(formatoData);
+        celula.setCellValue(valor);
     }
 
     private XSSFCellStyle definirEstiloCabecalho2(XSSFWorkbook workbook) {
@@ -170,6 +173,10 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
         var estilo = workbook.createCellStyle();
         estilo.setAlignment(HorizontalAlignment.CENTER);
         estilo.setVerticalAlignment(VerticalAlignment.CENTER);
+        estilo.setBorderTop(BorderStyle.THIN);
+        estilo.setBorderBottom(BorderStyle.THIN);
+        estilo.setBorderLeft(BorderStyle.THIN);
+        estilo.setBorderRight(BorderStyle.THIN);
         return estilo;
     }
 
