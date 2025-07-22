@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -164,6 +165,8 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
     private XSSFCellStyle definirEstiloCabecalho1(XSSFWorkbook workbook) {
         var estilo = definirEstiloPadrao(workbook);
+        var fonte = definirFonte(workbook, true);
+        estilo.setFont(fonte);
         estilo.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
         estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return estilo;
@@ -171,6 +174,8 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
     private XSSFCellStyle definirEstiloPadrao(XSSFWorkbook workbook) {
         var estilo = workbook.createCellStyle();
+        var fonte = definirFonte(workbook, false);
+        estilo.setFont(fonte);
         estilo.setAlignment(HorizontalAlignment.CENTER);
         estilo.setVerticalAlignment(VerticalAlignment.CENTER);
         estilo.setBorderTop(BorderStyle.THIN);
@@ -178,6 +183,15 @@ public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
         estilo.setBorderLeft(BorderStyle.THIN);
         estilo.setBorderRight(BorderStyle.THIN);
         return estilo;
+    }
+
+    private Font definirFonte(XSSFWorkbook workbook, boolean negrito) {
+        var fonte = workbook.createFont();
+        fonte.setBold(negrito);
+        fonte.setFontHeight(12);
+        fonte.setFontName("Arial");
+        fonte.setColor(IndexedColors.BLACK.getIndex());
+        return fonte;
     }
 
 }
