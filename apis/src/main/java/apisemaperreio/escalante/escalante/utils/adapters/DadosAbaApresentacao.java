@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
-public class DadosAbaApresentacao {
+public class DadosAbaApresentacao extends Celula {
 
     protected XSSFSheet planilha;
     protected int numeroLinha;
@@ -40,6 +41,29 @@ public class DadosAbaApresentacao {
                     .getDisplayName(TextStyle.FULL, Locale.forLanguageTag("pt-BR")).toUpperCase());
         }
         return diasSemana;
+    }
+
+    public void criarCabecalhoAbaApresentacao(XSSFCellStyle estilo1, XSSFCellStyle estilo2) {
+        
+        definirColuna0Cabecalho(estilo1, estilo2);
+
+        for (var dia : this.diasSemana) {
+            var indiceDia = this.diasSemana.indexOf(dia);
+            var dataServico = this.datasServicos.get(this.indiceDataServico);
+            incluirNaCelula(criarCelula(this.linha, estilo1, indiceDia + 1), dia);
+            incluirNaCelula(criarCelula(this.proxLinha, estilo2, indiceDia + 1), dataServico);
+            this.indiceDataServico++;
+        }
+    }
+
+    private void definirColuna0Cabecalho(XSSFCellStyle estilo1, XSSFCellStyle estilo2) {
+        if (this.indiceDataServico == 0) {
+            incluirNaCelula(criarCelula(this.linha, estilo1, 0), "Data de Criação");
+            incluirNaCelula(criarCelula(this.proxLinha, estilo2, 0), LocalDate.now());
+        } else {
+            incluirNaCelula(criarCelula(this.linha, estilo1, 0), "");
+            incluirNaCelula(criarCelula(this.proxLinha, estilo2, 0), "");
+        }
     }
 
 }
