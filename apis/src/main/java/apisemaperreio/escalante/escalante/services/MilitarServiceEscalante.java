@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import apisemaperreio.escalante.escalante.domain.Militar;
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
-import apisemaperreio.escalante.escalante.utils.adapters.ImportadorMilitaresXLSXAdapter;
+import apisemaperreio.escalante.escalante.utils.adapters.importador_xlsx.ImportadorMilitaresXLSXAdapter;
 import apisemaperreio.escalante.escalante.utils.mappers.MilitarMapperEscalante;
 
 @Service

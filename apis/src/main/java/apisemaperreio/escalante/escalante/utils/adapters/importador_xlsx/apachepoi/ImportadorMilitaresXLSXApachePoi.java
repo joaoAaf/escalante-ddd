@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.escalante.utils.adapters;
+package apisemaperreio.escalante.escalante.utils.adapters.importador_xlsx.apachepoi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import apisemaperreio.escalante.escalante.dtos.MilitarEscalavel;
+import apisemaperreio.escalante.escalante.utils.adapters.importador_xlsx.ImportadorMilitaresXLSXAdapter;
 
 @Component
 public class ImportadorMilitaresXLSXApachePoi implements ImportadorMilitaresXLSXAdapter {

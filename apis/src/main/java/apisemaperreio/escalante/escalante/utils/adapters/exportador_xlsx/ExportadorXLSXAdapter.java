@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.escalante.utils.adapters;
+package apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx;
 
 import java.io.OutputStream;
 import java.util.List;

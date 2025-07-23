@@ -11,7 +11,7 @@ import apisemaperreio.escalante.escalante.domain.DadosEscala;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 import apisemaperreio.escalante.escalante.usecases.EscalaUseCasesEscalante;
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
-import apisemaperreio.escalante.escalante.utils.adapters.ExportadorXLSXAdapter;
+import apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx.ExportadorXLSXAdapter;
 import apisemaperreio.escalante.escalante.utils.factories.EscalaFactory;
 
 @Service

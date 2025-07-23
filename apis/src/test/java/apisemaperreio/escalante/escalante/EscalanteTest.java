@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import apisemaperreio.escalante.escalante.utils.adapters.ImportadorMilitaresXLSXAdapter;
+import apisemaperreio.escalante.escalante.utils.adapters.importador_xlsx.ImportadorMilitaresXLSXAdapter;
 
 @SpringBootTest
 class EscalanteTest {

@@ -1,4 +1,6 @@
-package apisemaperreio.escalante.escalante.utils.adapters;
+package apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx.apachepoi;
+
+import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -7,19 +9,30 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
-public class DadosAbaConferencia extends Celula {
+public class AbaConferencia extends Celula {
 
-    protected XSSFSheet planilha;
-    protected int numeroLinha;
-    protected XSSFRow linha;
+    private XSSFSheet planilha;
+    private int numeroLinha;
+    private XSSFRow linha;
 
-    public DadosAbaConferencia(XSSFWorkbook workbook) {
+    public AbaConferencia(XSSFWorkbook workbook) {
         this.planilha = workbook.createSheet("Conferência");
         this.numeroLinha = 0;
         this.linha = planilha.createRow(this.numeroLinha++);
     }
 
-    public void criarCabecalhoAbaConferencia(XSSFCellStyle estilo) {
+    public void criarAbaConferencia(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+        var estilos = new EstilosPlanilha(workbook);
+
+        this.criarCabecalhoAbaConferencia(estilos.getEstiloCabecalho1());
+
+        for (var servico : servicos) {
+            this.linha = this.planilha.createRow(this.numeroLinha++);
+            this.criarLinhasAbaConferencia(estilos.getEstiloPadrao(), servico);
+        }
+    }
+
+    private void criarCabecalhoAbaConferencia(XSSFCellStyle estilo) {
         int indiceColuna = 0;
         incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Data");
         incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Matricula");
@@ -30,7 +43,7 @@ public class DadosAbaConferencia extends Celula {
         incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna), "Folga");
     }
 
-    public void escreverLinhasAbaConferencia(XSSFCellStyle estilo, ServicoOperacional servico) {
+    private void criarLinhasAbaConferencia(XSSFCellStyle estilo, ServicoOperacional servico) {
         int indiceColuna = 0;
         incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getDataServico());
         incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getMilitar().getMatricula());

@@ -1,4 +1,4 @@
-package apisemaperreio.escalante.escalante.utils.adapters;
+package apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx.apachepoi;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -11,9 +11,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class EstilosPlanilha {
 
-    protected XSSFCellStyle estiloPadrao;
-    protected XSSFCellStyle estiloCabecalho1;
-    protected XSSFCellStyle estiloCabecalho2;
+    private XSSFCellStyle estiloPadrao;
+    private XSSFCellStyle estiloCabecalho1;
+    private XSSFCellStyle estiloCabecalho2;
 
     public EstilosPlanilha(XSSFWorkbook workbook) {
         this.estiloPadrao = definirEstiloPadrao(workbook);
@@ -56,6 +56,18 @@ public class EstilosPlanilha {
         fonte.setFontName("Arial");
         fonte.setColor(IndexedColors.BLACK.getIndex());
         return fonte;
+    }
+
+    public XSSFCellStyle getEstiloPadrao() {
+        return estiloPadrao;
+    }
+
+    public XSSFCellStyle getEstiloCabecalho1() {
+        return estiloCabecalho1;
+    }
+
+    public XSSFCellStyle getEstiloCabecalho2() {
+        return estiloCabecalho2;
     }
 
 }
