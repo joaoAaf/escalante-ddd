@@ -8,6 +8,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 
 public class Celula {
 
+    protected XSSFRow linha;
+    protected XSSFCellStyle estilo;
+
+    public Celula(XSSFRow linha, XSSFCellStyle estilo) {
+        this.linha = linha;
+        this.estilo = estilo;
+    }
+
     protected void incluirNaCelula(XSSFCell celula, String valor) {
         celula.setCellValue(valor);
     }
@@ -23,9 +31,24 @@ public class Celula {
         celula.setCellValue(valor);
     }
 
-    protected XSSFCell criarCelula(XSSFRow linha, XSSFCellStyle estilo, int indiceColuna) {
-        var celula = linha.createCell(indiceColuna);
-        celula.setCellStyle(estilo);
+    // public void incluirNaCelula(XSSFCell celula, Object valor) {
+    //     if (valor instanceof String) {
+    //         celula.setCellValue((String) valor);
+    //     } else if (valor instanceof Integer) {
+    //         celula.setCellValue((Integer) valor);
+    //     } else if (valor instanceof LocalDate) {
+    //         var formatoData = celula.getCellStyle().copy();
+    //         formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
+    //         celula.setCellStyle(formatoData);
+    //         celula.setCellValue((LocalDate) valor);
+    //     } else {
+    //         celula.setCellValue("");
+    //     }
+    // }
+
+    protected XSSFCell criarCelula(int indiceColuna) {
+        var celula = this.linha.createCell(indiceColuna);
+        celula.setCellStyle(this.estilo);
         return celula;
     }
 

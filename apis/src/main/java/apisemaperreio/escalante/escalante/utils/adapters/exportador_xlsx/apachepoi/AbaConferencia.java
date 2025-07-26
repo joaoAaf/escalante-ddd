@@ -9,7 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 
-public class AbaConferencia extends Celula {
+public class AbaConferencia {
 
     private XSSFSheet planilha;
     private int numeroLinha;
@@ -34,24 +34,26 @@ public class AbaConferencia extends Celula {
 
     private void criarCabecalhoAbaConferencia(XSSFCellStyle estilo) {
         int indiceColuna = 0;
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Data");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Matricula");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Militar Escalado");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Posto/ Graduação");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Antiguidade");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), "Função");
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna), "Folga");
+        var celula = new Celula(this.linha, estilo);
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Data");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Matricula");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Militar Escalado");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Posto/ Graduação");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Antiguidade");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Função");
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Folga");
     }
 
     private void criarLinhasAbaConferencia(XSSFCellStyle estilo, ServicoOperacional servico) {
         int indiceColuna = 0;
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getDataServico());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getMilitar().getMatricula());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getMilitar().getNomePaz());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getMilitar().getPatente().getNome());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getMilitar().getAntiguidade());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna++), servico.getFuncao().getNome());
-        incluirNaCelula(criarCelula(this.linha, estilo, indiceColuna), servico.getFolga());
+        var celula = new Celula(this.linha, estilo);
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getDataServico());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getMatricula());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getNomePaz());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getPatente().getNome());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getAntiguidade());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getFuncao().getNome());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna), servico.getFolga());
     }
 
 }
