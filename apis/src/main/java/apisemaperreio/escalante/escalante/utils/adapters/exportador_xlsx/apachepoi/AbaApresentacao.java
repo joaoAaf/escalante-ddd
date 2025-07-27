@@ -30,8 +30,6 @@ public class AbaApresentacao {
     public AbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
         this.planilha = workbook.createSheet("Apresentação");
         this.numeroLinha = 0;
-        this.linha = this.planilha.createRow(this.numeroLinha++);
-        this.proxLinha = this.planilha.createRow(this.numeroLinha++);
         this.diasSemana = listarDiasSemana();
         this.datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
         this.indiceDataServico = 0;
@@ -41,8 +39,11 @@ public class AbaApresentacao {
         var estilos = new EstilosPlanilha(workbook);
 
         this.criarCabecalhoAbaApresentacao(estilos.getEstiloCabecalho1(), estilos.getEstiloCabecalho2());
-
         this.criarLinhasAbaApresentacao(estilos.getEstiloPadrao(), servicos);
+        
+        this.criarCabecalhoAbaApresentacao(estilos.getEstiloCabecalho1(), estilos.getEstiloCabecalho2());
+        this.criarLinhasAbaApresentacao(estilos.getEstiloPadrao(), servicos);
+        
     }
 
     private List<String> listarDiasSemana() {
@@ -55,11 +56,13 @@ public class AbaApresentacao {
     }
 
     private void criarCabecalhoAbaApresentacao(XSSFCellStyle estilo1, XSSFCellStyle estilo2) {
+        this.linha = this.planilha.createRow(this.numeroLinha++);
+        this.proxLinha = this.planilha.createRow(this.numeroLinha++);
+        
         var celula = new Celula(this.linha, estilo1);
         var celulaAbaixo = new Celula(this.proxLinha, estilo2);
 
         this.criarColunaInicialCabecalho(celula, celulaAbaixo);
-
         this.criarColunasPadraoCabecalho(celula, celulaAbaixo);
     }
 
@@ -86,7 +89,6 @@ public class AbaApresentacao {
                 .toList();
 
         for (var funcao : funcoes) {
-            int contador = 1;
             this.linha = this.planilha.createRow(this.numeroLinha++);
             var celula = new Celula(this.linha, estilo);
             var celulaAbaixo = new Celula(this.proxLinha, estilo);
@@ -96,27 +98,27 @@ public class AbaApresentacao {
                 celulaAbaixo.linha = this.proxLinha;
                 celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(0), funcao.getNome());
             }
-            for (var dataServico : this.datasServicos) {
+            var indiceDataServico = this.indiceDataServico - this.diasSemana.size();
+            var indiceColuna = 1;
+            for (; indiceDataServico < this.indiceDataServico; indiceDataServico++) {
+                var dataServico = this.datasServicos.get(indiceDataServico);
                 var servico = servicos.stream()
                         .filter(s -> s.getFuncao().equals(funcao) && s.getDataServico().equals(dataServico)).toList();
                 if (!servico.isEmpty()) {
                     var militarEscalado = servico.get(0).getMilitar().getPatente().name() + " "
                             + servico.get(0).getMilitar().getNomePaz();
-                    celula.incluirNaCelula(celula.criarCelula(contador), militarEscalado);
+                    celula.incluirNaCelula(celula.criarCelula(indiceColuna), militarEscalado);
                     if (servico.size() > 1) {
                         militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
                                 + servico.get(1).getMilitar().getNomePaz();
-                        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(contador), militarEscalado);
+                        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceColuna), militarEscalado);
                     } else if (funcao.equals(Funcao.OPERADOR_DE_LINHA))
-                        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(contador), "----------------------");
+                        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceColuna), "----------------------");
                 } else
-                    celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(contador), "----------------------");
-                if (contador == this.indiceDataServico)
-                    break;
-                contador++;
+                    celula.incluirNaCelula(celula.criarCelula(indiceColuna), "----------------------");
+                indiceColuna++;
             }
         }
-
     }
 
 }
