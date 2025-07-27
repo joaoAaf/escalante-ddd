@@ -26,6 +26,7 @@ public class AbaApresentacao {
     private List<String> diasSemana;
     private List<LocalDate> datasServicos;
     private int indiceDataServico;
+    private int contadorDias;
 
     public AbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
         this.planilha = workbook.createSheet("Apresentação");
@@ -33,17 +34,6 @@ public class AbaApresentacao {
         this.diasSemana = listarDiasSemana();
         this.datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
         this.indiceDataServico = 0;
-    }
-
-    public void criarAbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
-        var estilos = new EstilosPlanilha(workbook);
-
-        this.criarCabecalhoAbaApresentacao(estilos.getEstiloCabecalho1(), estilos.getEstiloCabecalho2());
-        this.criarLinhasAbaApresentacao(estilos.getEstiloPadrao(), servicos);
-        
-        this.criarCabecalhoAbaApresentacao(estilos.getEstiloCabecalho1(), estilos.getEstiloCabecalho2());
-        this.criarLinhasAbaApresentacao(estilos.getEstiloPadrao(), servicos);
-        
     }
 
     private List<String> listarDiasSemana() {
@@ -55,10 +45,19 @@ public class AbaApresentacao {
         return diasSemana;
     }
 
+    public void criarAbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+        var estilos = new EstilosPlanilha(workbook);
+
+        while (this.indiceDataServico < this.datasServicos.size()) {
+            this.criarCabecalhoAbaApresentacao(estilos.getEstiloCabecalho1(), estilos.getEstiloCabecalho2());
+            this.criarLinhasAbaApresentacao(estilos.getEstiloPadrao(), servicos);
+        }
+    }
+
     private void criarCabecalhoAbaApresentacao(XSSFCellStyle estilo1, XSSFCellStyle estilo2) {
         this.linha = this.planilha.createRow(this.numeroLinha++);
         this.proxLinha = this.planilha.createRow(this.numeroLinha++);
-        
+
         var celula = new Celula(this.linha, estilo1);
         var celulaAbaixo = new Celula(this.proxLinha, estilo2);
 
@@ -73,8 +72,15 @@ public class AbaApresentacao {
     }
 
     private void criarColunasPadraoCabecalho(Celula celula, Celula celulaAbaixo) {
+        this.contadorDias = 0;
         for (var dia : this.diasSemana) {
             var indiceDia = this.diasSemana.indexOf(dia);
+            if (this.indiceDataServico >= this.datasServicos.size()) {
+                celula.incluirNaCelula(celula.criarCelula(indiceDia + 1), "");
+                celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceDia + 1), "");
+                continue;
+            }
+            this.contadorDias++;
             var dataServico = this.datasServicos.get(this.indiceDataServico);
             celula.incluirNaCelula(celula.criarCelula(indiceDia + 1), dia);
             celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceDia + 1), dataServico);
@@ -98,7 +104,7 @@ public class AbaApresentacao {
                 celulaAbaixo.linha = this.proxLinha;
                 celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(0), funcao.getNome());
             }
-            var indiceDataServico = this.indiceDataServico - this.diasSemana.size();
+            var indiceDataServico = this.indiceDataServico - this.contadorDias;
             var indiceColuna = 1;
             for (; indiceDataServico < this.indiceDataServico; indiceDataServico++) {
                 var dataServico = this.datasServicos.get(indiceDataServico);
@@ -117,6 +123,15 @@ public class AbaApresentacao {
                 } else
                     celula.incluirNaCelula(celula.criarCelula(indiceColuna), "----------------------");
                 indiceColuna++;
+            }
+            if (this.indiceDataServico >= this.datasServicos.size()) {
+                var celulasVazias = diasSemana.size() - this.contadorDias;
+                for (int contador = 0; contador < celulasVazias; contador++) {
+                    celula.incluirNaCelula(celula.criarCelula(indiceColuna), "----------------------");
+                    if (funcao.equals(Funcao.OPERADOR_DE_LINHA))
+                        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceColuna), "----------------------");
+                    indiceColuna++;
+                }
             }
         }
     }
