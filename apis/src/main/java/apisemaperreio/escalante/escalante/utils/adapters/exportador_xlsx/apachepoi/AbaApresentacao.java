@@ -58,24 +58,24 @@ public class AbaApresentacao {
         var celula = new Celula(this.linha, estilo1);
         var celulaAbaixo = new Celula(this.proxLinha, estilo2);
 
-        criarColunaInicialCabecalho(celula, celulaAbaixo);
+        this.criarColunaInicialCabecalho(celula, celulaAbaixo);
 
+        this.criarColunasPadraoCabecalho(celula, celulaAbaixo);
+    }
+
+    private void criarColunaInicialCabecalho(Celula celula, Celula celulaAbaixo) {
+        var verificacao = this.indiceDataServico == 0;
+        celula.incluirNaCelula(celula.criarCelula(0), verificacao ? "Data de Criação" : "");
+        celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(0), verificacao ? LocalDate.now() : "");
+    }
+
+    private void criarColunasPadraoCabecalho(Celula celula, Celula celulaAbaixo) {
         for (var dia : this.diasSemana) {
             var indiceDia = this.diasSemana.indexOf(dia);
             var dataServico = this.datasServicos.get(this.indiceDataServico);
             celula.incluirNaCelula(celula.criarCelula(indiceDia + 1), dia);
             celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceDia + 1), dataServico);
             this.indiceDataServico++;
-        }
-    }
-
-    private void criarColunaInicialCabecalho(Celula celula, Celula celulaAbaixo) {
-        if (this.indiceDataServico == 0) {
-            celula.incluirNaCelula(celula.criarCelula(0), "Data de Criação");
-            celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(0), LocalDate.now());
-        } else {
-            celula.incluirNaCelula(celula.criarCelula(0), "");
-            celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(0), "");
         }
     }
 
