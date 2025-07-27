@@ -16,40 +16,31 @@ public class Celula {
         this.estilo = estilo;
     }
 
-    protected void incluirNaCelula(XSSFCell celula, String valor) {
-        celula.setCellValue(valor);
-    }
-
-    protected void incluirNaCelula(XSSFCell celula, int valor) {
-        celula.setCellValue(valor);
-    }
-
-    protected void incluirNaCelula(XSSFCell celula, LocalDate valor) {
-        var formatoData = celula.getCellStyle().copy();
-        formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
-        celula.setCellStyle(formatoData);
-        celula.setCellValue(valor);
-    }
-
-    // public void incluirNaCelula(XSSFCell celula, Object valor) {
-    //     if (valor instanceof String) {
-    //         celula.setCellValue((String) valor);
-    //     } else if (valor instanceof Integer) {
-    //         celula.setCellValue((Integer) valor);
-    //     } else if (valor instanceof LocalDate) {
-    //         var formatoData = celula.getCellStyle().copy();
-    //         formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
-    //         celula.setCellStyle(formatoData);
-    //         celula.setCellValue((LocalDate) valor);
-    //     } else {
-    //         celula.setCellValue("");
-    //     }
-    // }
-
-    protected XSSFCell criarCelula(int indiceColuna) {
+    public XSSFCell criarCelula(int indiceColuna) {
         var celula = this.linha.createCell(indiceColuna);
         celula.setCellStyle(this.estilo);
         return celula;
+    }
+
+    public void incluirNaCelula(XSSFCell celula, Object valor) {
+        if (valor == null) {
+            celula.setCellValue("");
+        } else if (valor instanceof String) {
+            celula.setCellValue((String) valor);
+        } else if (valor instanceof Integer) {
+            celula.setCellValue((Integer) valor);
+        } else if (valor instanceof LocalDate) {
+            this.formatarData(celula);
+            celula.setCellValue((LocalDate) valor);
+        } else {
+            celula.setCellValue("");
+        }
+    }
+
+    private void formatarData(XSSFCell celula) {
+        var formatoData = this.estilo.copy();
+        formatoData.setDataFormat(celula.getRow().getSheet().getWorkbook().createDataFormat().getFormat("dd/MM/yyyy"));
+        celula.setCellStyle(formatoData);
     }
 
 }
