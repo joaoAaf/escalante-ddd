@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escalante</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      background-color: #d93025;
+      color: white;
+      width: 240px;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+
+    .sidebar h1 {
+      font-size: 24px;
+      margin-bottom: 40px;
+    }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 4px;
+      gap: 8px;
+    }
+
+    .sidebar nav a span {
+      display: inline;
+    }
+
+    .sidebar nav a:hover {
+      background-color: #c42a1f;
+    }
+
+    .sidebar nav a.active {
+      background-color: #f9f9f9;
+      color: #d93025;
+    }
+
+    .sidebar nav a img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .main {
+      flex-grow: 1;
+      background-color: #f9f9f9;
+      padding: 40px;
+      overflow-x: auto;
+    }
+
+    .main h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .upload {
+      margin-bottom: 20px;
+    }
+
+    .upload .label-upload {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* Container principal do novo componente */
+    .input-upload {
+      display: flex;
+      align-items: center;
+      /* Alinha verticalmente os itens */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: fit-content;
+      /* Ajusta a largura ao conteúdo */
+      font-family: sans-serif;
+      font-size: 16px;
+      min-width: 511px;
+    }
+
+    /* Estilo do botão "Procurar..." (que é uma label) */
+    .input-upload .browse-btn {
+      padding: 8px 16px;
+      background-color: silver;
+      border-right: 1px solid #ccc;
+      cursor: pointer;
+      /* Garante que o canto arredondado esquerdo se aplique */
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+
+    .input-upload .browse-btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* Estilo da área que mostra o nome do arquivo */
+    .input-upload .file-name {
+      padding: 8px 12px;
+      color: #555;
+      white-space: nowrap;
+      /* Evita que o texto quebre a linha */
+      overflow: hidden;
+      /* Esconde o texto que ultrapassar */
+      text-overflow: ellipsis;
+      /* Adiciona "..." ao texto longo */
+      min-width: 200px;
+    }
+
+    /* Estilo do botão "Upload" */
+    .input-upload .upload-btn {
+      padding: 9px 20px;
+      background-color:tomato;
+      border: none;
+      /* O container já tem a borda externa */
+      border-left: 1px solid #ccc;
+      cursor: pointer;
+      font-weight: normal;
+      /* A imagem não parece ter negrito */
+      color: #333;
+      /* Garante que o canto arredondado direito se aplique */
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      font-size: 16px;
+    }
+
+    .input-upload .upload-btn:hover {
+      background-color: #e0e0e0;
+    }
+
+    .search {
+      margin-bottom: 20px;
+    }
+
+    .search input {
+      width: 100%;
+      min-width: 511px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      min-width: 600px;
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    td a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: 60px;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        flex-wrap: nowrap;
+      }
+
+      .sidebar h1 {
+        font-size: 20px;
+        margin: 0;
+        text-align: center;
+        flex: 1;
+        order: -1;
+      }
+
+      .sidebar nav {
+        display: flex;
+        gap: 10px;
+        order: 0;
+      }
+
+      .sidebar nav a {
+        padding: 6px;
+        font-size: 0;
+        background: transparent;
+      }
+
+      .sidebar nav a img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+      }
+
+      .sidebar nav a span {
+        display: none;
+      }
+
+      .sidebar nav a.active img {
+        filter: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h1>Ajudância</h1>
+      <nav>
+        <a href="#" class="active" title="Militares">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Militares">
+          <span>Militares</span>
+        </a>
+        <a href="#" title="Cadastro">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="Cadastro">
+          <span>Cadastrar</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="main">
+      <h2>Militares Escalaveis</h2>
+
+      <div class="upload">
+        <label for="input-upload" class="label-upload">Importe a Planilha dos Militares</label>
+
+        <div class="input-upload">
+          <input type="file" id="input-upload" hidden />
+
+          <label for="input-upload" class="browse-btn">Procurar...</label>
+
+          <span class="file-name">Nenhum arquivo selecionado.</span>
+
+          <button class="upload-btn">Listar Militares</button>
+        </div>
+      </div>
+
+      <div class="search">
+        <input type="text" placeholder="Pesquisar militares...">
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Nome</th>
+            <th>Patente</th>
+            <th>Sexo</th>
+            <th>Telefone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="#">123456</a></td>
+            <td>João Silva</td>
+            <td>Cabo</td>
+            <td>Masculino</td>
+            <td>(11) 9765-4321</td>
+          </tr>
+          <tr>
+            <td><a href="#">233450</a></td>
+            <td>Paulo Almeida</td>
+            <td>Cabo</td>
+            <td>Calco</td>
+            <td>(11) 4564-1140</td>
+          </tr>
+          <tr>
+            <td><a href="#">438264</a></td>
+            <td>Cláudia Martins</td>
+            <td>Soldado</td>
+            <td>Masculino</td>
+            <td>(11) 9758-5076</td>
+          </tr>
+          <tr>
+            <td><a href="#">566428</a></td>
+            <td>Vittári Barreto</td>
+            <td>Cabo</td>
+            <td>Feminino</td>
+            <td>(10) 9768-0190</td>
+          </tr>
+          <tr>
+            <td><a href="#">862289</a></td>
+            <td>Jose Sourzeiro</td>
+            <td>Cabo</td>
+            <td>Soldado</td>
+            <td>(11) 4758-6610</td>
+          </tr>
+          <tr>
+            <td><a href="#">434569</a></td>
+            <td>Denis Lagoan</td>
+            <td>Soldado</td>
+            <td>Masculino</td>
+            <td>(11) 9755-3025</td>
+          </tr>
+          <tr>
+            <td><a href="#">456998</a></td>
+            <td>Antônio Silva</td>
+            <td>Soldado</td>
+            <td>Masculino</td>
+            <td>(11) 9875-8010</td>
+          </tr>
+          <tr>
+            <td><a href="#">256990</a></td>
+            <td>Alexandre Busso</td>
+            <td>Soldado</td>
+            <td>Masculino</td>
+            <td>(11) 4564-1200</td>
+          </tr>
+          <tr>
+            <td><a href="#">160900</a></td>
+            <td>Maríam Hille</td>
+            <td>Cabo</td>
+            <td>Masculino</td>
+            <td>(11) 9758-2989</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</body>
+
+</html>
