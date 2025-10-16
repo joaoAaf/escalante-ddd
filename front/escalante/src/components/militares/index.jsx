@@ -1,3 +1,4 @@
+import BarraPesquisa from '../barra_pesquisa'
 import InputUpload from '../input_upload'
 import Styles from './styles.module.css'
 
@@ -8,6 +9,7 @@ export default function Militares() {
             <div className={Styles.upload}>
                 <label htmlFor="input_upload" className={Styles.label_upload}>Importe a Planilha dos Militares</label>
                 <InputUpload />
+                <BarraPesquisa />
             </div>
         </div>
     )
