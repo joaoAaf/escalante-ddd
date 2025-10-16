@@ -7,8 +7,10 @@
 }
 
 .sidebar h1 {
-    font-size: 32px;
+    font-size: 28px;
+    margin-top: 20px;
     margin-bottom: 40px;
+    text-align: center;
 }
 
 .sidebar nav a {
@@ -26,7 +28,7 @@
 .sidebar nav a span {
     display: inline;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .sidebar nav a:hover {
