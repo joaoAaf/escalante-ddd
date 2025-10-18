@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public abstract class ServicoOperacional {
 
     protected static Optional<Militar> covFiscal = Optional.empty();
 
+    @JsonIgnore
     private Long id;
     protected LocalDate dataServico;
     protected Funcao funcao;

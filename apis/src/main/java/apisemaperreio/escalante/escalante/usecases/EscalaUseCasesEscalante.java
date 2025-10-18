@@ -2,14 +2,12 @@ package apisemaperreio.escalante.escalante.usecases;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import apisemaperreio.escalante.escalante.domain.DadosEscala;
 import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
+import apisemaperreio.escalante.escalante.dtos.DadosEscalaRequest;
 
 public interface EscalaUseCasesEscalante {
     
-    List<ServicoOperacional> criarEscalaAutomatica(DadosEscala dadosEscala, MultipartFile planilhaMilitares);
+    List<ServicoOperacional> criarEscalaAutomatica(DadosEscalaRequest request);
     
     
     byte[] exportarEscalaXLSX(List<ServicoOperacional> servicos) throws Exception;

@@ -14,6 +14,9 @@ public interface MilitarMapperEscalante {
     @Mapping(target = "ultimosServicos", ignore = true)
     Militar toMilitar(MilitarEscalavel militarEscalavel);
 
+    MilitarEscalavel toMilitarEscalavel(Militar militar);
+
     List<Militar> toListMilitar(List<MilitarEscalavel> militaresEscalaveis);
 
+    List<MilitarEscalavel> toListMilitarEscalavel(List<Militar> militares);
 }

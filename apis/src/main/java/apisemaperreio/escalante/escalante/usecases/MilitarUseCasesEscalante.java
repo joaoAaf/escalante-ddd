@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import apisemaperreio.escalante.escalante.domain.Militar;
+import apisemaperreio.escalante.escalante.dtos.MilitarEscalavel;
 
 public interface MilitarUseCasesEscalante {
 
-    List<Militar> listarMilitaresEscalaveis(MultipartFile planilhaMilitares);
+    List<MilitarEscalavel> listarMilitaresEscalaveis(MultipartFile planilhaMilitares);
 
 }

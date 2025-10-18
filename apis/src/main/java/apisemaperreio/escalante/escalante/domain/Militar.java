@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Militar {
 
     private String matricula;
@@ -14,6 +16,7 @@ public class Militar {
     private Integer antiguidade;
     private int folgaEspecial;
     private Boolean cov;
+    @JsonIgnore
     private List<ServicoOperacional> ultimosServicos = new ArrayList<>();
 
     public Militar(String matricula, String nomePaz, LocalDate nascimento, Patente patente, Integer antiguidade,
