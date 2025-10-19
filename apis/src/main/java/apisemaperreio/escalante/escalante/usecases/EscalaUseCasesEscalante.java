@@ -2,14 +2,14 @@ package apisemaperreio.escalante.escalante.usecases;
 
 import java.util.List;
 
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 import apisemaperreio.escalante.escalante.dtos.DadosEscalaRequest;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 
 public interface EscalaUseCasesEscalante {
     
-    List<ServicoOperacional> criarEscalaAutomatica(DadosEscalaRequest request);
+    List<ServicoOperacionalDto> criarEscalaAutomatica(DadosEscalaRequest request);
     
     
-    byte[] exportarEscalaXLSX(List<ServicoOperacional> servicos) throws Exception;
+    byte[] exportarEscalaXLSX(List<ServicoOperacionalDto> servicos) throws Exception;
 
 }

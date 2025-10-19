@@ -7,7 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 
 public class AbaConferencia {
 
@@ -21,7 +21,7 @@ public class AbaConferencia {
         this.linha = planilha.createRow(this.numeroLinha++);
     }
 
-    public void criarAbaConferencia(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+    public void criarAbaConferencia(XSSFWorkbook workbook, List<ServicoOperacionalDto> servicos) {
         var estilos = new EstilosPlanilha(workbook);
 
         this.criarCabecalhoAbaConferencia(estilos.getEstiloCabecalho1());
@@ -44,16 +44,16 @@ public class AbaConferencia {
         celula.incluirNaCelula(celula.criarCelula(indiceColuna++), "Folga");
     }
 
-    private void criarLinhasAbaConferencia(XSSFCellStyle estilo, ServicoOperacional servico) {
+    private void criarLinhasAbaConferencia(XSSFCellStyle estilo, ServicoOperacionalDto servico) {
         int indiceColuna = 0;
         var celula = new Celula(this.linha, estilo);
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getDataServico());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getMatricula());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getNomePaz());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getPatente().getNome());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getMilitar().getAntiguidade());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.getFuncao().getNome());
-        celula.incluirNaCelula(celula.criarCelula(indiceColuna), servico.getFolga());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.dataServico());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.matricula());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.nomePaz());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.patente());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.antiguidade());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna++), servico.funcao());
+        celula.incluirNaCelula(celula.criarCelula(indiceColuna), servico.folga());
     }
 
 }

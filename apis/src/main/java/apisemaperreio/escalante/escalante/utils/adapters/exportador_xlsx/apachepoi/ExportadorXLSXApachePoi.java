@@ -6,14 +6,14 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
 
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 import apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx.ExportadorXLSXAdapter;
 
 @Component
 public class ExportadorXLSXApachePoi implements ExportadorXLSXAdapter {
 
     @Override
-    public void exportarEscalaXLSX(OutputStream outputStream, List<ServicoOperacional> servicos) throws Exception {
+    public void exportarEscalaXLSX(OutputStream outputStream, List<ServicoOperacionalDto> servicos) throws Exception {
 
         try (var workbook = new XSSFWorkbook()) {
             var abaApresentacao = new AbaApresentacao(workbook, servicos);

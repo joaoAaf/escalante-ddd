@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import apisemaperreio.escalante.escalante.domain.DadosEscala;
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 import apisemaperreio.escalante.escalante.dtos.DadosEscalaRequest;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 import apisemaperreio.escalante.escalante.usecases.EscalaUseCasesEscalante;
 import apisemaperreio.escalante.escalante.utils.adapters.exportador_xlsx.ExportadorXLSXAdapter;
 import apisemaperreio.escalante.escalante.utils.factories.EscalaFactory;
 import apisemaperreio.escalante.escalante.utils.mappers.MilitarMapperEscalante;
+import apisemaperreio.escalante.escalante.utils.mappers.ServicoOperacionalMapper;
 
 @Service
 public class EscalaServiceEscalante implements EscalaUseCasesEscalante {
@@ -23,16 +24,19 @@ public class EscalaServiceEscalante implements EscalaUseCasesEscalante {
     @Autowired
     private MilitarMapperEscalante militarMapper;
 
+    @Autowired
+    private ServicoOperacionalMapper servicoOperacionalMapper;
+
     @Override
-    public List<ServicoOperacional> criarEscalaAutomatica(DadosEscalaRequest request) {
+    public List<ServicoOperacionalDto> criarEscalaAutomatica(DadosEscalaRequest request) {
         var dadosEscala = new DadosEscala(request.dataInicio(), request.dataFim(), request.diasServico());
         var escala = EscalaFactory.criarEscala(dadosEscala);
         escala.preencherEscala(militarMapper.toListMilitar(request.militares()));
-        return escala.getServicosEscala();
+        return servicoOperacionalMapper.toListServicoOperacionalDto(escala.getServicosEscala());
     }
 
     @Override
-    public byte[] exportarEscalaXLSX(List<ServicoOperacional> servicos) throws Exception {
+    public byte[] exportarEscalaXLSX(List<ServicoOperacionalDto> servicos) throws Exception {
         try (var outputStream = new ByteArrayOutputStream()) {
             exportadorXLSX.exportarEscalaXLSX(outputStream, servicos);
             return outputStream.toByteArray();

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
 import apisemaperreio.escalante.escalante.dtos.DadosEscalaRequest;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 import apisemaperreio.escalante.escalante.usecases.EscalaUseCasesEscalante;
 
 @RequestMapping("/escala")
@@ -34,7 +34,7 @@ public class EscalaControllerEscalante {
     }
 
     @PostMapping("/exportar-xlsx")
-    public ResponseEntity<byte[]> exportarEscalaXLSX(@RequestBody List<ServicoOperacional> servicos) {
+    public ResponseEntity<byte[]> exportarEscalaXLSX(@RequestBody List<ServicoOperacionalDto> servicos) {
         try {
             var escalaXLSX = escalaUseCases.exportarEscalaXLSX(servicos);
             return ResponseEntity.ok()

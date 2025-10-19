@@ -15,7 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import apisemaperreio.escalante.escalante.domain.Funcao;
-import apisemaperreio.escalante.escalante.domain.ServicoOperacional;
+import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 
 public class AbaApresentacao {
 
@@ -28,11 +28,11 @@ public class AbaApresentacao {
     private int indiceDataServico;
     private int contadorDias;
 
-    public AbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+    public AbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacionalDto> servicos) {
         this.planilha = workbook.createSheet("Apresentação");
         this.numeroLinha = 0;
         this.diasSemana = listarDiasSemana();
-        this.datasServicos = servicos.stream().map(servico -> servico.getDataServico()).distinct().toList();
+        this.datasServicos = servicos.stream().map(servico -> servico.dataServico()).distinct().toList();
         this.indiceDataServico = 0;
     }
 
@@ -45,7 +45,7 @@ public class AbaApresentacao {
         return diasSemana;
     }
 
-    public void criarAbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacional> servicos) {
+    public void criarAbaApresentacao(XSSFWorkbook workbook, List<ServicoOperacionalDto> servicos) {
         var estilos = new EstilosPlanilha(workbook);
 
         while (this.indiceDataServico < this.datasServicos.size()) {
@@ -88,7 +88,7 @@ public class AbaApresentacao {
         }
     }
 
-    private void criarLinhasAbaApresentacao(XSSFCellStyle estilo, List<ServicoOperacional> servicos) {
+    private void criarLinhasAbaApresentacao(XSSFCellStyle estilo, List<ServicoOperacionalDto> servicos) {
 
         var funcoes = Arrays.stream(Funcao.values())
                 .sorted(Comparator.comparingInt(Funcao::getOrdemExibicao))
@@ -109,14 +109,14 @@ public class AbaApresentacao {
             for (; indiceDataServico < this.indiceDataServico; indiceDataServico++) {
                 var dataServico = this.datasServicos.get(indiceDataServico);
                 var servico = servicos.stream()
-                        .filter(s -> s.getFuncao().equals(funcao) && s.getDataServico().equals(dataServico)).toList();
+                        .filter(s -> s.funcao().equals(funcao.getNome()) && s.dataServico().equals(dataServico)).toList();
                 if (!servico.isEmpty()) {
-                    var militarEscalado = servico.get(0).getMilitar().getPatente().name() + " "
-                            + servico.get(0).getMilitar().getNomePaz();
+                    var militarEscalado = servico.get(0).patente() + " "
+                            + servico.get(0).nomePaz();
                     celula.incluirNaCelula(celula.criarCelula(indiceColuna), militarEscalado);
                     if (servico.size() > 1) {
-                        militarEscalado = servico.get(1).getMilitar().getPatente().name() + " "
-                                + servico.get(1).getMilitar().getNomePaz();
+                        militarEscalado = servico.get(1).patente() + " "
+                                + servico.get(1).nomePaz();
                         celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceColuna), militarEscalado);
                     } else if (funcao.equals(Funcao.OPERADOR_DE_LINHA))
                         celulaAbaixo.incluirNaCelula(celulaAbaixo.criarCelula(indiceColuna), "----------------------");
