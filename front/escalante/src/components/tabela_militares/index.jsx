@@ -1,6 +1,48 @@
 import Styles from './styles.module.css'
 
-export default function TabelaMilitares() {
+export default function TabelaMilitares({ militares }) {
+    const formatarData = (dataString) => {
+        if (!dataString) return "-"
+        try {
+            const [ano, mes, dia] = dataString.split("-")
+            return `${dia}/${mes}/${ano}`
+        } catch (error) {
+            console.error("Erro ao formatar data:", dataString, error)
+            return "-"
+        }
+    }
+
+    const listarMilitares = () => {
+        if (militares.length === 1 && militares[0] === true)
+            return (
+                <tr>
+                    <td colSpan="7">Importe a planilha para carregar os militares.</td>
+                </tr>
+            )
+        return militares.length > 0 ? (
+            militares.map((militar) => (
+                <tr key={militar.matricula}>
+                    <td>{militar.antiguidade ?? "-"}</td>
+                    <td>{militar.matricula ?? "-"}</td>
+                    <td>{militar.nomePaz ?? "-"}</td>
+                    <td>{formatarData(militar.nascimento) ?? "-"}</td>
+                    <td>{militar.patente ?? "-"}</td>
+                    <td>{militar.folgaEspecial ?? "-"}</td>
+                    <td>
+                        <input
+                            type="checkbox"
+                            defaultChecked={militar.cov === true}
+                        />
+                    </td>
+                </tr>
+            ))
+        ) : (
+            <tr>
+                <td colSpan="7">Nenhum militar encontrado.</td>
+            </tr>
+        )
+    }
+
     return (
         <table className={Styles.table}>
             <thead>
@@ -15,15 +57,7 @@ export default function TabelaMilitares() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>5</td>
-                    <td>123456</td>
-                    <td>João Silva</td>
-                    <td>01/01/1990</td>
-                    <td>CB</td>
-                    <td>0</td>
-                    <td><input type="checkbox" /></td>
-                </tr>
+                {listarMilitares()}
             </tbody>
         </table>
     )
