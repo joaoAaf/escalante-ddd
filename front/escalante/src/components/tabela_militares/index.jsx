@@ -1,6 +1,6 @@
 import Styles from './styles.module.css'
 
-export default function TabelaMilitares({ militares }) {
+export default function TabelaMilitares({ militares, setMilitares }) {
     const formatarData = (dataString) => {
         if (!dataString) return "-"
         try {
@@ -12,8 +12,16 @@ export default function TabelaMilitares({ militares }) {
         }
     }
 
+    const alterarCov = matricula => setMilitares(
+            militares => militares.map(militar => {
+                if (militar.matricula === matricula)
+                    return { ...militar, cov: !militar.cov }
+                return militar
+            })
+        )
+
     const listarMilitares = () => {
-        if (militares.length === 1 && militares[0] === true)
+        if (militares === null)
             return (
                 <tr>
                     <td colSpan="7">Importe a planilha para carregar os militares.</td>
@@ -31,14 +39,15 @@ export default function TabelaMilitares({ militares }) {
                     <td>
                         <input
                             type="checkbox"
-                            defaultChecked={militar.cov === true}
+                            checked={militar.cov === true}
+                            onChange={() => alterarCov(militar.matricula)}
                         />
                     </td>
                 </tr>
             ))
         ) : (
             <tr>
-                <td colSpan="7">Nenhum militar encontrado.</td>
+                <td colSpan="7">Nenhum militar encontrado. Importe a planilha.</td>
             </tr>
         )
     }

@@ -5,7 +5,7 @@ import TabelaMilitares from '../tabela_militares'
 import Styles from './styles.module.css'
 
 export default function Militares() {
-    const [militares, setMilitares] = useState([true])
+    const [militares, setMilitares] = useState(null)
 
     const gerenciarMilitares = dados => setMilitares(dados)
 
@@ -16,7 +16,10 @@ export default function Militares() {
                 <label htmlFor="input_upload" className={Styles.label_upload}>Importe a Planilha dos Militares</label>
                 <InputUpload gerenciarMilitares={gerenciarMilitares} />
                 <BarraPesquisa />
-                <TabelaMilitares militares={militares} />
+                <TabelaMilitares
+                    militares={militares}
+                    setMilitares={setMilitares}
+                />
             </div>
         </div>
     )
