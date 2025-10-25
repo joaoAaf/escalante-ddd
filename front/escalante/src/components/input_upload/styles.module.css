@@ -12,10 +12,7 @@
 .input_upload .browse_btn {
     padding: 8px 16px;
     background-color: silver;
-    border-right: 1px solid #ccc;
     cursor: pointer;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
     display: flex;
     align-items: center;
 }
@@ -35,11 +32,29 @@
     align-items: center;
 }
 
+.input_upload .modelo_btn {
+    padding: 9px 20px;
+    background-color: silver;
+    border: none;
+    border-right: 2px solid #ccc;
+    cursor: pointer;
+    font-weight: normal;
+    color: #333;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.input_upload .modelo_btn:hover {
+    background-color: #e0e0e0;
+}
+
 .input_upload .upload_btn {
     padding: 9px 20px;
     background-color: tomato;
     border: none;
-    border-left: 1px solid #ccc;
     cursor: pointer;
     font-weight: normal;
     color: #333;
