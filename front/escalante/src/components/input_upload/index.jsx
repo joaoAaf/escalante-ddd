@@ -4,7 +4,7 @@ import Styles from './styles.module.css'
 import { useState } from 'react'
 
 export default function InputUpload({ gerenciarMilitares }) {
-    const [nomeArquivo, setNomeArquivo] = useState("Nenhum arquivo selecionado.")
+    const [nomeArquivo, setNomeArquivo] = useState("Nenhuma seleção.")
     const [arquivo, setArquivo] = useState(null)
     const [carregandoPlanilha, setCarregandoPlanilha] = useState(false)
     const [baixandoModelo, setBaixandoModelo] = useState(false)

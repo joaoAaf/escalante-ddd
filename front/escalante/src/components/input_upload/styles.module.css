@@ -7,6 +7,7 @@
     width: fit-content;
     font-size: 16px;
     margin-bottom: 20px;
+    max-width: 100%;
 }
 
 .input_upload .browse_btn {
@@ -27,7 +28,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 200px;
     display: flex;
     align-items: center;
 }
@@ -66,5 +66,5 @@
 }
 
 .input_upload .upload_btn:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(255, 99, 71, 0.625);
 }

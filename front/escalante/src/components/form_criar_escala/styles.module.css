@@ -1,0 +1,74 @@
+.criar_escala {
+    background-color: #f1f1f1;
+    padding: 20px;
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.criar_escala h3 {
+    padding-bottom: 20px;
+}
+
+.criar_escala form {
+    display: flex;
+    align-items: stretch;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.criar_escala div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-inline: 10px;
+    color: #555;
+}
+
+.criar_escala form div:last-of-type {
+    flex-grow: 1;
+}
+
+.criar_escala input {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: inherit;
+    min-width: 200px;
+}
+
+.criar_escala button {
+    padding: 8px 20px;
+    background-color: tomato;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: normal;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.criar_escala button:hover {
+    background-color: rgba(255, 99, 71, 0.625);
+}
+
+@media (max-width: 768px) {
+    .criar_escala form {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .criar_escala div {
+        justify-content: space-between;
+    }
+
+    .criar_escala button {
+        align-self: center;
+    }
+}
