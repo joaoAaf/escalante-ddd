@@ -1,11 +1,13 @@
-import { listarMilitaresEscalaveis } from '../../../client/listarMilitaresEscalaveis'
+import { listarMilitaresEscalaveis } from '../../client/listarMilitaresEscalaveis'
+import { obterPlanilhaModeloMilitares } from '../../client/obterPlanilhaModeloMilitares'
 import Styles from './styles.module.css'
 import { useState } from 'react'
 
 export default function InputUpload({ gerenciarMilitares }) {
     const [nomeArquivo, setNomeArquivo] = useState("Nenhum arquivo selecionado.")
     const [arquivo, setArquivo] = useState(null)
-    const [carregando, setCarregando] = useState(false)
+    const [carregandoPlanilha, setCarregandoPlanilha] = useState(false)
+    const [baixandoModelo, setBaixandoModelo] = useState(false)
 
     const gerenciarArquivo = evento => {
         if (evento.target.files.length > 0) {
@@ -16,20 +18,42 @@ export default function InputUpload({ gerenciarMilitares }) {
 
     const enviarArquivo = () => {
         if (arquivo) {
-            setCarregando(true)
+            setCarregandoPlanilha(true)
             listarMilitaresEscalaveis(arquivo)
                 .then(dados => gerenciarMilitares(dados || []))
-                .finally(() => setCarregando(false))
+                .finally(() => setCarregandoPlanilha(false))
         } else
             alert("Por favor, selecione um arquivo primeiro.")
+    }
+
+    const baixarModelo = () => {
+        setBaixandoModelo(true)
+        obterPlanilhaModeloMilitares()
+            .then(arrayBuffer => {
+                if (arrayBuffer) {
+                    const blob = new Blob([arrayBuffer],
+                        { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+                    const url = URL.createObjectURL(blob)
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.download = 'modelo_militares.xlsx'
+                    link.click()
+                    URL.revokeObjectURL(url)
+                }
+            })
+            .finally(() => setBaixandoModelo(false))
     }
 
     return (
         <div className={Styles.input_upload}>
             <button
                 className={Styles.modelo_btn}
-            >Modelo</button>
-            
+                onClick={baixarModelo}
+                disabled={baixandoModelo}
+            >
+                {baixandoModelo ? "Baixando..." : "Modelo"}
+            </button>
+
             <input
                 type="file"
                 id="input_upload"
@@ -45,9 +69,9 @@ export default function InputUpload({ gerenciarMilitares }) {
             <button
                 className={Styles.upload_btn}
                 onClick={enviarArquivo}
-                disabled={carregando}
+                disabled={carregandoPlanilha}
             >
-                {carregando ? "Carregando..." : "Enviar/Processar"}
+                {carregandoPlanilha ? "Carregando..." : "Enviar/Processar"}
             </button>
         </div>
     )
