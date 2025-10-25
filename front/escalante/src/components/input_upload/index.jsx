@@ -26,6 +26,10 @@ export default function InputUpload({ gerenciarMilitares }) {
 
     return (
         <div className={Styles.input_upload}>
+            <button
+                className={Styles.modelo_btn}
+            >Modelo</button>
+            
             <input
                 type="file"
                 id="input_upload"
