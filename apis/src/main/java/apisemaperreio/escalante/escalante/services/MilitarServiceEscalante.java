@@ -1,5 +1,6 @@
 package apisemaperreio.escalante.escalante.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,17 @@ public class MilitarServiceEscalante implements MilitarUseCasesEscalante {
     @Override
     public List<MilitarEscalavel> listarMilitaresEscalaveis(MultipartFile planilhaMilitares) {
         return importadorMilitaresXLSXAdapter.importarMilitaresXLSX(planilhaMilitares);
+    }
+
+    @Override
+    public byte[] obterPlanilhaModeloMilitares() {
+        try (var inputStream = getClass().getResourceAsStream("/samples/modelo_importacao_militares.xlsx")) {
+            if (inputStream == null)
+                throw new RuntimeException("Não foi possível encontrar a planilha modelo.");
+            return inputStream.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler a planilha modelo de militares.", e);
+        }
     }
 
 }

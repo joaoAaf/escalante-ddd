@@ -10,4 +10,6 @@ public interface MilitarUseCasesEscalante {
 
     List<MilitarEscalavel> listarMilitaresEscalaveis(MultipartFile planilhaMilitares);
 
+    byte[] obterPlanilhaModeloMilitares();
+
 }
