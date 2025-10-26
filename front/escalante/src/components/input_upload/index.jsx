@@ -3,7 +3,7 @@ import { obterPlanilhaModeloMilitares } from '../../client/obterPlanilhaModeloMi
 import Styles from './styles.module.css'
 import { useState } from 'react'
 
-export default function InputUpload({ gerenciarMilitares }) {
+export default function InputUpload({ setMilitares }) {
     const [nomeArquivo, setNomeArquivo] = useState("Nenhuma seleção.")
     const [arquivo, setArquivo] = useState(null)
     const [carregandoPlanilha, setCarregandoPlanilha] = useState(false)
@@ -20,7 +20,7 @@ export default function InputUpload({ gerenciarMilitares }) {
         if (arquivo) {
             setCarregandoPlanilha(true)
             listarMilitaresEscalaveis(arquivo)
-                .then(dados => gerenciarMilitares(dados || []))
+                .then(dados => setMilitares(dados || []))
                 .finally(() => setCarregandoPlanilha(false))
         } else
             alert("Por favor, selecione um arquivo primeiro.")
