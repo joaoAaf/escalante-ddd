@@ -4,29 +4,15 @@ import InputUpload from '../input_upload'
 import TabelaMilitares from '../tabela_militares'
 import FormCriarEscala from '../form_criar_escala'
 import Styles from './styles.module.css'
+import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaDados'
 
 export default function Militares({ setEscala, setTelaAtiva }) {
     const [militares, setMilitares] = useState(null)
 
     const STORAGE_KEY_MILITARES = 'militares'
 
-    useEffect(() => {
-        try {
-            const militaresArmazenados = localStorage.getItem(STORAGE_KEY_MILITARES)
-            if (militaresArmazenados) setMilitares(JSON.parse(militaresArmazenados))
-        } catch (error) {
-            console.error("Erro ao carregar militares do localStorage:", error)
-        }
-    }, [])
-
-    useEffect(() => {
-        try {
-            if (militares === null) localStorage.removeItem(STORAGE_KEY_MILITARES)
-            else localStorage.setItem(STORAGE_KEY_MILITARES, JSON.stringify(militares))
-        } catch (error) {
-            console.error("Erro ao salvar militares no localStorage:", error)
-        }
-    }, [militares])
+    obterLocalStorage(STORAGE_KEY_MILITARES, setMilitares)
+    salvarLocalStorage(STORAGE_KEY_MILITARES, militares)
 
     return (
         <div className={Styles.main}>
