@@ -5,7 +5,7 @@ import TabelaMilitares from '../tabela_militares'
 import FormCriarEscala from '../form_criar_escala'
 import Styles from './styles.module.css'
 
-export default function Militares() {
+export default function Militares({ setEscala, setTelaAtiva }) {
     const [militares, setMilitares] = useState(null)
 
     const STORAGE_KEY_MILITARES = 'militares'
@@ -35,7 +35,11 @@ export default function Militares() {
                 <label htmlFor="input_upload" className={Styles.label_upload}>Importe a Planilha dos Militares</label>
                 <InputUpload setMilitares={setMilitares} />
             </div>
-            <FormCriarEscala />
+            <FormCriarEscala
+                militares={militares}
+                setEscala={setEscala}
+                setTelaAtiva={setTelaAtiva}
+            />
             <BarraPesquisa />
             <TabelaMilitares
                 militares={militares}

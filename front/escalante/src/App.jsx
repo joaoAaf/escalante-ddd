@@ -6,15 +6,19 @@ import Escala from './components/escala'
 
 export default function App() {
   const [telaAtiva, setTelaAtiva] = useState('militares')
+  const [escala, setEscala] = useState(null)
+
+  const componenteMilitares = <Militares setEscala={setEscala} setTelaAtiva={setTelaAtiva} />
+  const componenteEscala = <Escala escala={escala} />
 
   const selecionarTela = () => {
     switch (telaAtiva) {
       case 'militares':
-        return <Militares />
+        return componenteMilitares
       case 'escala':
-        return <Escala />
+        return componenteEscala
       default:
-        return <Militares />
+        return componenteMilitares
     }
   }
 
