@@ -23,8 +23,8 @@ export default function TabelaEscala({ escala }) {
                 </tr>
             )
         return escala.length > 0 ? (
-            escala.map((servico) => (
-                <tr key={`${servico.data}-${servico.matricula}-${servico.funcao}`}>
+            escala.map((servico, index) => (
+                <tr key={index}>
                     {listarServicos(servico)}
                 </tr>
             ))

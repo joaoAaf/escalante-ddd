@@ -3,8 +3,7 @@ import BarraPesquisa from '../barra_pesquisa'
 import TabelaEscala from '../tabela_escala'
 import Styles from './styles.module.css'
 
-export default function Escala() {
-    const [escala, setEscala] = useState(null)
+export default function Escala({ escala }) {
 
     return (
         <div className={Styles.main}>
@@ -12,7 +11,6 @@ export default function Escala() {
             <BarraPesquisa />
             <TabelaEscala
                 escala={escala}
-                setEscala={setEscala}
             />
         </div>
     )
