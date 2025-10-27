@@ -9,7 +9,7 @@ export default function App() {
   const [escala, setEscala] = useState(null)
 
   const componenteMilitares = <Militares setEscala={setEscala} setTelaAtiva={setTelaAtiva} />
-  const componenteEscala = <Escala escala={escala} />
+  const componenteEscala = <Escala escala={escala} setEscala={setEscala} />
 
   const selecionarTela = () => {
     switch (telaAtiva) {
