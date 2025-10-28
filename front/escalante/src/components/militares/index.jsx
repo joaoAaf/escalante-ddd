@@ -4,7 +4,7 @@ import InputUpload from '../input_upload'
 import TabelaMilitares from '../tabela_militares'
 import FormCriarEscala from '../form_criar_escala'
 import Styles from './styles.module.css'
-import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaDados'
+import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 
 export default function Militares({ setEscala, setTelaAtiva }) {
     const [militares, setMilitares] = useState(null)

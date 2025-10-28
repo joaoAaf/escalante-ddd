@@ -1,5 +1,4 @@
-import { listarMilitaresEscalaveis } from '../../client/listarMilitaresEscalaveis'
-import { obterPlanilhaModeloMilitares } from '../../client/obterPlanilhaModeloMilitares'
+import MilitarClient from '../../client/MilitarClient'
 import Styles from './styles.module.css'
 import { useState } from 'react'
 
@@ -19,7 +18,7 @@ export default function InputUpload({ setMilitares }) {
     const enviarArquivo = () => {
         if (arquivo) {
             setCarregandoPlanilha(true)
-            listarMilitaresEscalaveis(arquivo)
+            MilitarClient.listarMilitaresEscalaveis(arquivo)
                 .then(dados => setMilitares(dados || []))
                 .finally(() => setCarregandoPlanilha(false))
         } else
@@ -28,7 +27,7 @@ export default function InputUpload({ setMilitares }) {
 
     const baixarModelo = () => {
         setBaixandoModelo(true)
-        obterPlanilhaModeloMilitares()
+        MilitarClient.obterPlanilhaModeloMilitares()
             .then(arrayBuffer => {
                 if (arrayBuffer) {
                     const blob = new Blob([arrayBuffer],
