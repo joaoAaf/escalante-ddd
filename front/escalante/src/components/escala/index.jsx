@@ -1,7 +1,7 @@
 import BarraPesquisa from '../barra_pesquisa'
 import TabelaEscala from '../tabela_escala'
 import Styles from './styles.module.css'
-import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaDados'
+import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 
 export default function Escala({ escala, setEscala }) {
 

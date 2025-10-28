@@ -1,6 +1,6 @@
 import Styles from './styles.module.css'
 import { useState } from 'react'
-import { criarEscalaAutomatica } from '../../client/criarEscalaAutomatica'
+import EscalaClient from '../../client/EscalaClient'
 
 export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) {
 
@@ -25,7 +25,7 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
                 diasServico,
                 militares
             }
-            criarEscalaAutomatica(dadosEscala)
+            EscalaClient.criarEscalaAutomatica(dadosEscala)
                 .then(escala => setEscala(escala || []))
                 .finally(() => {
                     setCarregandoEscala(false)
