@@ -19,3 +19,25 @@
     font-weight: bold;
     margin-bottom: 10px;
 }
+
+.adicionarServico {
+    margin-bottom: 20px;
+}
+
+.adicionarServico button {
+    padding: 8px 20px;
+    background-color: tomato;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: normal;
+    color: #333;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.adicionarServico button:hover {
+    background-color: rgba(255, 99, 71, 0.625);
+}
