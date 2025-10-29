@@ -1,5 +1,4 @@
 import Styles from './styles.module.css'
-import { formatarData } from '../../scripts/formatarData'
 
 export default function TabelaMilitares({ militares, setMilitares }) {
 
@@ -7,9 +6,9 @@ export default function TabelaMilitares({ militares, setMilitares }) {
         <tr>
             <th>ANTIGUIDADE</th>
             <th>MATRÍCULA</th>
+            <th>POST./GRAD.</th>
             <th>NOME DE PAZ</th>
             <th>NASCIMENTO</th>
-            <th>POST./GRAD.</th>
             <th>FOLGA ESPECIAL</th>
             <th>C.O.V.</th>
         </tr>
@@ -36,16 +35,23 @@ export default function TabelaMilitares({ militares, setMilitares }) {
     }
 
     const listarDadosMilitar = militar => {
-        const militarDesconstruido = desconstruirMilitar(militar);
-        return Object.keys(militarDesconstruido).map((campo, index) => militarDesconstruido[campo] !== militar.cov ? (
-            <td key={index}>{militarDesconstruido[campo] ?? "-"}</td>
+        const militarFormatado = { ...militar, nascimento: formatarData(militar.nascimento) }
+        return Object.keys(militarFormatado).map((campo, index) => militarFormatado[campo] !== militar.cov ? (
+            <td key={index}>{militarFormatado[campo] ?? "-"}</td>
         ) : (
             <td key={index}>{checkboxCov(militar)}</td>
         ))
     }
 
-    const desconstruirMilitar = militar => {
-        return { ...militar, nascimento: formatarData(militar.nascimento) }
+    const formatarData = (dataString) => {
+        if (!dataString) return "-"
+        try {
+            const [ano, mes, dia] = dataString.split("-")
+            return `${dia}/${mes}/${ano}`
+        } catch (error) {
+            console.error("Erro ao formatar data:", dataString, error)
+            return "-"
+        }
     }
 
     const checkboxCov = militar => (
