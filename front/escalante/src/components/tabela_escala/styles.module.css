@@ -16,3 +16,10 @@
     background-color: #f2f2f2;
     font-weight: bold;
 }
+
+.grupoPar td {
+    background-color: #f6f9ff;
+}
+.grupoImpar td {
+    background-color: #ffffff;
+}
