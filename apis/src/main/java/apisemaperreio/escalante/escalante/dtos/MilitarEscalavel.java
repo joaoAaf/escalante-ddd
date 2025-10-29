@@ -2,7 +2,13 @@ package apisemaperreio.escalante.escalante.dtos;
 
 import java.time.LocalDate;
 
-public record MilitarEscalavel(String matricula, String nomePaz, LocalDate nascimento, String patente,
-        Integer antiguidade, int folgaEspecial, Boolean cov) {
+public record MilitarEscalavel(
+                Integer antiguidade,
+                String matricula,
+                String patente,
+                String nomePaz,
+                LocalDate nascimento,
+                int folgaEspecial,
+                Boolean cov) {
 
 }

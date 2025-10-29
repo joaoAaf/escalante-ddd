@@ -43,11 +43,11 @@ public class ImportadorMilitaresXLSXApachePoi implements ImportadorMilitaresXLSX
                 var cov = validarCelulas(row.getCell(6)).equalsIgnoreCase("sim");
 
                 var militar = new MilitarEscalavel(
+                        antiguidade,
                         matricula,
+                        patente,
                         nomePaz,
                         nascimento,
-                        patente,
-                        antiguidade,
                         folgaEspecial,
                         cov);
 
