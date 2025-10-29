@@ -1,4 +1,5 @@
 import Styles from './styles.module.css'
+import BotaoRemover from '../botao_remover'
 
 export default function TabelaEscala({ escala, setEscala }) {
 
@@ -11,6 +12,7 @@ export default function TabelaEscala({ escala, setEscala }) {
             <th>ANTIGUIDADE</th>
             <th>FUNÇÃO</th>
             <th>FOLGA</th>
+            <th>AÇÃO</th>
         </tr>
     )
 
@@ -31,6 +33,13 @@ export default function TabelaEscala({ escala, setEscala }) {
                 return (
                     <tr key={index} className={estiloGrupo}>
                         {listarServicos(servico, index)}
+                        <td>
+                            <BotaoRemover
+                                index={index}
+                                tabela={escala}
+                                setTabela={setEscala}
+                            />
+                        </td>
                     </tr>
                 )
             })
