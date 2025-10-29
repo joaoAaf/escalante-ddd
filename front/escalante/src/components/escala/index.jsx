@@ -16,6 +16,7 @@ export default function Escala({ escala, setEscala }) {
             <BarraPesquisa />
             <TabelaEscala
                 escala={escala}
+                setEscala={setEscala}
             />
         </div>
     )
