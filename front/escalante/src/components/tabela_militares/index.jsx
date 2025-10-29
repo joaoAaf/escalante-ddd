@@ -1,4 +1,5 @@
 import Styles from './styles.module.css'
+import BotaoRemover from '../botao_remover'
 
 export default function TabelaMilitares({ militares, setMilitares }) {
 
@@ -11,6 +12,7 @@ export default function TabelaMilitares({ militares, setMilitares }) {
             <th>NASCIMENTO</th>
             <th>FOLGA ESPECIAL</th>
             <th>C.O.V.</th>
+            <th>AÇÃO</th>
         </tr>
     )
 
@@ -22,9 +24,16 @@ export default function TabelaMilitares({ militares, setMilitares }) {
                 </tr>
             )
         return militares.length > 0 ? (
-            militares.map((militar) => (
+            militares.map((militar, index) => (
                 <tr key={militar.matricula}>
                     {listarDadosMilitar(militar)}
+                    <td>
+                        <BotaoRemover
+                            index={index}
+                            tabela={militares}
+                            setTabela={setMilitares}
+                        />
+                    </td>
                 </tr>
             ))
         ) : (
