@@ -1,5 +1,6 @@
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
+import { ordenarEscala } from '../../scripts/ordenacaoEscala'
 
 export default function TabelaEscala({ escala, setEscala }) {
 
@@ -81,9 +82,11 @@ export default function TabelaEscala({ escala, setEscala }) {
                                 value={servico?.funcao ?? ""}
                                 onChange={e => alterarFuncao(index, e.target.value)}
                             >
-                                {ordemFuncoes.map(funcao => (
-                                    <option key={funcao} value={funcao}>{funcao}</option>
-                                ))}
+                                <option>Fiscal de Dia</option>
+                                <option>C.O.V.</option>
+                                <option>Operador de Linha</option>
+                                <option>Ajudante de Linha</option>
+                                <option>Permanente</option>
                             </select>
                         </td>
                     )
@@ -108,42 +111,6 @@ export default function TabelaEscala({ escala, setEscala }) {
             return ordenarEscala(novaEscala)
         }
     )
-
-    const ordenarEscala = escala => {
-        const escalaOrdenada = [...escala]
-        escalaOrdenada.sort((servicoA, servicoB) => {
-            const dataServicoA = servicoA?.dataServico ? new Date(servicoA.dataServico) : null
-            const dataServicoB = servicoB?.dataServico ? new Date(servicoB.dataServico) : null
-
-            if ((dataServicoA && dataServicoB) && (dataServicoA.getTime() !== dataServicoB.getTime()))
-                return dataServicoA - dataServicoB
-            if (dataServicoA && !dataServicoB) return -1
-            if (!dataServicoA && dataServicoB) return 1
-
-            const prioridadeFuncaoA = prioridadeFuncao(servicoA?.funcao)
-            const prioridadeFuncaoB = prioridadeFuncao(servicoB?.funcao)
-            if (prioridadeFuncaoA !== prioridadeFuncaoB)
-                return prioridadeFuncaoA - prioridadeFuncaoB
-
-            const antiguidadeServicoA = Number(servicoA?.antiguidade ?? 0)
-            const antiguidadeServicoB = Number(servicoB?.antiguidade ?? 0)
-            return antiguidadeServicoA - antiguidadeServicoB
-        })
-        return escalaOrdenada
-    }
-
-    const prioridadeFuncao = funcao => {
-        const prioridade = ordemFuncoes.indexOf(funcao)
-        return prioridade === -1 ? ordemFuncoes.length : prioridade
-    }
-
-    const ordemFuncoes = [
-        'Fiscal de Dia',
-        'C.O.V.',
-        'Operador de Linha',
-        'Ajudante de Linha',
-        'Permanente'
-    ]
 
     return (
         <table className={Styles.table}>
