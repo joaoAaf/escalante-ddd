@@ -28,6 +28,8 @@ export default function Escala({ escala, setEscala }) {
             <CadastroServico
                 statusModal={statusModal}
                 fecharModal={() => setStatusModal(false)}
+                escala={escala}
+                setEscala={setEscala}
             />
         </div>
     )
