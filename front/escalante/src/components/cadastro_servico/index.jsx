@@ -1,6 +1,7 @@
 import Styles from './styles.module.css'
 import { useState } from 'react'
 import { ordenarEscala } from '../../scripts/ordenacaoEscala'
+import { obterProximoId } from '../../scripts/geradorIds'
 
 export default function CadastroServico({ statusModal, fecharModal, escala, setEscala }) {
     const servicoModelo = {
@@ -17,7 +18,8 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
 
     const cadastrarServico = evento => {
         evento.preventDefault()
-        let novaEscala = [...escala, servico]
+        const servicoComId = { ...servico, id: obterProximoId(escala) }
+        let novaEscala = [...(escala || []), servicoComId]
         novaEscala = ordenarEscala(novaEscala)
         setEscala(novaEscala)
         setServico(servicoModelo)
