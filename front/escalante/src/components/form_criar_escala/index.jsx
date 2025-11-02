@@ -1,6 +1,7 @@
 import Styles from './styles.module.css'
 import { useState } from 'react'
 import EscalaClient from '../../client/EscalaClient'
+import { inserirIds } from '../../scripts/geradorIds'
 
 export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) {
 
@@ -26,7 +27,11 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
                 militares
             }
             EscalaClient.criarEscalaAutomatica(dadosEscala)
-                .then(escala => setEscala(escala || []))
+                .then(escala => {
+                    const lista = (escala || [])
+                    const comIdsFinal = inserirIds(lista)
+                    setEscala(comIdsFinal)
+                })
                 .finally(() => {
                     setCarregandoEscala(false)
                     setTelaAtiva('escala')

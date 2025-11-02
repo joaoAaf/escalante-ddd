@@ -2,7 +2,7 @@ import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
 import { ordenarEscala } from '../../scripts/ordenacaoEscala'
 
-export default function TabelaEscala({ escala, setEscala }) {
+export default function TabelaEscala({ escala, setEscala, sourceEscala }) {
 
     const criarCabeçalho = () => (
         <tr>
@@ -28,16 +28,21 @@ export default function TabelaEscala({ escala, setEscala }) {
         const grupos = separarGruposPorData(escala)
 
         return escala.length > 0 ? (
-            escala.map((servico, index) => {
+            escala.map((servico) => {
+                const source = sourceEscala ?? escala
+                const id = servico?.id
+
                 const grupo = grupos.get(servico?.dataServico ?? "") ?? 0
                 const estiloGrupo = grupo % 2 === 0 ? Styles.grupoPar : Styles.grupoImpar
+                const key = id ? `s-${id}` : `s-${servico?.dataServico}-${servico?.matricula}`
                 return (
-                    <tr key={index} className={estiloGrupo}>
-                        {listarServicos(servico, index)}
+                    <tr key={key} className={estiloGrupo}>
+                        {listarServicos(servico, id)}
                         <td>
                             <BotaoRemover
-                                index={index}
-                                tabela={escala}
+                                id={id}
+                                idKey={'id'}
+                                tabela={source}
                                 setTabela={setEscala}
                             />
                         </td>
@@ -62,8 +67,9 @@ export default function TabelaEscala({ escala, setEscala }) {
         return mapaGrupo
     }
 
-    const listarServicos = (servico, index) => {
+    const listarServicos = (servico, id) => {
         return Object.keys(servico).map(campo => {
+            if (campo === 'id') return null
             switch (campo) {
                 case 'dataServico':
                     return (
@@ -71,7 +77,7 @@ export default function TabelaEscala({ escala, setEscala }) {
                             <input
                                 type="date"
                                 value={servico?.dataServico ?? ""}
-                                onChange={e => alterarData(index, e.target.value)}
+                                onChange={e => alterarData(id, e.target.value)}
                             />
                         </td>
                     )
@@ -80,7 +86,7 @@ export default function TabelaEscala({ escala, setEscala }) {
                         <td key={campo}>
                             <select
                                 value={servico?.funcao ?? ""}
-                                onChange={e => alterarFuncao(index, e.target.value)}
+                                onChange={e => alterarFuncao(id, e.target.value)}
                             >
                                 <option>Fiscal de Dia</option>
                                 <option>C.O.V.</option>
@@ -98,16 +104,18 @@ export default function TabelaEscala({ escala, setEscala }) {
         })
     }
 
-    const alterarData = (index, novaData) => setEscala(
+    const alterarData = (id, novaData) => setEscala(
         escala => {
-            const novaEscala = escala.map((servico, i) => i === index ? { ...servico, dataServico: novaData } : servico)
+            if (id == null) return escala
+            const novaEscala = escala.map((servico) => servico.id === id ? { ...servico, dataServico: novaData } : servico)
             return ordenarEscala(novaEscala)
         }
     )
 
-    const alterarFuncao = (index, novaFuncao) => setEscala(
+    const alterarFuncao = (id, novaFuncao) => setEscala(
         escala => {
-            const novaEscala = escala.map((servico, i) => i === index ? { ...servico, funcao: novaFuncao } : servico)
+            if (id == null) return escala
+            const novaEscala = escala.map((servico) => servico.id === id ? { ...servico, funcao: novaFuncao } : servico)
             return ordenarEscala(novaEscala)
         }
     )

@@ -1,7 +1,7 @@
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
 
-export default function TabelaMilitares({ militares, setMilitares }) {
+export default function TabelaMilitares({ militares, setMilitares, sourceMilitares }) {
 
     const criarCabeçalho = () => (
         <tr>
@@ -24,18 +24,23 @@ export default function TabelaMilitares({ militares, setMilitares }) {
                 </tr>
             )
         return militares.length > 0 ? (
-            militares.map((militar, index) => (
-                <tr key={militar.matricula}>
-                    {listarDadosMilitar(militar)}
-                    <td>
-                        <BotaoRemover
-                            index={index}
-                            tabela={militares}
-                            setTabela={setMilitares}
-                        />
-                    </td>
-                </tr>
-            ))
+                militares.map((militar, index) => {
+                    const source = sourceMilitares ?? militares
+                    const key = (militar?.matricula ?? '') || `m-${index}`
+                    return (
+                        <tr key={key}>
+                            {listarDadosMilitar(militar)}
+                            <td>
+                                <BotaoRemover
+                                    id={militar?.matricula}
+                                    idKey={'matricula'}
+                                    tabela={source}
+                                    setTabela={setMilitares}
+                                />
+                            </td>
+                        </tr>
+                    )
+                })
         ) : (
             <tr>
                 <td colSpan="7">Nenhum militar encontrado. Importe a planilha.</td>
