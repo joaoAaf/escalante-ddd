@@ -1,11 +1,73 @@
 .search {
+    display: flex;
+    gap: 8px;
+    align-items: center;
     margin-bottom: 20px;
+    background: #f1f1f1;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.selectField,
+.search input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background: #fff;
+    color: #222;
+    outline: none;
+}
+
+.selectField {
+    min-width: 160px;
 }
 
 .search input {
-    width: 100%;
-    padding: 10px;
+    flex: 1 1 auto;
+    min-width: 140px;
+}
+
+.selectField:disabled,
+.search input:disabled {
+    background: #f5f5f5;
+    color: #888;
+    cursor: not-allowed;
+}
+
+.clearBtn {
+    border: none;
+    background: transparent;
+    color: #666;
     font-size: 16px;
-    border: 1px solid #ccc;
+    padding: 6px 8px;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+.clearBtn:hover:not(:disabled) {
+    background: #f2f2f2;
+    color: #222;
+}
+
+.clearBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .selectField {
+        width: 100%;
+    }
+    .search input {
+        width: 100%;
+    }
+    .clearBtn {
+        align-self: flex-end;
+    }
 }
