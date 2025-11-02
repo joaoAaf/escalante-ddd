@@ -39,18 +39,37 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
             <h3>Dados para Criação da Escala</h3>
             <form onSubmit={gerenciarCriacaoEscala}>
                 <div>
-                    <label htmlFor="data-inicio">Data Inicial:</label>
-                    <input type="date" id="data-inicio" value={dataInicio} onChange={e => setDataInicio(e.target.value)} />
+                    <label>Data Inicial:</label>
+                    <input
+                        type="date"
+                        value={dataInicio}
+                        onChange={e => setDataInicio(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label htmlFor="data-fim">Data Final:</label>
-                    <input type="date" id="data-fim" value={dataFim} onChange={e => setDataFim(e.target.value)} />
+                    <label>Data Final:</label>
+                    <input
+                        type="date"
+                        value={dataFim}
+                        onChange={e => setDataFim(e.target.value)}
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label htmlFor="dias-servico">Dias de Serviço:</label>
-                    <input type="number" id="dias-servico" value={diasServico} onChange={e => setDiasServico(e.target.value)} />
+                    <label>Dias de Serviço:</label>
+                    <input
+                        type="number"
+                        value={diasServico}
+                        onChange={e => setDiasServico(e.target.value)}
+                        required
+                        min="1"
+                        max="12"
+                        step="1"
+                        title="Os dias de serviço devem ser um número inteiro positivo."
+                    />
                 </div>
                 <div>
                     <button
