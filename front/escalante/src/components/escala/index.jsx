@@ -2,20 +2,19 @@ import BarraPesquisa from '../barra_pesquisa'
 import TabelaEscala from '../tabela_escala'
 import Styles from './styles.module.css'
 import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import CadastroServico from '../cadastro_servico'
 
 export default function Escala({ escala, setEscala }) {
 
     const [statusModal, setStatusModal] = useState(false)
     const [escalaFiltrada, setEscalaFiltrada] = useState(null)
+    const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
 
     const STORAGE_KEY_ESCALA = 'escala'
 
     obterLocalStorage(STORAGE_KEY_ESCALA, setEscala)
     salvarLocalStorage(STORAGE_KEY_ESCALA, escala)
-
-    useEffect(() => setEscalaFiltrada(escala), [escala])
 
     const camposPesquisa = [
         { value: 'data', label: 'Data', inputType: 'date' },
@@ -36,9 +35,13 @@ export default function Escala({ escala, setEscala }) {
 
     const normalize = v => String(v ?? '').toLowerCase()
 
-    const gerenciarPesquisa = ({ campo, consulta }) => {
+    const gerenciarPesquisa = useCallback(({ campo, consulta }) => {
+        setUltimaPesquisa(pesquisa => {
+            if (pesquisa && pesquisa.campo === campo && pesquisa.consulta === consulta) return pesquisa
+            return { campo, consulta }
+        })
         const q = String(consulta ?? '').trim().toLowerCase()
-        
+
         if (!escala) return
 
         if (campo === 'data') {
@@ -72,7 +75,15 @@ export default function Escala({ escala, setEscala }) {
         })
 
         setEscalaFiltrada(resultados)
-    }
+    }, [escala, setEscalaFiltrada])
+
+    useEffect(() => {
+        if (!ultimaPesquisa) {
+            setEscalaFiltrada(escala)
+            return
+        }
+        gerenciarPesquisa(ultimaPesquisa)
+    }, [escala, gerenciarPesquisa, ultimaPesquisa])
 
     const escalaTabela = escalaFiltrada ?? escala
 

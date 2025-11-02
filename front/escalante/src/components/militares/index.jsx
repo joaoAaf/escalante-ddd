@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import BarraPesquisa from '../barra_pesquisa'
 import InputUpload from '../input_upload'
 import TabelaMilitares from '../tabela_militares'
@@ -9,13 +9,12 @@ import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenci
 export default function Militares({ setEscala, setTelaAtiva }) {
     const [militares, setMilitares] = useState(null)
     const [militaresFiltrados, setMilitaresFiltrados] = useState(null)
+    const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
 
     const STORAGE_KEY_MILITARES = 'militares'
 
     obterLocalStorage(STORAGE_KEY_MILITARES, setMilitares)
     salvarLocalStorage(STORAGE_KEY_MILITARES, militares)
-
-    useEffect(() => setMilitaresFiltrados(militares), [militares])
 
     const camposPesquisa = [
         { value: 'nome', label: 'Nome de Paz' },
@@ -25,7 +24,12 @@ export default function Militares({ setEscala, setTelaAtiva }) {
 
     const normalize = v => String(v ?? '').toLowerCase()
 
-    const gerenciarPesquisa = ({ campo, consulta }) => {
+    const gerenciarPesquisa = useCallback(({ campo, consulta }) => {
+        setUltimaPesquisa(pesquisa => {
+            if (pesquisa && pesquisa.campo === campo && pesquisa.consulta === consulta) return pesquisa
+            return { campo, consulta }
+        })
+        
         const q = String(consulta ?? '').trim().toLowerCase()
 
         if (!militares) return
@@ -53,7 +57,15 @@ export default function Militares({ setEscala, setTelaAtiva }) {
         })
 
         setMilitaresFiltrados(resultados)
-    }
+    }, [militares])
+
+    useEffect(() => {
+        if (!ultimaPesquisa) {
+            setMilitaresFiltrados(militares)
+            return
+        }
+        gerenciarPesquisa(ultimaPesquisa)
+    }, [militares, gerenciarPesquisa, ultimaPesquisa])
 
     const militaresTabela = militaresFiltrados ?? militares
 
