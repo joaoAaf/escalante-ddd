@@ -84,12 +84,12 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
 
                     <label>Posto/Grad.:</label>
                     <select name="patente" value={servico.patente} onChange={e => setServico({ ...servico, patente: e.target.value })} required>
-                        <option value="" selected disabled>Selecione o Posto ou Graduação</option>
-                        <option value="TEN">Tenente</option>
-                        <option value="SUBTEN">Subtenente</option>
-                        <option value="SGT">Sargento</option>
-                        <option value="CB">Cabo</option>
-                        <option value="SD">Soldado</option>
+                        <option value="" disabled>Selecione o Posto ou Graduação</option>
+                        <option>Tenente</option>
+                        <option>Subtenente</option>
+                        <option>Sargento</option>
+                        <option>Cabo</option>
+                        <option>Soldado</option>
                     </select>
 
                     <label>Antiguidade:</label>
@@ -107,7 +107,7 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
 
                     <label>Função:</label>
                     <select name="funcao" value={servico.funcao} onChange={e => setServico({ ...servico, funcao: e.target.value })} required>
-                        <option value="" selected disabled>Selecione a Função</option>
+                        <option value="" disabled>Selecione a Função</option>
                         <option>Fiscal de Dia</option>
                         <option>C.O.V.</option>
                         <option>Operador de Linha</option>
