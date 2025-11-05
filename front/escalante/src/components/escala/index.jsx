@@ -4,6 +4,7 @@ import Styles from './styles.module.css'
 import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 import { useState, useEffect, useCallback } from 'react'
 import CadastroServico from '../cadastro_servico'
+import AcoesEscala from '../acoes_escala'
 
 export default function Escala({ escala, setEscala }) {
 
@@ -90,9 +91,10 @@ export default function Escala({ escala, setEscala }) {
     return (
         <div className={Styles.main}>
             <h2>Escala de Serviço</h2>
-            <div className={Styles.adicionarServico}>
-                <button onClick={() => setStatusModal(true)}>Adicionar Serviço</button>
-            </div>
+            <AcoesEscala
+                setStatusModal={setStatusModal}
+                escala={escala}
+            />
             <BarraPesquisa
                 campos={camposPesquisa}
                 placeholder="Pesquisar na escala..."

@@ -10,7 +10,7 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
     const [diasServico, setDiasServico] = useState(2)
     const [carregandoEscala, setCarregandoEscala] = useState(false)
 
-    const gerenciarCriacaoEscala = async evento => {
+    const gerenciarCriacaoEscala = evento => {
         evento.preventDefault()
         if (!dataInicio || !dataFim)
             alert("Por favor, preencha a data inicial e final.")
@@ -32,6 +32,7 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
                     const comIdsFinal = inserirIds(lista)
                     setEscala(comIdsFinal)
                 })
+                .catch(() => setCarregandoEscala(false))
                 .finally(() => {
                     setCarregandoEscala(false)
                     setTelaAtiva('escala')

@@ -20,6 +20,7 @@ export default function InputUpload({ setMilitares }) {
             setCarregandoPlanilha(true)
             MilitarClient.listarMilitaresEscalaveis(arquivo)
                 .then(dados => setMilitares(dados || []))
+                .catch(() => setCarregandoPlanilha(false))
                 .finally(() => setCarregandoPlanilha(false))
         } else
             alert("Por favor, selecione um arquivo primeiro.")
@@ -40,6 +41,7 @@ export default function InputUpload({ setMilitares }) {
                     URL.revokeObjectURL(url)
                 }
             })
+            .catch(() => setBaixandoModelo(false))
             .finally(() => setBaixandoModelo(false))
     }
 
