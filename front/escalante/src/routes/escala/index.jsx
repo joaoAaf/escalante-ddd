@@ -1,13 +1,15 @@
-import BarraPesquisa from '../barra_pesquisa'
-import TabelaEscala from '../tabela_escala'
-import Styles from './styles.module.css'
-import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 import { useState, useEffect, useCallback } from 'react'
-import CadastroServico from '../cadastro_servico'
-import AcoesEscala from '../acoes_escala'
+import { useOutletContext } from 'react-router-dom'
+import BarraPesquisa from '../../components/barra_pesquisa'
+import TabelaEscala from '../../components/tabela_escala'
+import Styles from './styles.module.css'
+import CadastroServico from '../../components/cadastro_servico'
+import AcoesEscala from '../../components/acoes_escala'
+import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 
-export default function Escala({ escala, setEscala }) {
+export default function Escala() {
 
+    const { escala, setEscala } = useOutletContext()
     const [statusModal, setStatusModal] = useState(false)
     const [escalaFiltrada, setEscalaFiltrada] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)

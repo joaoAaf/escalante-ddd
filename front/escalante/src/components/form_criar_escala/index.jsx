@@ -1,14 +1,16 @@
-import Styles from './styles.module.css'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Styles from './styles.module.css'
 import EscalaClient from '../../client/EscalaClient'
 import { inserirIds } from '../../scripts/geradorIds'
 
-export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) {
+export default function FormCriarEscala({ militares, setEscala }) {
 
     const [dataInicio, setDataInicio] = useState('')
     const [dataFim, setDataFim] = useState('')
     const [diasServico, setDiasServico] = useState(2)
     const [carregandoEscala, setCarregandoEscala] = useState(false)
+    const navegar = useNavigate()
 
     const gerenciarCriacaoEscala = evento => {
         evento.preventDefault()
@@ -35,7 +37,7 @@ export default function FormCriarEscala({ militares, setEscala, setTelaAtiva }) 
                 .catch(() => setCarregandoEscala(false))
                 .finally(() => {
                     setCarregandoEscala(false)
-                    setTelaAtiva('escala')
+                    navegar('/escala')
                 })
         }
     }

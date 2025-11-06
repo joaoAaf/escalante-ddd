@@ -1,12 +1,15 @@
 import { useEffect, useState, useCallback } from 'react'
-import BarraPesquisa from '../barra_pesquisa'
-import InputUpload from '../input_upload'
-import TabelaMilitares from '../tabela_militares'
-import FormCriarEscala from '../form_criar_escala'
+import { useOutletContext } from 'react-router-dom'
+import BarraPesquisa from '../../components/barra_pesquisa'
+import InputUpload from '../../components/input_upload'
+import TabelaMilitares from '../../components/tabela_militares'
+import FormCriarEscala from '../../components/form_criar_escala'
 import Styles from './styles.module.css'
 import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 
-export default function Militares({ setEscala, setTelaAtiva }) {
+export default function Militares() {
+
+    const { setEscala } = useOutletContext()
     const [militares, setMilitares] = useState(null)
     const [militaresFiltrados, setMilitaresFiltrados] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
@@ -79,7 +82,6 @@ export default function Militares({ setEscala, setTelaAtiva }) {
             <FormCriarEscala
                 militares={militares}
                 setEscala={setEscala}
-                setTelaAtiva={setTelaAtiva}
             />
             <BarraPesquisa
                 campos={camposPesquisa}

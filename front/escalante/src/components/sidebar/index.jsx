@@ -1,35 +1,29 @@
 import Styles from './styles.module.css'
 import FireFighter from './assets/firefighter.png'
 import Notes from './assets/notes.png'
+import { NavLink } from 'react-router-dom'
 
-export default function Sidebar({ telaAtiva, setTelaAtiva }) {
-    const gerenciodorTela = (evento, nomeTela) => {
-        evento.preventDefault()
-        setTelaAtiva(nomeTela)
-    }
-
+export default function Sidebar() {
     return (
         <div className={Styles.sidebar}>
             <h1>Escalante</h1>
             <nav>
-                <a
-                    href="#"
+                <NavLink
+                    to="/"
                     title="Militares"
-                    className={telaAtiva === 'militares' ? Styles.active : ''}
-                    onClick={(evento) => gerenciodorTela(evento, 'militares')}
+                    className={({ isActive }) => isActive ? Styles.active : '' }
                 >
                     <img src={FireFighter} alt="Militares" />
                     <span>Militares</span>
-                </a>
-                <a
-                    href="#"
+                </NavLink>
+                <NavLink
+                    to="/escala"
                     title="Escala"
-                    className={telaAtiva === 'escala' ? Styles.active : ''}
-                    onClick={(evento) => gerenciodorTela(evento, 'escala')}
+                    className={({ isActive }) => isActive ? Styles.active : '' }
                 >
                     <img src={Notes} alt="Escala" />
                     <span>Escala</span>
-                </a>
+                </NavLink>
             </nav>
         </div>
     )
