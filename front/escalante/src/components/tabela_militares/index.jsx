@@ -1,7 +1,11 @@
+import { useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
 
-export default function TabelaMilitares({ militares, setMilitares, sourceMilitares }) {
+export default function TabelaMilitares({ militaresTabela }) {
+
+    const { militares, setMilitares } = useContext(GlobalContext)
 
     const criarCabeçalho = () => (
         <tr>
@@ -17,15 +21,15 @@ export default function TabelaMilitares({ militares, setMilitares, sourceMilitar
     )
 
     const listarMilitares = () => {
-        if (militares === null)
+        if (militaresTabela === null)
             return (
                 <tr>
                     <td colSpan="7">Importe a planilha para carregar os militares.</td>
                 </tr>
             )
-        return militares.length > 0 ? (
-                militares.map((militar, index) => {
-                    const source = sourceMilitares ?? militares
+        return militaresTabela.length > 0 ? (
+                militaresTabela.map((militar, index) => {
+                    const source = militares ?? militaresTabela
                     const key = (militar?.matricula ?? '') || `m-${index}`
                     return (
                         <tr key={key}>

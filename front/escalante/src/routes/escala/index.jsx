@@ -1,16 +1,17 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useState, useEffect, useCallback, useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
 import BarraPesquisa from '../../components/barra_pesquisa'
 import TabelaEscala from '../../components/tabela_escala'
 import Styles from './styles.module.css'
 import CadastroServico from '../../components/cadastro_servico'
 import AcoesEscala from '../../components/acoes_escala'
 import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
+import { CadastroServicoContextProvider } from '../../context/CadastroServicoContext'
 
 export default function Escala() {
 
-    const { escala, setEscala } = useOutletContext()
-    const [statusModal, setStatusModal] = useState(false)
+    const { escala, setEscala } = useContext(GlobalContext)
+
     const [escalaFiltrada, setEscalaFiltrada] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
 
@@ -93,26 +94,16 @@ export default function Escala() {
     return (
         <div className={Styles.main}>
             <h2>Escala de Serviço</h2>
-            <AcoesEscala
-                setStatusModal={setStatusModal}
-                escala={escala}
-            />
+            <CadastroServicoContextProvider>
+                <AcoesEscala />
+                <CadastroServico />
+            </CadastroServicoContextProvider>
             <BarraPesquisa
                 campos={camposPesquisa}
                 placeholder="Pesquisar na escala..."
                 pesquisar={gerenciarPesquisa}
             />
-            <TabelaEscala
-                escala={escalaTabela}
-                setEscala={setEscala}
-                sourceEscala={escala}
-            />
-            <CadastroServico
-                statusModal={statusModal}
-                fecharModal={() => setStatusModal(false)}
-                escala={escala}
-                setEscala={setEscala}
-            />
+            <TabelaEscala escalaTabela={escalaTabela} />
         </div>
     )
 }

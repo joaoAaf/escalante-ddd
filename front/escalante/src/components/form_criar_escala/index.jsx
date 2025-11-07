@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import EscalaClient from '../../client/EscalaClient'
 import { inserirIds } from '../../scripts/geradorIds'
 
-export default function FormCriarEscala({ militares, setEscala }) {
+export default function FormCriarEscala() {
+
+    const { militares, setEscala } = useContext(GlobalContext)
 
     const [dataInicio, setDataInicio] = useState('')
     const [dataFim, setDataFim] = useState('')

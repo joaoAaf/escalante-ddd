@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react'
-import { useOutletContext } from 'react-router-dom'
+import { useEffect, useState, useCallback, useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
 import BarraPesquisa from '../../components/barra_pesquisa'
 import InputUpload from '../../components/input_upload'
 import TabelaMilitares from '../../components/tabela_militares'
@@ -9,8 +9,8 @@ import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenci
 
 export default function Militares() {
 
-    const { setEscala } = useOutletContext()
-    const [militares, setMilitares] = useState(null)
+    const { militares, setMilitares } = useContext(GlobalContext)
+    
     const [militaresFiltrados, setMilitaresFiltrados] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
 
@@ -77,22 +77,15 @@ export default function Militares() {
             <h2>Militares Escalaveis</h2>
             <div className={Styles.upload}>
                 <label htmlFor="input_upload" className={Styles.label_upload}>Importe a Planilha dos Militares</label>
-                <InputUpload setMilitares={setMilitares} />
+                <InputUpload />
             </div>
-            <FormCriarEscala
-                militares={militares}
-                setEscala={setEscala}
-            />
+            <FormCriarEscala />
             <BarraPesquisa
                 campos={camposPesquisa}
                 placeholder="Pesquisar militares..."
                 pesquisar={gerenciarPesquisa}
             />
-            <TabelaMilitares
-                militares={militaresTabela}
-                setMilitares={setMilitares}
-                sourceMilitares={militares}
-            />
+            <TabelaMilitares militaresTabela={militaresTabela} />
         </div>
     )
 }

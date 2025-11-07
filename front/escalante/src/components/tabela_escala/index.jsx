@@ -1,8 +1,12 @@
+import { useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
 import { ordenarEscala } from '../../scripts/ordenacaoEscala'
 
-export default function TabelaEscala({ escala, setEscala, sourceEscala }) {
+export default function TabelaEscala({ escalaTabela }) {
+
+    const { escala, setEscala } = useContext(GlobalContext)
 
     const criarCabeçalho = () => (
         <tr>
@@ -18,18 +22,18 @@ export default function TabelaEscala({ escala, setEscala, sourceEscala }) {
     )
 
     const listarEscala = () => {
-        if (escala === null)
+        if (escalaTabela === null)
             return (
                 <tr>
                     <td colSpan="7">Vá para a aba <b>Militares</b> para iniciar a criação da escala.</td>
                 </tr>
             )
 
-        const grupos = separarGruposPorData(escala)
+        const grupos = separarGruposPorData(escalaTabela)
 
-        return escala.length > 0 ? (
-            escala.map((servico) => {
-                const source = sourceEscala ?? escala
+        return escalaTabela.length > 0 ? (
+            escalaTabela.map((servico) => {
+                const source = escala ?? escalaTabela
                 const id = servico?.id
 
                 const grupo = grupos.get(servico?.dataServico ?? "") ?? 0
