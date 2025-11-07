@@ -1,8 +1,14 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
+import { CadastroServicoContext } from '../../context/CadastroServicoContext'
 import Styles from './styles.module.css'
 import EscalaClient from '../../client/EscalaClient'
 
-export default function AcoesEscala({ setStatusModal, escala }) {
+export default function AcoesEscala() {
+
+    const { escala } = useContext(GlobalContext)
+    const { setStatusModal } = useContext(CadastroServicoContext)
+    
     const [exportandoEscala, setExportandoEscala] = useState(false)
 
     const exportarEscalaXLSX = escala => {

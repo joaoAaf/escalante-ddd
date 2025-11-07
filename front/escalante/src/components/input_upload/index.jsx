@@ -1,8 +1,12 @@
+import { useContext, useState } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
 import MilitarClient from '../../client/MilitarClient'
 import Styles from './styles.module.css'
-import { useState } from 'react'
 
-export default function InputUpload({ setMilitares }) {
+export default function InputUpload() {
+
+    const { setMilitares } = useContext(GlobalContext)
+    
     const [nomeArquivo, setNomeArquivo] = useState("Nenhuma seleção.")
     const [arquivo, setArquivo] = useState(null)
     const [carregandoPlanilha, setCarregandoPlanilha] = useState(false)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Styles from './styles.module.css'
 
-export default function BarraPesquisa({ campos = [{ value: '', label: '' }], placeholder = 'Pesquisar...', pesquisar = () => { } }) {
+export default function BarraPesquisa({ campos = [{ value: '', label: '' }], placeholder = 'Pesquisar...', pesquisar = () => {} }) {
     const [valorCampo, setValorCampo] = useState(campos[0]?.value ?? '')
     const [consulta, setConsulta] = useState('')
 

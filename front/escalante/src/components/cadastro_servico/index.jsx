@@ -1,9 +1,16 @@
+import { useContext } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
+import { CadastroServicoContext } from '../../context/CadastroServicoContext'
 import Styles from './styles.module.css'
 import { useState } from 'react'
 import { ordenarEscala } from '../../scripts/ordenacaoEscala'
 import { obterProximoId } from '../../scripts/geradorIds'
 
-export default function CadastroServico({ statusModal, fecharModal, escala, setEscala }) {
+export default function CadastroServico() {
+    
+    const { escala, setEscala } = useContext(GlobalContext)
+    const { statusModal, setStatusModal } = useContext(CadastroServicoContext)
+    
     const servicoModelo = {
         dataServico: '',
         matricula: '',
@@ -13,7 +20,7 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
         funcao: '',
         folga: ''
     }
-
+    
     const [servico, setServico] = useState(servicoModelo)
 
     const cadastrarServico = evento => {
@@ -23,7 +30,7 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
         novaEscala = ordenarEscala(novaEscala)
         setEscala(novaEscala)
         setServico(servicoModelo)
-        fecharModal()
+        setStatusModal(false)
     }
 
     const converterMaiusculas = nome => {
@@ -39,7 +46,7 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
     }
 
     return (
-        <div className={Styles.modal} onClick={fecharModal}>
+        <div className={Styles.modal} onClick={() => setStatusModal(false)}>
 
             <div onClick={e => e.stopPropagation()}>
 
@@ -130,7 +137,7 @@ export default function CadastroServico({ statusModal, fecharModal, escala, setE
 
                     <footer>
                         <button type="submit" className={Styles.salvar}>Salvar</button>
-                        <button type="button" onClick={fecharModal} className={Styles.cancelar}>Cancelar</button>
+                        <button type="button" onClick={() => setStatusModal(false)} className={Styles.cancelar}>Cancelar</button>
                     </footer>
 
                 </form>
