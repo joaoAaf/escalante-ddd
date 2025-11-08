@@ -1,24 +1,18 @@
+import Styles from './styles.module.css'
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
+import { CadastroServicoContextProvider } from '../../context/CadastroServicoContext'
 import BarraPesquisa from '../../components/barra_pesquisa'
 import TabelaEscala from '../../components/tabela_escala'
-import Styles from './styles.module.css'
 import CadastroServico from '../../components/cadastro_servico'
 import AcoesEscala from '../../components/acoes_escala'
-import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
-import { CadastroServicoContextProvider } from '../../context/CadastroServicoContext'
 
 export default function Escala() {
 
-    const { escala, setEscala } = useContext(GlobalContext)
+    const { escala } = useContext(GlobalContext)
 
     const [escalaFiltrada, setEscalaFiltrada] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
-
-    const STORAGE_KEY_ESCALA = 'escala'
-
-    obterLocalStorage(STORAGE_KEY_ESCALA, setEscala)
-    salvarLocalStorage(STORAGE_KEY_ESCALA, escala)
 
     const camposPesquisa = [
         { value: 'data', label: 'Data', inputType: 'date' },
