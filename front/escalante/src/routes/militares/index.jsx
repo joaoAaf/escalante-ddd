@@ -1,23 +1,17 @@
+import Styles from './styles.module.css'
 import { useEffect, useState, useCallback, useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import BarraPesquisa from '../../components/barra_pesquisa'
 import InputUpload from '../../components/input_upload'
 import TabelaMilitares from '../../components/tabela_militares'
 import FormCriarEscala from '../../components/form_criar_escala'
-import Styles from './styles.module.css'
-import { obterLocalStorage, salvarLocalStorage } from '../../scripts/persistenciaLocal'
 
 export default function Militares() {
 
-    const { militares, setMilitares } = useContext(GlobalContext)
+    const { militares } = useContext(GlobalContext)
     
     const [militaresFiltrados, setMilitaresFiltrados] = useState(null)
     const [ultimaPesquisa, setUltimaPesquisa] = useState(null)
-
-    const STORAGE_KEY_MILITARES = 'militares'
-
-    obterLocalStorage(STORAGE_KEY_MILITARES, setMilitares)
-    salvarLocalStorage(STORAGE_KEY_MILITARES, militares)
 
     const camposPesquisa = [
         { value: 'nome', label: 'Nome de Paz' },
