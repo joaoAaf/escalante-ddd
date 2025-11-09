@@ -32,7 +32,7 @@ export default function FeedbackToast() {
     return (
         <div className={Styles.toastContainer}>
             <div className={`${Styles.toast} ${toastClass}`}>
-                <span>{feedback.messagem}</span>
+                <span>{feedback.mensagem}</span>
                 <button className={Styles.clearBtn} onClick={fecharToast} title="Fechar">✕</button>
             </div>
         </div>

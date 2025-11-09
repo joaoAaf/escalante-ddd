@@ -26,14 +26,14 @@ export default function InputUpload() {
                 .then(dados => {
                     setMilitares(dados || [])
                     setCarregandoPlanilha(false)
-                    setFeedback({ type: 'success', messagem: 'Militares importados com sucesso.' })
+                    setFeedback({ type: 'success', mensagem: 'Militares importados com sucesso.' })
                 })
                 .catch(error => {
                     setCarregandoPlanilha(false)
-                    setFeedback({ type: 'error', messagem: error.message })
+                    setFeedback({ type: 'error', mensagem: error.message })
                 })
         } else
-            setFeedback({ type: 'info', messagem: 'Por favor, selecione um arquivo antes de enviar.' })
+            setFeedback({ type: 'info', mensagem: 'Por favor, selecione um arquivo antes de enviar.' })
     }
 
     const baixarModelo = () => {
@@ -51,11 +51,11 @@ export default function InputUpload() {
                     URL.revokeObjectURL(url)
                 }
                 setBaixandoModelo(false)
-                setFeedback({ type: 'success', messagem: 'Download do modelo iniciado.' })
+                setFeedback({ type: 'success', mensagem: 'Download do modelo iniciado.' })
             })
             .catch(error => {
                 setBaixandoModelo(false)
-                setFeedback({ type: 'error', messagem: error.message })
+                setFeedback({ type: 'error', mensagem: error.message })
             })
     }
 

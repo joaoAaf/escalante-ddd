@@ -21,15 +21,15 @@ export default function FormCriarEscala() {
         const form = evento.currentTarget
 
         if (!form.checkValidity()) {
-            for (const element of form.elements) {
+                    for (const element of form.elements) {
                 if (element.willValidate && !element.checkValidity()) {
-                    return setFeedback({ type: 'info', messagem: element.validationMessage })
+                    return setFeedback({ type: 'info', mensagem: element.validationMessage })
                 }
             }
         }
 
         if (dataFim <= dataInicio)
-            return setFeedback({ type: 'info', messagem: 'A data final não pode ser anterior à data inicial.' })
+            return setFeedback({ type: 'info', mensagem: 'A data final não pode ser anterior à data inicial.' })
 
         setCarregandoEscala(true)
         
@@ -46,12 +46,12 @@ export default function FormCriarEscala() {
                 const comIdsFinal = inserirIds(lista)
                 setEscala(comIdsFinal)
                 setCarregandoEscala(false)
-                setFeedback({ type: 'success', messagem: 'Escala criada com sucesso.' })
+                setFeedback({ type: 'success', mensagem: 'Escala criada com sucesso.' })
                 navegar('/escala')
             })
             .catch(error => {
                 setCarregandoEscala(false)
-                setFeedback({ type: 'error', messagem: error.message })
+                setFeedback({ type: 'error', mensagem: error.message })
             })
     }
 
