@@ -2,10 +2,10 @@ import Styles from './styles.module.css'
 import { useState, useEffect, useCallback, useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import { CadastroServicoContextProvider } from '../../context/CadastroServicoContext'
-import BarraPesquisa from '../../components/barra_pesquisa'
-import TabelaEscala from '../../components/tabela_escala'
-import CadastroServico from '../../components/cadastro_servico'
-import AcoesEscala from '../../components/acoes_escala'
+import BarraPesquisa from '../../components/barra_pesquisa/BarraPesquisa'
+import TabelaEscala from '../../components/tabela_escala/TabelaEscala'
+import CadastroServico from '../../components/cadastro_servico/CadastroServico'
+import AcoesEscala from '../../components/acoes_escala/AcoesEscala'
 
 export default function Escala() {
 
