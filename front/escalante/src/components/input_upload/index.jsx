@@ -5,7 +5,7 @@ import Styles from './styles.module.css'
 
 export default function InputUpload() {
 
-    const { setMilitares } = useContext(GlobalContext)
+    const { setMilitares, setFeedback } = useContext(GlobalContext)
     
     const [nomeArquivo, setNomeArquivo] = useState("Nenhuma seleção.")
     const [arquivo, setArquivo] = useState(null)
@@ -23,11 +23,17 @@ export default function InputUpload() {
         if (arquivo) {
             setCarregandoPlanilha(true)
             MilitarClient.listarMilitaresEscalaveis(arquivo)
-                .then(dados => setMilitares(dados || []))
-                .catch(() => setCarregandoPlanilha(false))
-                .finally(() => setCarregandoPlanilha(false))
+                .then(dados => {
+                    setMilitares(dados || [])
+                    setCarregandoPlanilha(false)
+                    setFeedback({ type: 'success', messagem: 'Militares importados com sucesso.' })
+                })
+                .catch(error => {
+                    setCarregandoPlanilha(false)
+                    setFeedback({ type: 'error', messagem: error.message })
+                })
         } else
-            alert("Por favor, selecione um arquivo primeiro.")
+            setFeedback({ type: 'info', messagem: 'Por favor, selecione um arquivo antes de enviar.' })
     }
 
     const baixarModelo = () => {
@@ -44,9 +50,13 @@ export default function InputUpload() {
                     link.click()
                     URL.revokeObjectURL(url)
                 }
+                setBaixandoModelo(false)
+                setFeedback({ type: 'success', messagem: 'Download do modelo iniciado.' })
             })
-            .catch(() => setBaixandoModelo(false))
-            .finally(() => setBaixandoModelo(false))
+            .catch(error => {
+                setBaixandoModelo(false)
+                setFeedback({ type: 'error', messagem: error.message })
+            })
     }
 
     return (

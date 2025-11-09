@@ -4,9 +4,12 @@ export default class MilitarClient {
     static async obterPlanilhaModeloMilitares() {
         try {
             const response = await fetch(`${this.baseUrl}/modelo-planilha`)
+            if (!response.status.toString().startsWith('2'))
+                throw new Error(`Erro ao obter a planilha modelo: ${response.status} ${response.statusText}`)
             return await response.arrayBuffer()
         } catch (error) {
-            alert("Erro ao obter a planilha modelo: " + error.message)
+            console.error(error.message)
+            throw new Error(`Erro ao obter a planilha modelo: ${error.message}`)
         }
     }
 
@@ -18,9 +21,12 @@ export default class MilitarClient {
                 method: 'POST',
                 body: formData
             })
+            if (!response.status.toString().startsWith('2'))
+                throw new Error(`Erro ao listar militares escaláveis: ${response.status} ${response.statusText}`)
             return await response.json()
         } catch (error) {
-            alert("Erro ao listar militares escaláveis: " + error.message)
+            console.error(error.message)
+            throw new Error(`Erro ao listar militares escaláveis: ${error.message}`)
         }
     }
 }

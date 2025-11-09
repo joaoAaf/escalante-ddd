@@ -7,7 +7,7 @@ import { inserirIds } from '../../scripts/geradorIds'
 
 export default function FormCriarEscala() {
 
-    const { militares, setEscala } = useContext(GlobalContext)
+    const { militares, setEscala, setFeedback } = useContext(GlobalContext)
 
     const [dataInicio, setDataInicio] = useState('')
     const [dataFim, setDataFim] = useState('')
@@ -17,45 +17,59 @@ export default function FormCriarEscala() {
 
     const gerenciarCriacaoEscala = evento => {
         evento.preventDefault()
-        if (!dataInicio || !dataFim)
-            alert("Por favor, preencha a data inicial e final.")
-        else if (isNaN(diasServico) || diasServico <= 0)
-            alert("Por favor, os dias de serviço devem ser maiores que zero.")
-        else if (!militares || militares.length === 0)
-            alert("Não há militares disponíveis para criar a escala. Por favor, importe a planilha de militares.")
-        else {
-            setCarregandoEscala(true)
-            const dadosEscala = {
-                dataInicio,
-                dataFim,
-                diasServico,
-                militares
+
+        const form = evento.currentTarget
+
+        if (!form.checkValidity()) {
+            for (const element of form.elements) {
+                if (element.willValidate && !element.checkValidity()) {
+                    return setFeedback({ type: 'info', messagem: element.validationMessage })
+                }
             }
-            EscalaClient.criarEscalaAutomatica(dadosEscala)
-                .then(escala => {
-                    const lista = (escala || [])
-                    const comIdsFinal = inserirIds(lista)
-                    setEscala(comIdsFinal)
-                })
-                .catch(() => setCarregandoEscala(false))
-                .finally(() => {
-                    setCarregandoEscala(false)
-                    navegar('/escala')
-                })
         }
+
+        if (dataFim <= dataInicio)
+            return setFeedback({ type: 'info', messagem: 'A data final não pode ser anterior à data inicial.' })
+
+        setCarregandoEscala(true)
+        
+        const dadosEscala = {
+            dataInicio,
+            dataFim,
+            diasServico,
+            militares
+        }
+
+        EscalaClient.criarEscalaAutomatica(dadosEscala)
+            .then(escala => {
+                const lista = (escala || [])
+                const comIdsFinal = inserirIds(lista)
+                setEscala(comIdsFinal)
+                setCarregandoEscala(false)
+                setFeedback({ type: 'success', messagem: 'Escala criada com sucesso.' })
+                navegar('/escala')
+            })
+            .catch(error => {
+                setCarregandoEscala(false)
+                setFeedback({ type: 'error', messagem: error.message })
+            })
     }
 
     return (
         <div className={Styles.criar_escala}>
             <h3>Dados para Criação da Escala</h3>
-            <form onSubmit={gerenciarCriacaoEscala}>
+            <form onSubmit={gerenciarCriacaoEscala} noValidate>
                 <div>
                     <label>Data Inicial:</label>
                     <input
                         type="date"
                         value={dataInicio}
-                        onChange={e => setDataInicio(e.target.value)}
+                        onChange={e => {
+                            e.target.setCustomValidity("")
+                            setDataInicio(e.target.value)
+                        }}
                         required
+                        onInvalid={e => e.target.setCustomValidity("Por favor, digite uma data inicial válida.")}
                     />
                 </div>
 
@@ -64,8 +78,12 @@ export default function FormCriarEscala() {
                     <input
                         type="date"
                         value={dataFim}
-                        onChange={e => setDataFim(e.target.value)}
+                        onChange={e => {
+                            e.target.setCustomValidity("")
+                            setDataFim(e.target.value)
+                        }}
                         required
+                        onInvalid={e => e.target.setCustomValidity("Por favor, digite uma data final válida.")}
                     />
                 </div>
 
@@ -74,12 +92,16 @@ export default function FormCriarEscala() {
                     <input
                         type="number"
                         value={diasServico}
-                        onChange={e => setDiasServico(e.target.value)}
+                        onChange={e => {
+                            e.target.setCustomValidity("")
+                            setDiasServico(e.target.value)
+                        }}
                         required
                         min="1"
                         max="12"
                         step="1"
                         title="Os dias de serviço devem ser um número inteiro positivo."
+                        onInvalid={e => e.target.setCustomValidity("Por favor, digite uma quantidade válida de dias de serviço.")}
                     />
                 </div>
                 <div>

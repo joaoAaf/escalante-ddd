@@ -11,9 +11,12 @@ export default class EscalaClient {
                 },
                 body: JSON.stringify(dadosEscala)
             })
+            if (!response.status.toString().startsWith('2'))
+                throw new Error(`Erro ao criar escala: ${response.status} ${response.statusText}`)
             return await response.json()
         } catch (error) {
-            alert("Erro ao criar escala: " + error.message)
+            console.error(error.message)
+            throw new Error(`Erro ao criar escala: ${error.message}`)
         }
     }
 
@@ -26,9 +29,12 @@ export default class EscalaClient {
                 },
                 body: JSON.stringify(escala)
             })
+            if (!response.status.toString().startsWith('2'))
+                throw new Error(`Erro ao exportar escala: ${response.status} ${response.statusText}`)
             return await response.arrayBuffer()
         } catch (error) {
-            alert("Erro ao exportar escala: " + error.message)
+            console.error(error.message)
+            throw new Error(`Erro ao exportar escala: ${error.message}`)
         }
     }
 }
