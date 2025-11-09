@@ -1,10 +1,10 @@
 import Styles from './styles.module.css'
 import { useEffect, useState, useCallback, useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
-import BarraPesquisa from '../../components/barra_pesquisa'
-import InputUpload from '../../components/input_upload'
-import TabelaMilitares from '../../components/tabela_militares'
-import FormCriarEscala from '../../components/form_criar_escala'
+import BarraPesquisa from '../../components/barra_pesquisa/BarraPesquisa'
+import InputUpload from '../../components/input_upload/InputUpload'
+import TabelaMilitares from '../../components/tabela_militares/TabelaMilitares'
+import FormCriarEscala from '../../components/form_criar_escala/FormCriarEscala'
 
 export default function Militares() {
 

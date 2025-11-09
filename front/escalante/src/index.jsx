@@ -1,9 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
-import Militares from './routes/militares'
-import Escala from './routes/escala'
+import App from './App'
+import Militares from './routes/militares/Militares'
+import Escala from './routes/escala/Escala'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter([

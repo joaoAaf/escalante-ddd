@@ -44,7 +44,7 @@ export default function BotaoRemover({ tabela, setTabela, id, idKey, campos }) {
         const novaTabela = (tabela || []).filter(item => String(item?.[idKey]) !== String(id))
         setTabela(novaTabela)
         setStatusModal(false)
-    setFeedback({ type: 'success', mensagem: 'Item removido com sucesso.' })
+        setFeedback({ type: 'success', mensagem: 'Item removido com sucesso.' })
     }
 
     return (
