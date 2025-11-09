@@ -3,3 +3,8 @@
     width: 32px;
     height: 32px;
 }
+
+.textoConfirmacao {
+    margin-bottom: 10px;
+    font-weight: bold;
+}

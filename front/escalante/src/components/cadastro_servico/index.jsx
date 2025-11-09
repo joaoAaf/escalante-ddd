@@ -5,6 +5,8 @@ import Styles from './styles.module.css'
 import { useState } from 'react'
 import { ordenarEscala } from '../../scripts/ordenacaoEscala'
 import { obterProximoId } from '../../scripts/geradorIds'
+import Modal from '../modal/Modal'
+import BotoesModal from '../modal/BotoesModal'
 
 export default function CadastroServico() {
 
@@ -52,18 +54,10 @@ export default function CadastroServico() {
         return nome.trim().replace(/\s+/g, ' ')
     }
 
-    if (!statusModal) {
-        return null
-    }
-
     return (
-        <div className={Styles.modal} onClick={() => setStatusModal(false)}>
-
-            <div onClick={e => e.stopPropagation()}>
-
-                <h2>Adicionar Serviço</h2>
-
-                <form onSubmit={cadastrarServico} noValidate>
+        <>
+            <Modal abrir={statusModal} fechar={() => setStatusModal(false)} titulo="Adicionar Serviço">
+                <form onSubmit={cadastrarServico} className={Styles.CadastroServico} noValidate>
 
                     <label>Data do Serviço:</label>
                     <input
@@ -184,13 +178,13 @@ export default function CadastroServico() {
                         onInvalid={e => e.target.setCustomValidity("Por favor, digite uma folga válida.")}
                     />
 
-                    <footer>
-                        <button type="submit" className={Styles.salvar}>Salvar</button>
-                        <button type="button" onClick={() => setStatusModal(false)} className={Styles.cancelar}>Cancelar</button>
-                    </footer>
+                    <BotoesModal
+                        typeConfirmar="submit"
+                        cancelar={() => setStatusModal(false)}
+                    />
 
                 </form>
-            </div>
-        </div>
+            </Modal>
+        </>
     )
 }

@@ -1,33 +1,79 @@
+import { useContext, useState } from 'react'
+import { GlobalContext } from '../../context/GlobalContext'
+import Modal from '../modal/Modal'
+import BotoesModal from '../modal/BotoesModal'
 import Delete from './assets/delete.png'
 import Styles from './styles.module.css'
+import { formatarData } from '../../scripts/formatarData'
 
-export default function BotaoRemover({ tabela, setTabela, id, idKey = 'id' }) {
+export default function BotaoRemover({ tabela, setTabela, id, idKey, campos }) {
 
-    const removerLinha = () => {
-        if (id === undefined || id === null) return
+    const { setFeedback } = useContext(GlobalContext)
+    const [statusModal, setStatusModal] = useState(false)
+    const [confirmacao, setConfirmacao] = useState([])
 
-        const linha = (tabela || []).find(item => String(item?.[idKey]) === String(id))
-        if (!linha) return
+    const invocarModal = evento => {
+        evento.preventDefault()
 
-        const linhaString = Object.entries(linha)
-            .map(([chave, valor]) => `${chave}: ${valor}`)
-            .join('\n')
+        if (id === undefined || id === null) {
+            setFeedback({ type: 'error', messagem: 'ID inválido para remoção.' })
+            return
+        }
 
-        const confirmacao = window.confirm(`Tem certeza que deseja remover o item abaixo?\n\n${linhaString}`)
-        if (!confirmacao) return
+        const item = (tabela || []).find(it => String(it?.[idKey]) === String(id))
 
+        if (!item) {
+            setFeedback({ type: 'error', messagem: 'Item não encontrado para remoção.' })
+            return
+        }
+
+        const valores = Object.values({ ...item, dataServico: formatarData(item.dataServico), nascimento: formatarData(item.nascimento) })
+
+        const mapaCamposValores = campos.map((campo, index) => {
+            if (valores[index] === 0) return [campo, '0']
+            if (valores[index] === false) return [campo, 'Não']
+            if (valores[index] === true) return [campo, 'Sim']
+            return [campo, valores[index] || '']
+        })
+
+        setConfirmacao(mapaCamposValores)
+        setStatusModal(true)
+    }
+
+    const removerItem = () => {
         const novaTabela = (tabela || []).filter(item => String(item?.[idKey]) !== String(id))
         setTabela(novaTabela)
+        setStatusModal(false)
+        setFeedback({ type: 'success', messagem: 'Item removido com sucesso.' })
     }
 
     return (
-        <a
-            href="#"
-            onClick={e => { e.preventDefault(); removerLinha() }}
-            className={Styles.botaoRemover}
-        >
-            <img src={Delete} alt="Remover" />
-        </a>
+        <>
+            <a
+                href="#"
+                onClick={e => invocarModal(e)}
+                className={Styles.botaoRemover}
+            >
+                <img src={Delete} alt="Remover" />
+            </a>
+
+            <Modal abrir={statusModal} fechar={() => setStatusModal(false)} titulo="Confirmar Remoção">
+                <p className={Styles.textoConfirmacao}>
+                    {`Tem certeza que deseja remover o item abaixo?`}
+                </p>
+                <table>
+                    <tbody>
+                        {confirmacao.map(([chave, valor], index) => (
+                            <tr key={index}>
+                                <td><strong>{chave}</strong></td>
+                                <td>{valor}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <BotoesModal confirmar={removerItem} cancelar={() => setStatusModal(false)} />
+            </Modal>
+        </>
     )
 
 }

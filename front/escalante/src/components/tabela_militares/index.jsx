@@ -2,20 +2,19 @@ import { useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover'
+import { formatarData } from '../../scripts/formatarData'
 
 export default function TabelaMilitares({ militaresTabela }) {
 
     const { militares, setMilitares } = useContext(GlobalContext)
 
+    const campos = ["ANTIGUIDADE", "MATRÍCULA", "POST./GRAD.", "NOME DE PAZ", "NASCIMENTO", "FOLGA ESPECIAL", "C.O.V."]
+
     const criarCabeçalho = () => (
         <tr>
-            <th>ANTIGUIDADE</th>
-            <th>MATRÍCULA</th>
-            <th>POST./GRAD.</th>
-            <th>NOME DE PAZ</th>
-            <th>NASCIMENTO</th>
-            <th>FOLGA ESPECIAL</th>
-            <th>C.O.V.</th>
+            {campos.map(campo => (
+                <th key={campo}>{campo}</th>
+            ))}
             <th>AÇÃO</th>
         </tr>
     )
@@ -40,6 +39,7 @@ export default function TabelaMilitares({ militaresTabela }) {
                                     idKey={'matricula'}
                                     tabela={source}
                                     setTabela={setMilitares}
+                                    campos={campos}
                                 />
                             </td>
                         </tr>
@@ -59,17 +59,6 @@ export default function TabelaMilitares({ militaresTabela }) {
         ) : (
             <td key={index}>{checkboxCov(militar)}</td>
         ))
-    }
-
-    const formatarData = (dataString) => {
-        if (!dataString) return "-"
-        try {
-            const [ano, mes, dia] = dataString.split("-")
-            return `${dia}/${mes}/${ano}`
-        } catch (error) {
-            console.error("Erro ao formatar data:", dataString, error)
-            return "-"
-        }
     }
 
     const checkboxCov = militar => (
