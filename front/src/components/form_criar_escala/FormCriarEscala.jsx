@@ -2,8 +2,8 @@ import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
-import EscalaClient from '../../client/EscalaClient'
-import { inserirIds } from '../../scripts/geradorIds'
+import EscalaClient from '../../clients/EscalaClient'
+import { inserirIds } from '../../utils/geradorIds'
 
 export default function FormCriarEscala() {
 

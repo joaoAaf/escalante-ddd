@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover/BotaoRemover'
-import { ordenarEscala } from '../../scripts/ordenacaoEscala'
+import { ordenarEscala } from '../../utils/ordenacaoEscala'
 
 export default function TabelaEscala({ escalaTabela }) {
 
