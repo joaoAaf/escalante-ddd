@@ -8,15 +8,13 @@ export default function TabelaEscala({ escalaTabela }) {
 
     const { escala, setEscala } = useContext(GlobalContext)
 
+    const campos = ["DATA", "MATRÍCULA", "MILITAR ESCALADO", "POST./GRAD.", "ANTIGUIDADE", "FUNÇÃO", "FOLGA"]
+    
     const criarCabeçalho = () => (
         <tr>
-            <th>DATA</th>
-            <th>MATRÍCULA</th>
-            <th>MILITAR ESCALADO</th>
-            <th>POST./GRAD.</th>
-            <th>ANTIGUIDADE</th>
-            <th>FUNÇÃO</th>
-            <th>FOLGA</th>
+            {campos.map(campo => (
+                <th key={campo}>{campo}</th>
+            ))}
             <th>AÇÃO</th>
         </tr>
     )
@@ -48,6 +46,7 @@ export default function TabelaEscala({ escalaTabela }) {
                                 idKey={'id'}
                                 tabela={source}
                                 setTabela={setEscala}
+                                campos={campos}
                             />
                         </td>
                     </tr>
