@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, useState } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 
 export const GlobalContext = createContext()
@@ -8,8 +8,10 @@ export const GlobalContextProvider = ({ children }) => {
     const [escala, setEscala] = useLocalStorage('escala')
     const [militares, setMilitares] = useLocalStorage('militares')
 
+    const [feedback, setFeedback] = useState(null)
+
     return (
-        <GlobalContext.Provider value={{ escala, setEscala, militares, setMilitares }}>
+        <GlobalContext.Provider value={{ escala, setEscala, militares, setMilitares, feedback, setFeedback }}>
             {children}
         </GlobalContext.Provider>
     )

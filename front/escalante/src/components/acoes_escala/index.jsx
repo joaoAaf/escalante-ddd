@@ -6,12 +6,14 @@ import EscalaClient from '../../client/EscalaClient'
 
 export default function AcoesEscala() {
 
-    const { escala } = useContext(GlobalContext)
+    const { escala, setFeedback } = useContext(GlobalContext)
     const { setStatusModal } = useContext(CadastroServicoContext)
-    
+
     const [exportandoEscala, setExportandoEscala] = useState(false)
 
     const exportarEscalaXLSX = escala => {
+        if (!escala || escala.length === 0)
+            return setFeedback({ type: 'info', messagem: 'Não há escala disponível para exportação.' })
         setExportandoEscala(true)
         EscalaClient.exportarEscalaXLSX(escala)
             .then(arrayBuffer => {
@@ -25,9 +27,13 @@ export default function AcoesEscala() {
                     link.click()
                     URL.revokeObjectURL(url)
                 }
+                setExportandoEscala(false)
+                setFeedback({ type: 'success', messagem: 'Exportação da escala realizada com sucesso. Download iniciado.' })
             })
-            .catch(() => setExportandoEscala(false))
-            .finally(() => setExportandoEscala(false))
+            .catch(error => {
+                setExportandoEscala(false)
+                setFeedback({ type: 'error', messagem: error.message })
+            })
     }
 
     return (
