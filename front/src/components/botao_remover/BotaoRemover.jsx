@@ -4,7 +4,7 @@ import Modal from '../modal/Modal'
 import BotoesModal from '../modal/BotoesModal'
 import Delete from './assets/delete.png'
 import Styles from './styles.module.css'
-import { formatarData } from '../../scripts/formatarData'
+import { formatarData } from '../../utils/formatarData'
 
 export default function BotaoRemover({ tabela, setTabela, id, idKey, campos }) {
 

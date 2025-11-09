@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
 import BotaoRemover from '../botao_remover/BotaoRemover'
-import { formatarData } from '../../scripts/formatarData'
+import { formatarData } from '../../utils/formatarData'
 
 export default function TabelaMilitares({ militaresTabela }) {
 

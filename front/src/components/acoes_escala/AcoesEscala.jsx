@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import { CadastroServicoContext } from '../../context/CadastroServicoContext'
 import Styles from './styles.module.css'
-import EscalaClient from '../../client/EscalaClient'
+import EscalaClient from '../../clients/EscalaClient'
 
 export default function AcoesEscala() {
 

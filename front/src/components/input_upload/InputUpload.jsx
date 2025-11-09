@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
-import MilitarClient from '../../client/MilitarClient'
+import MilitarClient from '../../clients/MilitarClient'
 import Styles from './styles.module.css'
 
 export default function InputUpload() {
