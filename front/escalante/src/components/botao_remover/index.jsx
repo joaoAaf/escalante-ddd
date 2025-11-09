@@ -16,14 +16,14 @@ export default function BotaoRemover({ tabela, setTabela, id, idKey, campos }) {
         evento.preventDefault()
 
         if (id === undefined || id === null) {
-            setFeedback({ type: 'error', messagem: 'ID inválido para remoção.' })
+            setFeedback({ type: 'error', mensagem: 'ID inválido para remoção.' })
             return
         }
 
         const item = (tabela || []).find(it => String(it?.[idKey]) === String(id))
 
         if (!item) {
-            setFeedback({ type: 'error', messagem: 'Item não encontrado para remoção.' })
+            setFeedback({ type: 'error', mensagem: 'Item não encontrado para remoção.' })
             return
         }
 
@@ -44,7 +44,7 @@ export default function BotaoRemover({ tabela, setTabela, id, idKey, campos }) {
         const novaTabela = (tabela || []).filter(item => String(item?.[idKey]) !== String(id))
         setTabela(novaTabela)
         setStatusModal(false)
-        setFeedback({ type: 'success', messagem: 'Item removido com sucesso.' })
+    setFeedback({ type: 'success', mensagem: 'Item removido com sucesso.' })
     }
 
     return (

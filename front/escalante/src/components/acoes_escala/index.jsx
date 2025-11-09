@@ -13,7 +13,7 @@ export default function AcoesEscala() {
 
     const exportarEscalaXLSX = escala => {
         if (!escala || escala.length === 0)
-            return setFeedback({ type: 'info', messagem: 'Não há escala disponível para exportação.' })
+            return setFeedback({ type: 'info', mensagem: 'Não há escala disponível para exportação.' })
         setExportandoEscala(true)
         EscalaClient.exportarEscalaXLSX(escala)
             .then(arrayBuffer => {
@@ -28,11 +28,11 @@ export default function AcoesEscala() {
                     URL.revokeObjectURL(url)
                 }
                 setExportandoEscala(false)
-                setFeedback({ type: 'success', messagem: 'Exportação da escala realizada com sucesso. Download iniciado.' })
+                setFeedback({ type: 'success', mensagem: 'Exportação da escala realizada com sucesso. Download iniciado.' })
             })
             .catch(error => {
                 setExportandoEscala(false)
-                setFeedback({ type: 'error', messagem: error.message })
+                setFeedback({ type: 'error', mensagem: error.message })
             })
     }
 

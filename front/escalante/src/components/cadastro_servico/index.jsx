@@ -33,7 +33,7 @@ export default function CadastroServico() {
         if (!form.checkValidity()) {
             for (const element of form.elements) {
                 if (element.willValidate && !element.checkValidity()) {
-                    return setFeedback({ type: 'info', messagem: element.validationMessage })
+                    return setFeedback({ type: 'info', mensagem: element.validationMessage })
                 }
             }
         }
