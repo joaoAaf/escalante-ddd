@@ -16,7 +16,7 @@ export default class EscalaClient {
             return await response.json()
         } catch (error) {
             console.error(error.message)
-            throw new Error(`Erro ao criar escala: ${error.message}`)
+            throw new Error("Erro ao criar escala: Servidor indisponível.")
         }
     }
 
@@ -34,7 +34,7 @@ export default class EscalaClient {
             return await response.arrayBuffer()
         } catch (error) {
             console.error(error.message)
-            throw new Error(`Erro ao exportar escala: ${error.message}`)
+            throw new Error("Erro ao exportar escala: Servidor indisponível.")
         }
     }
 }
