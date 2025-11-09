@@ -9,7 +9,7 @@ export default class MilitarClient {
             return await response.arrayBuffer()
         } catch (error) {
             console.error(error.message)
-            throw new Error(`Erro ao obter a planilha modelo: ${error.message}`)
+            throw new Error("Erro ao obter a planilha modelo: Servidor indisponível.")
         }
     }
 
@@ -26,7 +26,7 @@ export default class MilitarClient {
             return await response.json()
         } catch (error) {
             console.error(error.message)
-            throw new Error(`Erro ao listar militares escaláveis: ${error.message}`)
+            throw new Error("Erro ao listar militares escaláveis: Servidor indisponível.")
         }
     }
 }
