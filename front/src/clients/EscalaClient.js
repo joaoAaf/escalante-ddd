@@ -1,6 +1,6 @@
 export default class EscalaClient {
 
-    static baseUrl = 'http://localhost:8080/escala'
+    static baseUrl = `${import.meta.env.VITE_API_URL ?? 'http://localhost:8080'}/escala`
 
     static async criarEscalaAutomatica(dadosEscala, signal) {
         try {
