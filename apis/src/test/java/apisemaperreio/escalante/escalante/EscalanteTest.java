@@ -3,10 +3,6 @@ package apisemaperreio.escalante.escalante;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,12 +24,10 @@ class EscalanteTest {
 		final String MATRICULA_MILITAR_FOLGA_ESPECIAL = "REG835";
 		final int FOLGA_ESPECIAL = 7;
 
-		File file = new File("../samples/modelo_importação_militares.xlsx");
-
-		InputStream inputStream = new FileInputStream(file);
+		var inputStream = getClass().getResourceAsStream("/samples/modelo_importacao_militares.xlsx");
 
 		MultipartFile multipartFile = new MockMultipartFile(
-				"file", file.getName(),
+				"file", "modelo_importacao_militares.xlsx",
 				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 				inputStream);
 
