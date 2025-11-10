@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import { CadastroServicoContext } from '../../context/CadastroServicoContext'
 import Styles from './styles.module.css'
@@ -11,11 +11,30 @@ export default function AcoesEscala() {
 
     const [exportandoEscala, setExportandoEscala] = useState(false)
 
+    const abortControllerRef = useRef(null)
+
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current)
+                abortControllerRef.current.abort()
+        }
+    }, [])
+
+    const criarAbortController = () => {
+        abortControllerRef.current?.abort()
+        const controller = new AbortController()
+        abortControllerRef.current = controller
+        return controller
+    }
+
     const exportarEscalaXLSX = escala => {
         if (!escala || escala.length === 0)
             return setFeedback({ type: 'info', mensagem: 'Não há escala disponível para exportação.' })
+        
+        const controller = criarAbortController()
+        
         setExportandoEscala(true)
-        EscalaClient.exportarEscalaXLSX(escala)
+        EscalaClient.exportarEscalaXLSX(escala, controller.signal)
             .then(arrayBuffer => {
                 if (arrayBuffer) {
                     const blob = new Blob([arrayBuffer],
@@ -27,12 +46,16 @@ export default function AcoesEscala() {
                     link.click()
                     URL.revokeObjectURL(url)
                 }
-                setExportandoEscala(false)
                 setFeedback({ type: 'success', mensagem: 'Exportação da escala realizada com sucesso. Download iniciado.' })
             })
             .catch(error => {
-                setExportandoEscala(false)
+                if (error.name === 'AbortError') return
                 setFeedback({ type: 'error', mensagem: error.message })
+            })
+            .finally(() => {
+                setExportandoEscala(false)
+                if (abortControllerRef.current === controller)
+                    abortControllerRef.current = null
             })
     }
 

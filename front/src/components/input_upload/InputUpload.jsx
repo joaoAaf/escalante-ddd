@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { GlobalContext } from '../../context/GlobalContext'
 import MilitarClient from '../../clients/MilitarClient'
 import Styles from './styles.module.css'
@@ -12,6 +12,22 @@ export default function InputUpload() {
     const [carregandoPlanilha, setCarregandoPlanilha] = useState(false)
     const [baixandoModelo, setBaixandoModelo] = useState(false)
 
+    const abortControllerRef = useRef(null)
+
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current)
+                abortControllerRef.current.abort()
+        }
+    }, [])
+
+    const criarAbortController = () => {
+        abortControllerRef.current?.abort()
+        const controller = new AbortController()
+        abortControllerRef.current = controller
+        return controller
+    }
+
     const gerenciarArquivo = evento => {
         if (evento.target.files.length > 0) {
             setNomeArquivo(evento.target.files[0].name)
@@ -21,24 +37,34 @@ export default function InputUpload() {
 
     const enviarArquivo = () => {
         if (arquivo) {
+
+            const controller = criarAbortController()
+
             setCarregandoPlanilha(true)
-            MilitarClient.listarMilitaresEscalaveis(arquivo)
+            MilitarClient.listarMilitaresEscalaveis(arquivo, controller.signal)
                 .then(dados => {
                     setMilitares(dados || [])
-                    setCarregandoPlanilha(false)
                     setFeedback({ type: 'success', mensagem: 'Militares importados com sucesso.' })
                 })
                 .catch(error => {
-                    setCarregandoPlanilha(false)
+                    if (error.name === 'AbortError') return
                     setFeedback({ type: 'error', mensagem: error.message })
+                })
+                .finally(() => {
+                    setCarregandoPlanilha(false)
+                    if (abortControllerRef.current === controller)
+                        abortControllerRef.current = null
                 })
         } else
             setFeedback({ type: 'info', mensagem: 'Por favor, selecione um arquivo antes de enviar.' })
     }
 
     const baixarModelo = () => {
+
+        const controller = criarAbortController()
+
         setBaixandoModelo(true)
-        MilitarClient.obterPlanilhaModeloMilitares()
+        MilitarClient.obterPlanilhaModeloMilitares(controller.signal)
             .then(arrayBuffer => {
                 if (arrayBuffer) {
                     const blob = new Blob([arrayBuffer],
@@ -50,12 +76,16 @@ export default function InputUpload() {
                     link.click()
                     URL.revokeObjectURL(url)
                 }
-                setBaixandoModelo(false)
                 setFeedback({ type: 'success', mensagem: 'Download do modelo iniciado.' })
             })
             .catch(error => {
-                setBaixandoModelo(false)
+                if (error.name === 'AbortError') return
                 setFeedback({ type: 'error', mensagem: error.message })
+            })
+            .finally(() => {
+                setBaixandoModelo(false)
+                if (abortControllerRef.current === controller)
+                    abortControllerRef.current = null
             })
     }
 
