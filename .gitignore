@@ -1,35 +1,60 @@
-HELP.md
+### Arquivos e diretórios gerados / build ###
 target/
-!.mvn/wrapper/maven-wrapper.jar
+build/
+dist/
+dist-ssr/
 !**/src/main/**/target/
 !**/src/test/**/target/
-private/
-*.bkp
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-### STS ###
-.apt_generated
+# Maven wrapper
+!.mvn/wrapper/maven-wrapper.jar
+
+### Node / Frontend ###
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+*.local
+
+### Arquivos temporários / backups ###
+*.bkp
+*.local
+HELP.md
+private/
+
+### Editor directories and files / IDEs ###
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 .classpath
-.factorypath
 .project
 .settings
+.factorypath
+.apt_generated
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
 
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
-/nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
-.vscode/
+### Vite / build cache ###
+.vite
+
+# Outros
+!.mvn/wrapper/maven-wrapper.jar
+
