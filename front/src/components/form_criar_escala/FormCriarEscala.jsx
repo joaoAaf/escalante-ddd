@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GlobalContext } from '../../context/GlobalContext'
 import Styles from './styles.module.css'
@@ -13,7 +13,24 @@ export default function FormCriarEscala() {
     const [dataFim, setDataFim] = useState('')
     const [diasServico, setDiasServico] = useState(2)
     const [carregandoEscala, setCarregandoEscala] = useState(false)
+    
     const navegar = useNavigate()
+
+    const abortControllerRef = useRef(null)
+
+    useEffect(() => {
+        return () => {
+            if (abortControllerRef.current)
+                abortControllerRef.current.abort()
+        }
+    }, [])
+
+    const criarAbortController = () => {
+        abortControllerRef.current?.abort()
+        const controller = new AbortController()
+        abortControllerRef.current = controller
+        return controller
+    }
 
     const gerenciarCriacaoEscala = evento => {
         evento.preventDefault()
@@ -31,6 +48,8 @@ export default function FormCriarEscala() {
         if (dataFim <= dataInicio)
             return setFeedback({ type: 'info', mensagem: 'A data final não pode ser anterior à data inicial.' })
 
+        const controller = criarAbortController()
+        
         setCarregandoEscala(true)
         
         const dadosEscala = {
@@ -40,18 +59,23 @@ export default function FormCriarEscala() {
             militares
         }
 
-        EscalaClient.criarEscalaAutomatica(dadosEscala)
+        EscalaClient.criarEscalaAutomatica(dadosEscala, controller.signal)
             .then(escala => {
-                const lista = (escala || [])
-                const comIdsFinal = inserirIds(lista)
-                setEscala(comIdsFinal)
-                setCarregandoEscala(false)
+                const escalaResponse = (escala || [])
+                const escalaComIds = inserirIds(escalaResponse)
+                setEscala(escalaComIds)
                 setFeedback({ type: 'success', mensagem: 'Escala criada com sucesso.' })
                 navegar('/escala')
             })
             .catch(error => {
-                setCarregandoEscala(false)
+                
+                if (error.name === 'AbortError') return
                 setFeedback({ type: 'error', mensagem: error.message })
+            })
+            .finally(() => {
+                setCarregandoEscala(false)
+                if (abortControllerRef.current === controller)
+                    abortControllerRef.current = null
             })
     }
 
