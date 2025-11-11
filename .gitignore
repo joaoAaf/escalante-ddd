@@ -58,3 +58,5 @@ private/
 # Outros
 !.mvn/wrapper/maven-wrapper.jar
 
+# Variáveis de ambiente
+.env

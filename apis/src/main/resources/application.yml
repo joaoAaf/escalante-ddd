@@ -3,4 +3,7 @@ spring:
     name: escalante
   profiles:
     active:
-    - dev  
+    - dev
+env:
+  front:
+    url: ${FRONT_URL:""}
