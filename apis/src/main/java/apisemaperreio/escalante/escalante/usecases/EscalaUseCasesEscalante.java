@@ -9,7 +9,9 @@ import apisemaperreio.escalante.escalante.dtos.ServicoOperacionalDto;
 
 public interface EscalaUseCasesEscalante {
 
-    List<ServicoOperacionalDto> listarEscalaAnterior(MultipartFile planilhaEscala);
+    byte[] obterPlanilhaModeloEscala();
+    
+    List<ServicoOperacionalDto> importarEscalaXLSX(MultipartFile planilhaEscala);
     
     List<ServicoOperacionalDto> criarEscalaAutomatica(DadosEscalaRequest request);
     

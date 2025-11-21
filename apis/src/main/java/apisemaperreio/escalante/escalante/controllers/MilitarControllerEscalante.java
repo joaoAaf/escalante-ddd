@@ -13,14 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import apisemaperreio.escalante.escalante.usecases.MilitarUseCasesEscalante;
 
-@RequestMapping("/militar")
+@RequestMapping("/api/militar")
 @RestController
 public class MilitarControllerEscalante {
 
     @Autowired
     private MilitarUseCasesEscalante militarUseCases;
 
-    @GetMapping("/modelo-planilha")
+    @GetMapping("/modelo/xlsx")
     public ResponseEntity<byte[]> obterPlanilhaModeloMilitares() {
         try {
             var planilhaModelo = militarUseCases.obterPlanilhaModeloMilitares();
@@ -35,10 +35,10 @@ public class MilitarControllerEscalante {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> listarMilitaresEscalaveis(@RequestParam MultipartFile militares) {
+    @PostMapping("/importar/xlsx")
+    public ResponseEntity<?> importarMilitaresXLSX(@RequestParam MultipartFile militares) {
         try {
-            return ResponseEntity.ok(militarUseCases.listarMilitaresEscalaveis(militares));
+            return ResponseEntity.ok(militarUseCases.importarMilitaresXLSX(militares));
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();

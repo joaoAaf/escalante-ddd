@@ -18,7 +18,7 @@ public class MilitarServiceEscalante implements MilitarUseCasesEscalante {
     private ImportadorMilitaresXLSXAdapter importadorMilitaresXLSXAdapter;
 
     @Override
-    public List<MilitarEscalavel> listarMilitaresEscalaveis(MultipartFile planilhaMilitares) {
+    public List<MilitarEscalavel> importarMilitaresXLSX(MultipartFile planilhaMilitares) {
         return importadorMilitaresXLSXAdapter.importarMilitaresXLSX(planilhaMilitares);
     }
 

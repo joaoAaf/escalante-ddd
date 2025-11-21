@@ -1,6 +1,7 @@
 package apisemaperreio.escalante.escalante.services;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,18 @@ public class EscalaServiceEscalante implements EscalaUseCasesEscalante {
     private ServicoOperacionalMapper servicoOperacionalMapper;
 
     @Override
-    public List<ServicoOperacionalDto> listarEscalaAnterior(MultipartFile planilhaEscala) {
+    public byte[] obterPlanilhaModeloEscala() {
+        try (var inputStream = getClass().getResourceAsStream("/samples/modelo_importacao_escala.xlsx")) {
+            if (inputStream == null)
+                throw new RuntimeException("Não foi possível encontrar a planilha modelo.");
+            return inputStream.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao ler a planilha modelo de escala.", e);
+        }
+    }
+
+    @Override
+    public List<ServicoOperacionalDto> importarEscalaXLSX(MultipartFile planilhaEscala) {
         return importadorXLSX.importarEscalaXLSX(planilhaEscala);
     }
 
